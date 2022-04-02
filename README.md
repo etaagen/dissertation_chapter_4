@@ -21,17 +21,17 @@ Data, analysis, and scripts for reviewing or reproducing results presented in ch
 
 * **[/results_S2.2/](https://github.com/etaagen/dissertation_chapter_4/tree/main/Supplementary_2/results_S2.2/)**, script and master summary .csv files for pairwise contrasts with Tukey multiple-test correction  
 
-* **plots_S2.1.md & plots_S2.1.Rmd**, response variable plots, full founder population  
+* **plots_S2.1.md & .Rmd**, response variable plots, full founder population  
 
-* **plots_S2.2.md & plots_S2.2.Rmd**, response variable plots, biparental population
+* **plots_S2.2.md & .Rmd**, response variable plots, biparental population
 
-* **model_S2.1.md & model_S2.1.Rmd**, response variable linear models, cycle 6, full founder
+* **model_S2.1.md & .Rmd**, response variable linear models, cycle 6, full founder
 
-* **model_S2.2.md & model_S2.2.Rmd**, response variable linear models, cycle 10, full founder  
+* **model_S2.2.md & .Rmd**, response variable linear models, cycle 10, full founder  
 
-* **model_S2.3.md & model_S2.3.Rmd**, response variable linear models, cycle 6, biparental
+* **model_S2.3.md & .Rmd**, response variable linear models, cycle 6, biparental
  
-* **model_S2.4.md & model_S2.4.Rmd**, response variable linear models, cycle 10, biparental
+* **model_S2.4.md & .Rmd**, response variable linear models, cycle 10, biparental
 
 
 
