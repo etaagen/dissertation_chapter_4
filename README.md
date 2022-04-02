@@ -9,6 +9,8 @@ Data, analysis, and scripts for reviewing or reproducing results presented in ch
 
 * **file_S1.2.csv.zip**, biparental founder population raw data  
 
+* **summary_stats.R**, custom functions called upon while running simmulatinons, and summarizing results  
+
 
 
 ### [Supplementary_2: Results (simulation output, model analysis, figures, etc.)](https://github.com/etaagen/dissertation_chapter_4/tree/main/Supplementary_2)  
