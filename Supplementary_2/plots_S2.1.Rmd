@@ -1,0 +1,1805 @@
+---
+title: "Controlled recombination simulation results"
+output: github_document
+always_allow_html: true
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(dpi=400,fig.width=7)
+```
+
+### Notes:   
+Each simulation rep draws from 26 founders, 10 cycles of phenotypic selection burnin 400 F1s -> 400 DHs, phenotype, serves as TP and GS cycle 1 starting pop, variance standardized to 1 -> change recombination distribution (WT, 20X Peri or 20X Chr) --> 400 F1s -> 400 DHs, train model, phenotype and update TP with top 160 (40%) DHs and drop bottom 80 (20%), advance top 20 DHs (5% selection intensity) for next cycle of 400 new F1s, repeat for 10 cycles   
+
+**WT map type does not get a recombination change, WT is always WT while Peri and Chr are always 2 or 20X**  
+
+<details><summary>Click here: simulation parameters</summary> 
+
+#### Variables:   
+
+**Recombination:** WT, 2X or 20X     
+**Genetic map change:** WT, Pericentromere or Chromosome   
+**Repulsion:** 1:5  
+**QTL type:** Random or deleterious variant 
+**Heritability:** 0.2 or 0.8   
+**QTL per Chr:** 2 or 200    
+**Relationship matrix:** genomewide or causal variant  
+
+#### Load packages and data
+```{r load data, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(data.table)
+library(kableExtra)
+library(ggsci)
+
+# anova and summary plot functions
+source("/Users/ellietaagen/Desktop/github/cr_simulation/Functions/master_functions/summary_stats_anova.R")
+source("/Users/ellietaagen/Desktop/github/cr_simulation/Results/table_view_function.R")
+
+gg <- fread("/Users/ellietaagen/Desktop/github/cr_simulation/Results/BP_F_master_results_csv/f_gg.csv") %>% as.data.frame()
+gv <- fread("/Users/ellietaagen/Desktop/github/cr_simulation/Results/BP_F_master_results_csv/f_gv.csv") %>% as.data.frame()
+pa <- fread("/Users/ellietaagen/Desktop/github/cr_simulation/Results/BP_F_master_results_csv/f_pa.csv") %>% as.data.frame()
+be <- fread("/Users/ellietaagen/Desktop/github/cr_simulation/Results/BP_F_master_results_csv/f_be.csv") %>% as.data.frame()
+# be `value` is 2-fold higher than it should be (ASR does not know how to treat VarA/GenicVarA for DH)
+be$value <- be$value/2
+qtl <- fread("/Users/ellietaagen/Desktop/github/cr_simulation/Results/BP_F_master_results_csv/f_qtl.csv") %>% as.data.frame()
+qtl_af <- fread("/Users/ellietaagen/Desktop/github/cr_simulation/Results/BP_F_master_results_csv/f_qtl_af.csv") %>% as.data.frame()
+
+```
+
+
+**Data frames**    
+ 
+gg: population's genetic gain   
+gv: additive genetic variance of population   
+pa: prediction accuracy of genomic selection  
+be: Bulmer effect (varA/genicVarA)  
+qtl: positive and negative effect QTL fixation ratio    
+qtl_af: change in QTL negative allele frequency, subset by small (Q1), medium, or large (Q3) effect size 
+
+**Columns**  
+  
+**rep** is 1:number of reps simulation was run    
+**cycle** designates founder / burnin (0), and GS cycle 1:10   
+**value** is the raw response variable measurement, (or average after summary function, grouped by legend and cycle, of all rep)    
+**Matrix** is the relationship matrix used in RRBLUP, genomewide or causal variant   
+**Pop** is the full founder set (F) or biparental (bp)  
+**Recombination** is the scale of map change, 2 or 20X   
+**H2** is the broad sense heritability   
+**QTL** is the number of QTL per chromosome  
+**QTL_type** is R or DV, random or deleterious variant  
+**Map_Type** is the WT, Pericentromere, or Chromosome-wide change to the genetic map, given a Recombination scale  
+**Repulsion** is 1:5 representing different coupling and replusion ratios  
+
+* 1: Additive effect signs are positive for all QTL (select against minor allele)  
+
+* 2: Random 2/3 of additive effect signs are positive and 1/3 are negative for QTL   
+
+* 3: Random 1/2 of additive effect signs are positive and 1/2 are negative for QTL   
+
+* 4: 1/2 of additive effect signs are positive and 1/2 are negative for QTL, alternating positive or negative each QTL   
+
+* 5: Random 1/3 of additive effect signs are positive and 2/3 are negative for QTL (most selection for minor allele)   
+
+</details> 
+ 
+  
+ 
+
+### Genetic gain  
+
+ 
+
+**Plots**   
+
+<details>
+  <summary>Click to expand: QTL/Chr: 200, H^2: 0.8 </summary> 
+  
+```{r, echo = FALSE, message = FALSE}
+# summary
+my_ASR_summary(measurement_df = (gg %>% filter(QTL == 200 & H2 == 8)), measurement = "genetic gain", df_name = "gg")
+
+info <- str_split_fixed(gg_summary$legend, "_", 3) %>% as.data.frame()
+colnames(info) <- c("type", "map", "cond")
+gg_summary <- cbind(gg_summary, info)
+gg_summary$legend <- factor(gg_summary$legend, levels = c("R_WT_1", "R_WT_2", "R_WT_3", "R_WT_4", "R_WT_5",    "R_Peri_1", "R_Peri_2", "R_Peri_3", "R_Peri_4","R_Peri_5",   "R_Chr_1", "R_Chr_2", "R_Chr_3", "R_Chr_4", "R_Chr_5",   "DV_WT_1", "DV_WT_2", "DV_WT_3", "DV_WT_4", "DV_WT_5",   "DV_Peri_1", "DV_Peri_2", "DV_Peri_3", "DV_Peri_4", "DV_Peri_5",   "DV_Chr_1", "DV_Chr_2", "DV_Chr_3", "DV_Chr_4", "DV_Chr_5"))
+#gg_summary$simulation[gg_summary$simulation == 1] <- "GW matrix"
+#gg_summary$simulation[gg_summary$simulation == 2] <- "CV matrix"
+#gg_summary$Matrix <- factor(gg_summary$simulation, levels = c("GW matrix", "CV matrix"))
+gg_summary$Matrix <- factor(gg_summary$Matrix, levels = c("GW", "CV"))
+gg_summary$Recombination <- factor(gg_summary$Recombination, levels = c("2X", "20X"))
+
+for(i in 1:nrow(gg_summary)){
+  if(gg_summary$cond[i] == 1){
+    gg_summary$cycle[i] = gg_summary$cycle[i] - 0.3
+  }else if(gg_summary$cond[i] == 2){
+    gg_summary$cycle[i] = gg_summary$cycle[i] - 0.15
+  }else if(gg_summary$cond[i] == 3){
+    gg_summary$cycle[i] = gg_summary$cycle[i] + 0
+  }else if(gg_summary$cond[i] == 4){
+    gg_summary$cycle[i] = gg_summary$cycle[i] + 0.15
+  }else if(gg_summary$cond[i] == 5){
+    gg_summary$cycle[i] = gg_summary$cycle[i] + 0.3
+  }
+}
+
+# plots
+gg_summary %>% 
+  filter(type == "R") %>% 
+  ggplot(aes(x = cycle, y = value, color = cond, shape = map)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=value-se, ymax=value+se, width=0.15)) +
+  scale_color_jco(alpha = 0.6) + 
+  scale_x_continuous(breaks=seq(1,10,1)) +
+  ggtitle("Genetic gain, R QTL") +
+  ylab("genetic gain") +
+  xlab("GS cycle") + 
+  theme_minimal() + labs(color='repulsion') + labs(color='repulsion') +
+  facet_grid(Matrix  ~ Recombination)
+
+gg_summary %>% 
+  filter(type == "DV") %>% 
+  ggplot(aes(x = cycle, y = value, color = cond, shape = map)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=value-se, ymax=value+se, width=0.15)) +
+  scale_color_jco(alpha = 0.6) + 
+  scale_x_continuous(breaks=seq(1,10,1)) +
+  ggtitle("Genetic gain, DV QTL") +
+  ylab("genetic gain") +
+  xlab("GS cycle") + 
+  theme_minimal() + labs(color='repulsion') +
+  facet_grid(Matrix  ~ Recombination)
+```
+
+  </details> 
+  
+
+<details>
+  <summary>Click to expand: QTL/Chr: 200, H^2: 0.2 </summary> 
+  
+```{r, echo = FALSE, message = FALSE}
+# summary
+my_ASR_summary(measurement_df = (gg %>% filter(QTL == 200 & H2 == 2)), measurement = "genetic gain", df_name = "gg")
+
+info <- str_split_fixed(gg_summary$legend, "_", 3) %>% as.data.frame()
+colnames(info) <- c("type", "map", "cond")
+gg_summary <- cbind(gg_summary, info)
+gg_summary$legend <- factor(gg_summary$legend, levels = c("R_WT_1", "R_WT_2", "R_WT_3", "R_WT_4", "R_WT_5",    "R_Peri_1", "R_Peri_2", "R_Peri_3", "R_Peri_4","R_Peri_5",   "R_Chr_1", "R_Chr_2", "R_Chr_3", "R_Chr_4", "R_Chr_5",   "DV_WT_1", "DV_WT_2", "DV_WT_3", "DV_WT_4", "DV_WT_5",   "DV_Peri_1", "DV_Peri_2", "DV_Peri_3", "DV_Peri_4", "DV_Peri_5",   "DV_Chr_1", "DV_Chr_2", "DV_Chr_3", "DV_Chr_4", "DV_Chr_5"))
+#gg_summary$simulation[gg_summary$simulation == 1] <- "GW matrix"
+#gg_summary$simulation[gg_summary$simulation == 2] <- "CV matrix"
+#gg_summary$Matrix <- factor(gg_summary$simulation, levels = c("GW matrix", "CV matrix"))
+gg_summary$Matrix <- factor(gg_summary$Matrix, levels = c("GW", "CV"))
+gg_summary$Recombination <- factor(gg_summary$Recombination, levels = c("2X", "20X"))
+
+for(i in 1:nrow(gg_summary)){
+  if(gg_summary$cond[i] == 1){
+    gg_summary$cycle[i] = gg_summary$cycle[i] - 0.3
+  }else if(gg_summary$cond[i] == 2){
+    gg_summary$cycle[i] = gg_summary$cycle[i] - 0.15
+  }else if(gg_summary$cond[i] == 3){
+    gg_summary$cycle[i] = gg_summary$cycle[i] + 0
+  }else if(gg_summary$cond[i] == 4){
+    gg_summary$cycle[i] = gg_summary$cycle[i] + 0.15
+  }else if(gg_summary$cond[i] == 5){
+    gg_summary$cycle[i] = gg_summary$cycle[i] + 0.3
+  }
+}
+
+# plots
+gg_summary %>% 
+  filter(type == "R") %>% 
+  ggplot(aes(x = cycle, y = value, color = cond, shape = map)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=value-se, ymax=value+se, width=0.15)) +
+  scale_color_jco(alpha = 0.6) + 
+  scale_x_continuous(breaks=seq(1,10,1)) +
+  ggtitle("Genetic gain, R QTL") +
+  ylab("genetic gain") +
+  xlab("GS cycle") + 
+  theme_minimal() + labs(color='repulsion') +
+  facet_grid(Matrix  ~ Recombination)
+
+gg_summary %>% 
+  filter(type == "DV") %>% 
+  ggplot(aes(x = cycle, y = value, color = cond, shape = map)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=value-se, ymax=value+se, width=0.15)) +
+  scale_color_jco(alpha = 0.6) + 
+  scale_x_continuous(breaks=seq(1,10,1)) +
+  ggtitle("Genetic gain, DV QTL") +
+  ylab("genetic gain") +
+  xlab("GS cycle") + 
+  theme_minimal() + labs(color='repulsion') +
+  facet_grid(Matrix  ~ Recombination)
+```
+
+  </details> 
+  
+  
+<details>
+  <summary>Click to expand: QTL/Chr: 2, H^2: 0.8 </summary> 
+  
+```{r, echo = FALSE, message = FALSE}
+# summary
+my_ASR_summary(measurement_df = (gg %>% filter(QTL == 2 & H2 == 8)), measurement = "genetic gain", df_name = "gg")
+
+info <- str_split_fixed(gg_summary$legend, "_", 3) %>% as.data.frame()
+colnames(info) <- c("type", "map", "cond")
+gg_summary <- cbind(gg_summary, info)
+gg_summary$legend <- factor(gg_summary$legend, levels = c("R_WT_1", "R_WT_2", "R_WT_3", "R_WT_4", "R_WT_5",    "R_Peri_1", "R_Peri_2", "R_Peri_3", "R_Peri_4","R_Peri_5",   "R_Chr_1", "R_Chr_2", "R_Chr_3", "R_Chr_4", "R_Chr_5",   "DV_WT_1", "DV_WT_2", "DV_WT_3", "DV_WT_4", "DV_WT_5",   "DV_Peri_1", "DV_Peri_2", "DV_Peri_3", "DV_Peri_4", "DV_Peri_5",   "DV_Chr_1", "DV_Chr_2", "DV_Chr_3", "DV_Chr_4", "DV_Chr_5"))
+#gg_summary$simulation[gg_summary$simulation == 1] <- "GW matrix"
+#gg_summary$simulation[gg_summary$simulation == 2] <- "CV matrix"
+#gg_summary$Matrix <- factor(gg_summary$simulation, levels = c("GW matrix", "CV matrix"))
+gg_summary$Matrix <- factor(gg_summary$Matrix, levels = c("GW", "CV"))
+gg_summary$Recombination <- factor(gg_summary$Recombination, levels = c("2X", "20X"))
+
+for(i in 1:nrow(gg_summary)){
+  if(gg_summary$cond[i] == 1){
+    gg_summary$cycle[i] = gg_summary$cycle[i] - 0.3
+  }else if(gg_summary$cond[i] == 2){
+    gg_summary$cycle[i] = gg_summary$cycle[i] - 0.15
+  }else if(gg_summary$cond[i] == 3){
+    gg_summary$cycle[i] = gg_summary$cycle[i] + 0
+  }else if(gg_summary$cond[i] == 4){
+    gg_summary$cycle[i] = gg_summary$cycle[i] + 0.15
+  }else if(gg_summary$cond[i] == 5){
+    gg_summary$cycle[i] = gg_summary$cycle[i] + 0.3
+  }
+}
+
+# plots
+gg_summary %>% 
+  filter(type == "R") %>% 
+  ggplot(aes(x = cycle, y = value, color = cond, shape = map)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=value-se, ymax=value+se, width=0.15)) +
+  scale_color_jco(alpha = 0.6) + 
+  scale_x_continuous(breaks=seq(1,10,1)) +
+  ggtitle("Genetic gain, R QTL") +
+  ylab("genetic gain") +
+  xlab("GS cycle") + 
+  theme_minimal() + labs(color='repulsion') +
+  facet_grid(Matrix  ~ Recombination)
+
+gg_summary %>% 
+  filter(type == "DV") %>% 
+  ggplot(aes(x = cycle, y = value, color = cond, shape = map)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=value-se, ymax=value+se, width=0.15)) +
+  scale_color_jco(alpha = 0.6) + 
+  scale_x_continuous(breaks=seq(1,10,1)) +
+  ggtitle("Genetic gain, DV QTL") +
+  ylab("genetic gain") +
+  xlab("GS cycle") + 
+  theme_minimal() + labs(color='repulsion') +
+  facet_grid(Matrix  ~ Recombination)
+```
+
+  </details> 
+
+
+<details>
+  <summary>Click to expand: QTL/Chr: 2, H^2: 0.2 </summary> 
+  
+```{r, echo = FALSE, message = FALSE}
+# summary
+my_ASR_summary(measurement_df = (gg %>% filter(QTL == 2 & H2 == 2)), measurement = "genetic gain", df_name = "gg")
+
+info <- str_split_fixed(gg_summary$legend, "_", 3) %>% as.data.frame()
+colnames(info) <- c("type", "map", "cond")
+gg_summary <- cbind(gg_summary, info)
+gg_summary$legend <- factor(gg_summary$legend, levels = c("R_WT_1", "R_WT_2", "R_WT_3", "R_WT_4", "R_WT_5",    "R_Peri_1", "R_Peri_2", "R_Peri_3", "R_Peri_4","R_Peri_5",   "R_Chr_1", "R_Chr_2", "R_Chr_3", "R_Chr_4", "R_Chr_5",   "DV_WT_1", "DV_WT_2", "DV_WT_3", "DV_WT_4", "DV_WT_5",   "DV_Peri_1", "DV_Peri_2", "DV_Peri_3", "DV_Peri_4", "DV_Peri_5",   "DV_Chr_1", "DV_Chr_2", "DV_Chr_3", "DV_Chr_4", "DV_Chr_5"))
+#gg_summary$simulation[gg_summary$simulation == 1] <- "GW matrix"
+#gg_summary$simulation[gg_summary$simulation == 2] <- "CV matrix"
+#gg_summary$Matrix <- factor(gg_summary$simulation, levels = c("GW matrix", "CV matrix"))
+gg_summary$Matrix <- factor(gg_summary$Matrix, levels = c("GW", "CV"))
+gg_summary$Recombination <- factor(gg_summary$Recombination, levels = c("2X", "20X"))
+
+for(i in 1:nrow(gg_summary)){
+  if(gg_summary$cond[i] == 1){
+    gg_summary$cycle[i] = gg_summary$cycle[i] - 0.3
+  }else if(gg_summary$cond[i] == 2){
+    gg_summary$cycle[i] = gg_summary$cycle[i] - 0.15
+  }else if(gg_summary$cond[i] == 3){
+    gg_summary$cycle[i] = gg_summary$cycle[i] + 0
+  }else if(gg_summary$cond[i] == 4){
+    gg_summary$cycle[i] = gg_summary$cycle[i] + 0.15
+  }else if(gg_summary$cond[i] == 5){
+    gg_summary$cycle[i] = gg_summary$cycle[i] + 0.3
+  }
+}
+
+# plots
+gg_summary %>% 
+  filter(type == "R") %>% 
+  ggplot(aes(x = cycle, y = value, color = cond, shape = map)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=value-se, ymax=value+se, width=0.15)) +
+  scale_color_jco(alpha = 0.6) + 
+  scale_x_continuous(breaks=seq(1,10,1)) +
+  ggtitle("Genetic gain, R QTL") +
+  ylab("genetic gain") +
+  xlab("GS cycle") + 
+  theme_minimal() + labs(color='repulsion') +
+  facet_grid(Matrix  ~ Recombination)
+
+gg_summary %>% 
+  filter(type == "DV") %>% 
+  ggplot(aes(x = cycle, y = value, color = cond, shape = map)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=value-se, ymax=value+se, width=0.15)) +
+  scale_color_jco(alpha = 0.6) + 
+  scale_x_continuous(breaks=seq(1,10,1)) +
+  ggtitle("Genetic gain, DV QTL") +
+  ylab("genetic gain") +
+  xlab("GS cycle") + 
+  theme_minimal() + labs(color='repulsion') +
+  facet_grid(Matrix  ~ Recombination)
+```
+
+  </details> 
+  
+
+ 
+
+### Genetic variance
+
+ 
+
+  **Plots**  
+  
+<details>
+  <summary>Click to expand: QTL/Chr: 200, H^2: 0.8 </summary>
+  
+```{r, echo = FALSE, message = FALSE}
+# summary 
+my_ASR_summary(measurement_df = (gv %>% filter(QTL == 200, H2 == 8)), measurement = "genetic variance", df_name = "gv")
+
+info <- str_split_fixed(gv_summary$legend, "_", 3) %>% as.data.frame()
+colnames(info) <- c("type", "map", "cond")
+gv_summary <- cbind(gv_summary, info)
+gv_summary$legend <- factor(gv_summary$legend, levels = c("R_WT_1", "R_WT_2", "R_WT_3", "R_WT_4", "R_WT_5",    "R_Peri_1", "R_Peri_2", "R_Peri_3", "R_Peri_4","R_Peri_5",   "R_Chr_1", "R_Chr_2", "R_Chr_3", "R_Chr_4", "R_Chr_5",   "DV_WT_1", "DV_WT_2", "DV_WT_3", "DV_WT_4", "DV_WT_5",   "DV_Peri_1", "DV_Peri_2", "DV_Peri_3", "DV_Peri_4", "DV_Peri_5",   "DV_Chr_1", "DV_Chr_2", "DV_Chr_3", "DV_Chr_4", "DV_Chr_5"))
+
+# gv_summary$simulation[gv_summary$simulation == 1] <- "GW matrix"
+# gv_summary$simulation[gv_summary$simulation == 2] <- "CV matrix"
+# gv_summary$simulation <- factor(gv_summary$simulation, levels = c("GW matrix", "CV matrix"))
+gv_summary$Matrix <- factor(gv_summary$Matrix, levels = c("GW", "CV"))
+gv_summary$Recombination <- factor(gv_summary$Recombination, levels = c("2X", "20X"))
+
+gv_summary <- gv_summary %>% filter(!cycle == "founder")
+gv_summary$cycle[gv_summary$cycle == "burnin"] <- 0
+gv_summary$cycle <- as.numeric(gv_summary$cycle)
+
+
+gv_summary$cycle <- as.numeric(gv_summary$cycle)
+for(i in 1:nrow(gv_summary)){
+  if(gv_summary$cond[i] == 1){
+    gv_summary$cycle[i] <- gv_summary$cycle[i] - 0.3
+  }else if(gv_summary$cond[i] == 2){
+    gv_summary$cycle[i] <- gv_summary$cycle[i] - 0.15
+  }else if(gv_summary$cond[i] == 3){
+    gv_summary$cycle[i] <- gv_summary$cycle[i] + 0
+  }else if(gv_summary$cond[i] == 4){
+    gv_summary$cycle[i] <- gv_summary$cycle[i] + 0.15
+  }else if(gv_summary$cond[i] == 5){
+    gv_summary$cycle[i] <- gv_summary$cycle[i] + 0.3
+  }
+}
+gv_summary$cycle <- factor(gv_summary$cycle, 
+                           levels = c(-0.30, -0.15,  0.00,  0.15,  0.30,  0.70,  0.85,  1.00,
+                                      1.15,  1.30,  1.70,  1.85,  2.0,  2.15,  2.30,  2.70,
+                                      2.85,  3.00, 3.15,  3.30,  3.70,  3.85,  4.00,  4.15,
+                                      4.30,  4.70,  4.85,  5.00,  5.15,  5.30,  5.70,  5.85,
+                                      6.00,  6.15,  6.30,  6.70, 6.85,  7.00,  7.15,  7.30,
+                                      7.70,  7.85,  8.00,  8.15,  8.30,  8.70,  8.85,  9.00,
+                                      9.15,  9.30,  9.70,  9.85, 10.00, 10.15, 10.30))
+
+
+gv_summary %>% 
+  filter(type == "R") %>% 
+  ggplot(aes(x = cycle, y = value, color = cond, shape = map)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=value-se, ymax=value+se, width=0.15)) +
+  scale_color_jco(alpha = 0.6) + 
+  scale_x_discrete(breaks=0:10)+
+  ggtitle("Genetic variance, R QTL") +
+  ylab("genetic variance") +
+  xlab("Breeding cycle") + 
+  theme_minimal() + labs(color='repulsion') +
+  facet_grid(Matrix  ~ Recombination)
+
+gv_summary %>% 
+  filter(type == "DV") %>% 
+  ggplot(aes(x = cycle, y = value, color = cond, shape = map)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=value-se, ymax=value+se, width=0.15)) +
+  scale_color_jco(alpha = 0.6) + 
+  scale_x_discrete(breaks=0:10)+
+  ggtitle("Genetic variance, DV QTL") +
+  ylab("genetic variance") +
+  xlab("Breeding cycle") + 
+  theme_minimal() + labs(color='repulsion') +
+  facet_grid(Matrix  ~ Recombination)
+
+```
+  
+</details> 
+
+
+<details>
+  <summary>Click to expand: QTL/Chr: 200, H^2: 0.2 </summary>
+  
+```{r, echo = FALSE, message = FALSE}
+# summary 
+my_ASR_summary(measurement_df = (gv %>% filter(QTL == 200, H2 == 2)), measurement = "genetic variance", df_name = "gv")
+
+info <- str_split_fixed(gv_summary$legend, "_", 3) %>% as.data.frame()
+colnames(info) <- c("type", "map", "cond")
+gv_summary <- cbind(gv_summary, info)
+gv_summary$legend <- factor(gv_summary$legend, levels = c("R_WT_1", "R_WT_2", "R_WT_3", "R_WT_4", "R_WT_5",    "R_Peri_1", "R_Peri_2", "R_Peri_3", "R_Peri_4","R_Peri_5",   "R_Chr_1", "R_Chr_2", "R_Chr_3", "R_Chr_4", "R_Chr_5",   "DV_WT_1", "DV_WT_2", "DV_WT_3", "DV_WT_4", "DV_WT_5",   "DV_Peri_1", "DV_Peri_2", "DV_Peri_3", "DV_Peri_4", "DV_Peri_5",   "DV_Chr_1", "DV_Chr_2", "DV_Chr_3", "DV_Chr_4", "DV_Chr_5"))
+
+# gv_summary$simulation[gv_summary$simulation == 1] <- "GW matrix"
+# gv_summary$simulation[gv_summary$simulation == 2] <- "CV matrix"
+# gv_summary$simulation <- factor(gv_summary$simulation, levels = c("GW matrix", "CV matrix"))
+gv_summary$Matrix <- factor(gv_summary$Matrix, levels = c("GW", "CV"))
+gv_summary$Recombination <- factor(gv_summary$Recombination, levels = c("2X", "20X"))
+
+gv_summary <- gv_summary %>% filter(!cycle == "founder")
+gv_summary$cycle[gv_summary$cycle == "burnin"] <- 0
+gv_summary$cycle <- as.numeric(gv_summary$cycle)
+
+
+gv_summary$cycle <- as.numeric(gv_summary$cycle)
+for(i in 1:nrow(gv_summary)){
+  if(gv_summary$cond[i] == 1){
+    gv_summary$cycle[i] <- gv_summary$cycle[i] - 0.3
+  }else if(gv_summary$cond[i] == 2){
+    gv_summary$cycle[i] <- gv_summary$cycle[i] - 0.15
+  }else if(gv_summary$cond[i] == 3){
+    gv_summary$cycle[i] <- gv_summary$cycle[i] + 0
+  }else if(gv_summary$cond[i] == 4){
+    gv_summary$cycle[i] <- gv_summary$cycle[i] + 0.15
+  }else if(gv_summary$cond[i] == 5){
+    gv_summary$cycle[i] <- gv_summary$cycle[i] + 0.3
+  }
+}
+gv_summary$cycle <- factor(gv_summary$cycle, 
+                           levels = c(-0.30, -0.15,  0.00,  0.15,  0.30,  0.70,  0.85,  1.00,
+                                      1.15,  1.30,  1.70,  1.85,  2.0,  2.15,  2.30,  2.70,
+                                      2.85,  3.00, 3.15,  3.30,  3.70,  3.85,  4.00,  4.15,
+                                      4.30,  4.70,  4.85,  5.00,  5.15,  5.30,  5.70,  5.85,
+                                      6.00,  6.15,  6.30,  6.70, 6.85,  7.00,  7.15,  7.30,
+                                      7.70,  7.85,  8.00,  8.15,  8.30,  8.70,  8.85,  9.00,
+                                      9.15,  9.30,  9.70,  9.85, 10.00, 10.15, 10.30))
+
+
+gv_summary %>% 
+  filter(type == "R") %>% 
+  ggplot(aes(x = cycle, y = value, color = cond, shape = map)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=value-se, ymax=value+se, width=0.15)) +
+  scale_color_jco(alpha = 0.6) + 
+  scale_x_discrete(breaks=0:10)+
+  ggtitle("Genetic variance, R QTL") +
+  ylab("genetic variance") +
+  xlab("Breeding cycle") + 
+  theme_minimal() + labs(color='repulsion') +
+  facet_grid(Matrix  ~ Recombination)
+
+gv_summary %>% 
+  filter(type == "DV") %>% 
+  ggplot(aes(x = cycle, y = value, color = cond, shape = map)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=value-se, ymax=value+se, width=0.15)) +
+  scale_color_jco(alpha = 0.6) + 
+  scale_x_discrete(breaks=0:10)+
+  ggtitle("Genetic variance, DV QTL") +
+  ylab("genetic variance") +
+  xlab("Breeding cycle") + 
+  theme_minimal() + labs(color='repulsion') +
+  facet_grid(Matrix  ~ Recombination)
+
+```
+  
+</details> 
+
+
+<details>
+  <summary>Click to expand: QTL/Chr: 2, H^2: 0.8 </summary>
+  
+```{r, echo = FALSE, message = FALSE}
+# summary 
+my_ASR_summary(measurement_df = (gv %>% filter(QTL == 2, H2 == 8)), measurement = "genetic variance", df_name = "gv")
+
+info <- str_split_fixed(gv_summary$legend, "_", 3) %>% as.data.frame()
+colnames(info) <- c("type", "map", "cond")
+gv_summary <- cbind(gv_summary, info)
+gv_summary$legend <- factor(gv_summary$legend, levels = c("R_WT_1", "R_WT_2", "R_WT_3", "R_WT_4", "R_WT_5",    "R_Peri_1", "R_Peri_2", "R_Peri_3", "R_Peri_4","R_Peri_5",   "R_Chr_1", "R_Chr_2", "R_Chr_3", "R_Chr_4", "R_Chr_5",   "DV_WT_1", "DV_WT_2", "DV_WT_3", "DV_WT_4", "DV_WT_5",   "DV_Peri_1", "DV_Peri_2", "DV_Peri_3", "DV_Peri_4", "DV_Peri_5",   "DV_Chr_1", "DV_Chr_2", "DV_Chr_3", "DV_Chr_4", "DV_Chr_5"))
+
+# gv_summary$simulation[gv_summary$simulation == 1] <- "GW matrix"
+# gv_summary$simulation[gv_summary$simulation == 2] <- "CV matrix"
+# gv_summary$simulation <- factor(gv_summary$simulation, levels = c("GW matrix", "CV matrix"))
+gv_summary$Matrix <- factor(gv_summary$Matrix, levels = c("GW", "CV"))
+gv_summary$Recombination <- factor(gv_summary$Recombination, levels = c("2X", "20X"))
+
+gv_summary <- gv_summary %>% filter(!cycle == "founder")
+gv_summary$cycle[gv_summary$cycle == "burnin"] <- 0
+gv_summary$cycle <- as.numeric(gv_summary$cycle)
+
+
+gv_summary$cycle <- as.numeric(gv_summary$cycle)
+for(i in 1:nrow(gv_summary)){
+  if(gv_summary$cond[i] == 1){
+    gv_summary$cycle[i] <- gv_summary$cycle[i] - 0.3
+  }else if(gv_summary$cond[i] == 2){
+    gv_summary$cycle[i] <- gv_summary$cycle[i] - 0.15
+  }else if(gv_summary$cond[i] == 3){
+    gv_summary$cycle[i] <- gv_summary$cycle[i] + 0
+  }else if(gv_summary$cond[i] == 4){
+    gv_summary$cycle[i] <- gv_summary$cycle[i] + 0.15
+  }else if(gv_summary$cond[i] == 5){
+    gv_summary$cycle[i] <- gv_summary$cycle[i] + 0.3
+  }
+}
+gv_summary$cycle <- factor(gv_summary$cycle, 
+                           levels = c(-0.30, -0.15,  0.00,  0.15,  0.30,  0.70,  0.85,  1.00,
+                                      1.15,  1.30,  1.70,  1.85,  2.0,  2.15,  2.30,  2.70,
+                                      2.85,  3.00, 3.15,  3.30,  3.70,  3.85,  4.00,  4.15,
+                                      4.30,  4.70,  4.85,  5.00,  5.15,  5.30,  5.70,  5.85,
+                                      6.00,  6.15,  6.30,  6.70, 6.85,  7.00,  7.15,  7.30,
+                                      7.70,  7.85,  8.00,  8.15,  8.30,  8.70,  8.85,  9.00,
+                                      9.15,  9.30,  9.70,  9.85, 10.00, 10.15, 10.30))
+
+
+gv_summary %>% 
+  filter(type == "R") %>% 
+  ggplot(aes(x = cycle, y = value, color = cond, shape = map)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=value-se, ymax=value+se, width=0.15)) +
+  scale_color_jco(alpha = 0.6) + 
+  scale_x_discrete(breaks=0:10)+
+  ggtitle("Genetic variance, R QTL") +
+  ylab("genetic variance") +
+  xlab("Breeding cycle") + 
+  theme_minimal() + labs(color='repulsion') +
+  facet_grid(Matrix  ~ Recombination)
+
+gv_summary %>% 
+  filter(type == "DV") %>% 
+  ggplot(aes(x = cycle, y = value, color = cond, shape = map)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=value-se, ymax=value+se, width=0.15)) +
+  scale_color_jco(alpha = 0.6) + 
+  scale_x_discrete(breaks=0:10)+
+  ggtitle("Genetic variance, DV QTL") +
+  ylab("genetic variance") +
+  xlab("Breeding cycle") + 
+  theme_minimal() + labs(color='repulsion') +
+  facet_grid(Matrix  ~ Recombination)
+
+```
+  
+</details>
+
+
+<details>
+  <summary>Click to expand: QTL/Chr: 2, H^2: 0.2 </summary>
+  
+```{r, echo = FALSE, message = FALSE}
+# summary 
+my_ASR_summary(measurement_df = (gv %>% filter(QTL == 2, H2 == 2)), measurement = "genetic variance", df_name = "gv")
+
+info <- str_split_fixed(gv_summary$legend, "_", 3) %>% as.data.frame()
+colnames(info) <- c("type", "map", "cond")
+gv_summary <- cbind(gv_summary, info)
+gv_summary$legend <- factor(gv_summary$legend, levels = c("R_WT_1", "R_WT_2", "R_WT_3", "R_WT_4", "R_WT_5",    "R_Peri_1", "R_Peri_2", "R_Peri_3", "R_Peri_4","R_Peri_5",   "R_Chr_1", "R_Chr_2", "R_Chr_3", "R_Chr_4", "R_Chr_5",   "DV_WT_1", "DV_WT_2", "DV_WT_3", "DV_WT_4", "DV_WT_5",   "DV_Peri_1", "DV_Peri_2", "DV_Peri_3", "DV_Peri_4", "DV_Peri_5",   "DV_Chr_1", "DV_Chr_2", "DV_Chr_3", "DV_Chr_4", "DV_Chr_5"))
+
+# gv_summary$simulation[gv_summary$simulation == 1] <- "GW matrix"
+# gv_summary$simulation[gv_summary$simulation == 2] <- "CV matrix"
+# gv_summary$simulation <- factor(gv_summary$simulation, levels = c("GW matrix", "CV matrix"))
+gv_summary$Matrix <- factor(gv_summary$Matrix, levels = c("GW", "CV"))
+gv_summary$Recombination <- factor(gv_summary$Recombination, levels = c("2X", "20X"))
+
+gv_summary <- gv_summary %>% filter(!cycle == "founder")
+gv_summary$cycle[gv_summary$cycle == "burnin"] <- 0
+gv_summary$cycle <- as.numeric(gv_summary$cycle)
+
+
+gv_summary$cycle <- as.numeric(gv_summary$cycle)
+for(i in 1:nrow(gv_summary)){
+  if(gv_summary$cond[i] == 1){
+    gv_summary$cycle[i] <- gv_summary$cycle[i] - 0.3
+  }else if(gv_summary$cond[i] == 2){
+    gv_summary$cycle[i] <- gv_summary$cycle[i] - 0.15
+  }else if(gv_summary$cond[i] == 3){
+    gv_summary$cycle[i] <- gv_summary$cycle[i] + 0
+  }else if(gv_summary$cond[i] == 4){
+    gv_summary$cycle[i] <- gv_summary$cycle[i] + 0.15
+  }else if(gv_summary$cond[i] == 5){
+    gv_summary$cycle[i] <- gv_summary$cycle[i] + 0.3
+  }
+}
+gv_summary$cycle <- factor(gv_summary$cycle, 
+                           levels = c(-0.30, -0.15,  0.00,  0.15,  0.30,  0.70,  0.85,  1.00,
+                                      1.15,  1.30,  1.70,  1.85,  2.0,  2.15,  2.30,  2.70,
+                                      2.85,  3.00, 3.15,  3.30,  3.70,  3.85,  4.00,  4.15,
+                                      4.30,  4.70,  4.85,  5.00,  5.15,  5.30,  5.70,  5.85,
+                                      6.00,  6.15,  6.30,  6.70, 6.85,  7.00,  7.15,  7.30,
+                                      7.70,  7.85,  8.00,  8.15,  8.30,  8.70,  8.85,  9.00,
+                                      9.15,  9.30,  9.70,  9.85, 10.00, 10.15, 10.30))
+
+
+gv_summary %>% 
+  filter(type == "R") %>% 
+  ggplot(aes(x = cycle, y = value, color = cond, shape = map)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=value-se, ymax=value+se, width=0.15)) +
+  scale_color_jco(alpha = 0.6) + 
+  scale_x_discrete(breaks=0:10)+
+  ggtitle("Genetic variance, R QTL") +
+  ylab("genetic variance") +
+  xlab("Breeding cycle") + 
+  theme_minimal() + labs(color='repulsion') +
+  facet_grid(Matrix  ~ Recombination)
+
+gv_summary %>% 
+  filter(type == "DV") %>% 
+  ggplot(aes(x = cycle, y = value, color = cond, shape = map)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=value-se, ymax=value+se, width=0.15)) +
+  scale_color_jco(alpha = 0.6) + 
+  scale_x_discrete(breaks=0:10)+
+  ggtitle("Genetic variance, DV QTL") +
+  ylab("genetic variance") +
+  xlab("Breeding cycle") + 
+  theme_minimal() + labs(color='repulsion') +
+  facet_grid(Matrix  ~ Recombination)
+
+```
+  
+  </details>
+
+
+ 
+
+### Bulmer effect  
+
+  
+
+  **Plots**
+<details>
+  <summary>Click to expand: QTL/Chr: 200, H^2: 0.8 </summary>
+  
+```{r, echo = FALSE, message = FALSE}
+# summary
+my_ASR_summary(measurement_df = (be %>% filter(QTL == 200, H2 == 8)), measurement = "Bulmer effect", df_name = "be")
+
+info <- str_split_fixed(be_summary$legend, "_", 3) %>% as.data.frame()
+colnames(info) <- c("type", "map", "cond")
+be_summary <- cbind(be_summary, info)
+be_summary$legend <- factor(be_summary$legend, levels = c("R_WT_1", "R_WT_2", "R_WT_3", "R_WT_4", "R_WT_5",    "R_Peri_1", "R_Peri_2", "R_Peri_3", "R_Peri_4","R_Peri_5",   "R_Chr_1", "R_Chr_2", "R_Chr_3", "R_Chr_4", "R_Chr_5",   "DV_WT_1", "DV_WT_2", "DV_WT_3", "DV_WT_4", "DV_WT_5",   "DV_Peri_1", "DV_Peri_2", "DV_Peri_3", "DV_Peri_4", "DV_Peri_5",   "DV_Chr_1", "DV_Chr_2", "DV_Chr_3", "DV_Chr_4", "DV_Chr_5"))
+
+# be_summary$simulation[be_summary$simulation == 1] <- "GW matrix"
+# be_summary$simulation[be_summary$simulation == 2] <- "CV matrix"
+# be_summary$simulation <- factor(be_summary$simulation, levels = c("GW matrix", "CV matrix"))
+be_summary$Matrix <- factor(be_summary$Matrix, levels = c("GW", "CV"))
+be_summary$Recombination <- factor(be_summary$Recombination, levels = c("2X", "20X"))
+
+be_summary <- be_summary %>% filter(!cycle == "founder")
+be_summary$cycle[be_summary$cycle == "burnin"] <- 0
+be_summary$cycle <- as.numeric(be_summary$cycle)
+
+be_summary$cycle <- as.numeric(be_summary$cycle)
+for(i in 1:nrow(be_summary)){
+  if(be_summary$cond[i] == 1){
+    be_summary$cycle[i] <- be_summary$cycle[i] - 0.3
+  }else if(be_summary$cond[i] == 2){
+    be_summary$cycle[i] <- be_summary$cycle[i] - 0.15
+  }else if(be_summary$cond[i] == 3){
+    be_summary$cycle[i] <- be_summary$cycle[i] + 0
+  }else if(be_summary$cond[i] == 4){
+    be_summary$cycle[i] <- be_summary$cycle[i] + 0.15
+  }else if(be_summary$cond[i] == 5){
+    be_summary$cycle[i] <- be_summary$cycle[i] + 0.3
+  }
+}
+be_summary$cycle <- factor(be_summary$cycle, 
+                           levels = c(-0.30, -0.15,  0.00,  0.15,  0.30,  0.70,  0.85,  1.00,
+                                      1.15,  1.30,  1.70,  1.85,  2.0,  2.15,  2.30,  2.70,
+                                      2.85,  3.00, 3.15,  3.30,  3.70,  3.85,  4.00,  4.15,
+                                      4.30,  4.70,  4.85,  5.00,  5.15,  5.30,  5.70,  5.85,
+                                      6.00,  6.15,  6.30,  6.70, 6.85,  7.00,  7.15,  7.30,
+                                      7.70,  7.85,  8.00,  8.15,  8.30,  8.70,  8.85,  9.00,
+                                      9.15,  9.30,  9.70,  9.85, 10.00, 10.15, 10.30))
+
+be_summary %>% 
+  filter(type == "R") %>% 
+  ggplot(aes(x = cycle, y = value, color = cond, shape = map)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=value-se, ymax=value+se, width=0.15)) +
+  scale_x_discrete(breaks=0:10)+
+  scale_color_jco(alpha = 0.6) + 
+  ggtitle("Bulmer effect, R QTL") +
+  ylab("Bulmer effect") +
+  xlab("Breeding cycle") + 
+  theme_minimal() + labs(color='repulsion') +
+  facet_grid(Matrix  ~ Recombination)
+
+be_summary %>% 
+  filter(type == "DV") %>% 
+  ggplot(aes(x = cycle, y = value, color = cond, shape = map)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=value-se, ymax=value+se, width=0.15)) +
+  scale_x_discrete(breaks=0:10)+
+  scale_color_jco(alpha = 0.6) + 
+  ggtitle("Bulmer effect, DV QTL") +
+  ylab("Bulmer effect") +
+  xlab("Breeding cycle") + 
+  theme_minimal() + labs(color='repulsion') +
+  facet_grid(Matrix  ~ Recombination)
+```
+ 
+  </details> 
+  
+  
+<details>
+  <summary>Click to expand: QTL/Chr: 200, H^2: 0.2 </summary>
+  
+```{r, echo = FALSE, message = FALSE}
+# summary
+my_ASR_summary(measurement_df = (be %>% filter(QTL == 200, H2 == 2)), measurement = "Bulmer effect", df_name = "be")
+
+info <- str_split_fixed(be_summary$legend, "_", 3) %>% as.data.frame()
+colnames(info) <- c("type", "map", "cond")
+be_summary <- cbind(be_summary, info)
+be_summary$legend <- factor(be_summary$legend, levels = c("R_WT_1", "R_WT_2", "R_WT_3", "R_WT_4", "R_WT_5",    "R_Peri_1", "R_Peri_2", "R_Peri_3", "R_Peri_4","R_Peri_5",   "R_Chr_1", "R_Chr_2", "R_Chr_3", "R_Chr_4", "R_Chr_5",   "DV_WT_1", "DV_WT_2", "DV_WT_3", "DV_WT_4", "DV_WT_5",   "DV_Peri_1", "DV_Peri_2", "DV_Peri_3", "DV_Peri_4", "DV_Peri_5",   "DV_Chr_1", "DV_Chr_2", "DV_Chr_3", "DV_Chr_4", "DV_Chr_5"))
+
+# be_summary$simulation[be_summary$simulation == 1] <- "GW matrix"
+# be_summary$simulation[be_summary$simulation == 2] <- "CV matrix"
+# be_summary$simulation <- factor(be_summary$simulation, levels = c("GW matrix", "CV matrix"))
+be_summary$Matrix <- factor(be_summary$Matrix, levels = c("GW", "CV"))
+be_summary$Recombination <- factor(be_summary$Recombination, levels = c("2X", "20X"))
+
+be_summary <- be_summary %>% filter(!cycle == "founder")
+be_summary$cycle[be_summary$cycle == "burnin"] <- 0
+be_summary$cycle <- as.numeric(be_summary$cycle)
+
+be_summary$cycle <- as.numeric(be_summary$cycle)
+for(i in 1:nrow(be_summary)){
+  if(be_summary$cond[i] == 1){
+    be_summary$cycle[i] <- be_summary$cycle[i] - 0.3
+  }else if(be_summary$cond[i] == 2){
+    be_summary$cycle[i] <- be_summary$cycle[i] - 0.15
+  }else if(be_summary$cond[i] == 3){
+    be_summary$cycle[i] <- be_summary$cycle[i] + 0
+  }else if(be_summary$cond[i] == 4){
+    be_summary$cycle[i] <- be_summary$cycle[i] + 0.15
+  }else if(be_summary$cond[i] == 5){
+    be_summary$cycle[i] <- be_summary$cycle[i] + 0.3
+  }
+}
+be_summary$cycle <- factor(be_summary$cycle, 
+                           levels = c(-0.30, -0.15,  0.00,  0.15,  0.30,  0.70,  0.85,  1.00,
+                                      1.15,  1.30,  1.70,  1.85,  2.0,  2.15,  2.30,  2.70,
+                                      2.85,  3.00, 3.15,  3.30,  3.70,  3.85,  4.00,  4.15,
+                                      4.30,  4.70,  4.85,  5.00,  5.15,  5.30,  5.70,  5.85,
+                                      6.00,  6.15,  6.30,  6.70, 6.85,  7.00,  7.15,  7.30,
+                                      7.70,  7.85,  8.00,  8.15,  8.30,  8.70,  8.85,  9.00,
+                                      9.15,  9.30,  9.70,  9.85, 10.00, 10.15, 10.30))
+
+be_summary %>% 
+  filter(type == "R") %>% 
+  ggplot(aes(x = cycle, y = value, color = cond, shape = map)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=value-se, ymax=value+se, width=0.15)) +
+  scale_x_discrete(breaks=0:10)+
+  scale_color_jco(alpha = 0.6) + 
+  ggtitle("Bulmer effect, R QTL") +
+  ylab("Bulmer effect") +
+  xlab("Breeding cycle") + 
+  theme_minimal() + labs(color='repulsion') +
+  facet_grid(Matrix  ~ Recombination)
+
+be_summary %>% 
+  filter(type == "DV") %>% 
+  ggplot(aes(x = cycle, y = value, color = cond, shape = map)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=value-se, ymax=value+se, width=0.15)) +
+  scale_x_discrete(breaks=0:10)+
+  scale_color_jco(alpha = 0.6) + 
+  ggtitle("Bulmer effect, DV QTL") +
+  ylab("Bulmer effect") +
+  xlab("Breeding cycle") + 
+  theme_minimal() + labs(color='repulsion') +
+  facet_grid(Matrix  ~ Recombination)
+```
+ 
+  </details> 
+
+
+<details>
+  <summary>Click to expand: QTL/Chr: 2, H^2: 0.8 </summary>
+  
+```{r, echo = FALSE, message = FALSE, warning=FALSE}
+# summary
+my_ASR_summary(measurement_df = (be %>% filter(QTL == 2, H2 == 8)), measurement = "Bulmer effect", df_name = "be")
+
+info <- str_split_fixed(be_summary$legend, "_", 3) %>% as.data.frame()
+colnames(info) <- c("type", "map", "cond")
+be_summary <- cbind(be_summary, info)
+be_summary$legend <- factor(be_summary$legend, levels = c("R_WT_1", "R_WT_2", "R_WT_3", "R_WT_4", "R_WT_5",    "R_Peri_1", "R_Peri_2", "R_Peri_3", "R_Peri_4","R_Peri_5",   "R_Chr_1", "R_Chr_2", "R_Chr_3", "R_Chr_4", "R_Chr_5",   "DV_WT_1", "DV_WT_2", "DV_WT_3", "DV_WT_4", "DV_WT_5",   "DV_Peri_1", "DV_Peri_2", "DV_Peri_3", "DV_Peri_4", "DV_Peri_5",   "DV_Chr_1", "DV_Chr_2", "DV_Chr_3", "DV_Chr_4", "DV_Chr_5"))
+
+# be_summary$simulation[be_summary$simulation == 1] <- "GW matrix"
+# be_summary$simulation[be_summary$simulation == 2] <- "CV matrix"
+# be_summary$simulation <- factor(be_summary$simulation, levels = c("GW matrix", "CV matrix"))
+be_summary$Matrix <- factor(be_summary$Matrix, levels = c("GW", "CV"))
+be_summary$Recombination <- factor(be_summary$Recombination, levels = c("2X", "20X"))
+
+be_summary <- be_summary %>% filter(!cycle == "founder")
+be_summary$cycle[be_summary$cycle == "burnin"] <- 0
+be_summary$cycle <- as.numeric(be_summary$cycle)
+
+be_summary$cycle <- as.numeric(be_summary$cycle)
+for(i in 1:nrow(be_summary)){
+  if(be_summary$cond[i] == 1){
+    be_summary$cycle[i] <- be_summary$cycle[i] - 0.3
+  }else if(be_summary$cond[i] == 2){
+    be_summary$cycle[i] <- be_summary$cycle[i] - 0.15
+  }else if(be_summary$cond[i] == 3){
+    be_summary$cycle[i] <- be_summary$cycle[i] + 0
+  }else if(be_summary$cond[i] == 4){
+    be_summary$cycle[i] <- be_summary$cycle[i] + 0.15
+  }else if(be_summary$cond[i] == 5){
+    be_summary$cycle[i] <- be_summary$cycle[i] + 0.3
+  }
+}
+be_summary$cycle <- factor(be_summary$cycle, 
+                           levels = c(-0.30, -0.15,  0.00,  0.15,  0.30,  0.70,  0.85,  1.00,
+                                      1.15,  1.30,  1.70,  1.85,  2.0,  2.15,  2.30,  2.70,
+                                      2.85,  3.00, 3.15,  3.30,  3.70,  3.85,  4.00,  4.15,
+                                      4.30,  4.70,  4.85,  5.00,  5.15,  5.30,  5.70,  5.85,
+                                      6.00,  6.15,  6.30,  6.70, 6.85,  7.00,  7.15,  7.30,
+                                      7.70,  7.85,  8.00,  8.15,  8.30,  8.70,  8.85,  9.00,
+                                      9.15,  9.30,  9.70,  9.85, 10.00, 10.15, 10.30))
+
+be_summary %>% 
+  filter(type == "R") %>% 
+  ggplot(aes(x = cycle, y = value, color = cond, shape = map)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=value-se, ymax=value+se, width=0.15)) +
+  scale_x_discrete(breaks=0:10)+
+  scale_color_jco(alpha = 0.6) + 
+  ggtitle("Bulmer effect, R QTL") +
+  ylab("Bulmer effect") +
+  xlab("Breeding cycle") + 
+  theme_minimal() + labs(color='repulsion') +
+  facet_grid(Matrix  ~ Recombination)
+
+be_summary %>% 
+  filter(type == "DV") %>% 
+  ggplot(aes(x = cycle, y = value, color = cond, shape = map)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=value-se, ymax=value+se, width=0.15)) +
+  scale_x_discrete(breaks=0:10)+
+  scale_color_jco(alpha = 0.6) + 
+  ggtitle("Bulmer effect, DV QTL") +
+  ylab("Bulmer effect") +
+  xlab("Breeding cycle") + 
+  theme_minimal() + labs(color='repulsion') +
+  facet_grid(Matrix  ~ Recombination)
+```
+ 
+  </details> 
+  
+  
+<details>
+  <summary>Click to expand: QTL/Chr: 2, H^2: 0.2 </summary>
+  
+```{r, echo = FALSE, message = FALSE, warning=FALSE}
+# summary
+my_ASR_summary(measurement_df = (be %>% filter(QTL == 2, H2 == 2)), measurement = "Bulmer effect", df_name = "be")
+
+info <- str_split_fixed(be_summary$legend, "_", 3) %>% as.data.frame()
+colnames(info) <- c("type", "map", "cond")
+be_summary <- cbind(be_summary, info)
+be_summary$legend <- factor(be_summary$legend, levels = c("R_WT_1", "R_WT_2", "R_WT_3", "R_WT_4", "R_WT_5",    "R_Peri_1", "R_Peri_2", "R_Peri_3", "R_Peri_4","R_Peri_5",   "R_Chr_1", "R_Chr_2", "R_Chr_3", "R_Chr_4", "R_Chr_5",   "DV_WT_1", "DV_WT_2", "DV_WT_3", "DV_WT_4", "DV_WT_5",   "DV_Peri_1", "DV_Peri_2", "DV_Peri_3", "DV_Peri_4", "DV_Peri_5",   "DV_Chr_1", "DV_Chr_2", "DV_Chr_3", "DV_Chr_4", "DV_Chr_5"))
+
+# be_summary$simulation[be_summary$simulation == 1] <- "GW matrix"
+# be_summary$simulation[be_summary$simulation == 2] <- "CV matrix"
+# be_summary$simulation <- factor(be_summary$simulation, levels = c("GW matrix", "CV matrix"))
+be_summary$Matrix <- factor(be_summary$Matrix, levels = c("GW", "CV"))
+be_summary$Recombination <- factor(be_summary$Recombination, levels = c("2X", "20X"))
+
+be_summary <- be_summary %>% filter(!cycle == "founder")
+be_summary$cycle[be_summary$cycle == "burnin"] <- 0
+be_summary$cycle <- as.numeric(be_summary$cycle)
+
+be_summary$cycle <- as.numeric(be_summary$cycle)
+for(i in 1:nrow(be_summary)){
+  if(be_summary$cond[i] == 1){
+    be_summary$cycle[i] <- be_summary$cycle[i] - 0.3
+  }else if(be_summary$cond[i] == 2){
+    be_summary$cycle[i] <- be_summary$cycle[i] - 0.15
+  }else if(be_summary$cond[i] == 3){
+    be_summary$cycle[i] <- be_summary$cycle[i] + 0
+  }else if(be_summary$cond[i] == 4){
+    be_summary$cycle[i] <- be_summary$cycle[i] + 0.15
+  }else if(be_summary$cond[i] == 5){
+    be_summary$cycle[i] <- be_summary$cycle[i] + 0.3
+  }
+}
+be_summary$cycle <- factor(be_summary$cycle, 
+                           levels = c(-0.30, -0.15,  0.00,  0.15,  0.30,  0.70,  0.85,  1.00,
+                                      1.15,  1.30,  1.70,  1.85,  2.0,  2.15,  2.30,  2.70,
+                                      2.85,  3.00, 3.15,  3.30,  3.70,  3.85,  4.00,  4.15,
+                                      4.30,  4.70,  4.85,  5.00,  5.15,  5.30,  5.70,  5.85,
+                                      6.00,  6.15,  6.30,  6.70, 6.85,  7.00,  7.15,  7.30,
+                                      7.70,  7.85,  8.00,  8.15,  8.30,  8.70,  8.85,  9.00,
+                                      9.15,  9.30,  9.70,  9.85, 10.00, 10.15, 10.30))
+
+be_summary %>% 
+  filter(type == "R") %>% 
+  ggplot(aes(x = cycle, y = value, color = cond, shape = map)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=value-se, ymax=value+se, width=0.15)) +
+  scale_x_discrete(breaks=0:10)+
+  scale_color_jco(alpha = 0.6) + 
+  ggtitle("Bulmer effect, R QTL") +
+  ylab("Bulmer effect") +
+  xlab("Breeding cycle") + 
+  theme_minimal() + labs(color='repulsion') +
+  facet_grid(Matrix  ~ Recombination)
+
+be_summary %>% 
+  filter(type == "DV") %>% 
+  ggplot(aes(x = cycle, y = value, color = cond, shape = map)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=value-se, ymax=value+se, width=0.15)) +
+  scale_x_discrete(breaks=0:10)+
+  scale_color_jco(alpha = 0.6) + 
+  ggtitle("Bulmer effect, DV QTL") +
+  ylab("Bulmer effect") +
+  xlab("Breeding cycle") + 
+  theme_minimal() + labs(color='repulsion') +
+  facet_grid(Matrix  ~ Recombination)
+```
+ 
+  </details> 
+
+
+   
+  
+### Prediction accuracy
+
+  
+  **Plots** 
+  
+<details>
+  <summary>Click to expand: QTL/Chr: 200, H^2: 0.8 </summary>
+
+```{r, echo = FALSE, message = FALSE}
+# summary
+my_ASR_summary(measurement_df = (pa %>% filter(QTL == 200, H2 == 8)), measurement = "prediction accuracy", df_name = "pa")
+
+info <- str_split_fixed(pa_summary$legend, "_", 3) %>% as.data.frame()
+colnames(info) <- c("type", "map", "cond")
+pa_summary <- cbind(pa_summary, info)
+pa_summary$legend <- factor(pa_summary$legend, levels = c("R_WT_1", "R_WT_2", "R_WT_3", "R_WT_4", "R_WT_5",    "R_Peri_1", "R_Peri_2", "R_Peri_3", "R_Peri_4","R_Peri_5",   "R_Chr_1", "R_Chr_2", "R_Chr_3", "R_Chr_4", "R_Chr_5",   "DV_WT_1", "DV_WT_2", "DV_WT_3", "DV_WT_4", "DV_WT_5",   "DV_Peri_1", "DV_Peri_2", "DV_Peri_3", "DV_Peri_4", "DV_Peri_5",   "DV_Chr_1", "DV_Chr_2", "DV_Chr_3", "DV_Chr_4", "DV_Chr_5"))
+# pa_summary$simulation[pa_summary$simulation == 1] <- "GW matrix"
+# pa_summary$simulation[pa_summary$simulation == 2] <- "CV matrix"
+# pa_summary$simulation <- factor(pa_summary$simulation, levels = c("GW matrix", "CV matrix"))
+pa_summary$Matrix <- factor(pa_summary$Matrix, levels = c("GW", "CV"))
+pa_summary$Recombination <- factor(pa_summary$Recombination, levels = c("2X", "20X"))
+
+for(i in 1:nrow(pa_summary)){
+  if(pa_summary$cond[i] == 1){
+    pa_summary$cycle[i] = pa_summary$cycle[i] - 0.3
+  }else if(pa_summary$cond[i] == 2){
+    pa_summary$cycle[i] = pa_summary$cycle[i] - 0.15
+  }else if(pa_summary$cond[i] == 3){
+    pa_summary$cycle[i] = pa_summary$cycle[i] + 0
+  }else if(pa_summary$cond[i] == 4){
+    pa_summary$cycle[i] = pa_summary$cycle[i] + 0.15
+  }else if(pa_summary$cond[i] == 5){
+    pa_summary$cycle[i] = pa_summary$cycle[i] + 0.3
+  }
+}
+
+pa_summary %>% 
+  filter(type == "R") %>% 
+  ggplot(aes(x = cycle, y = value, color = cond, shape = map)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=value-se, ymax=value+se, width=0.15)) +
+  scale_color_jco(alpha = 0.6) + 
+  ggtitle("Prediction accuracy, R QTL") +
+  scale_x_continuous(breaks=seq(1,10,1)) +
+  ylab("Prediction accuracy") +
+  xlab("GS cycle") + 
+  theme_minimal() + labs(color='repulsion') +
+  facet_grid(Matrix  ~ Recombination)
+
+pa_summary %>% 
+  filter(type == "DV") %>% 
+  ggplot(aes(x = cycle, y = value, color = cond, shape = map)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=value-se, ymax=value+se, width=0.15)) +
+  scale_color_jco(alpha = 0.6) + 
+  ggtitle("Prediction accuracy, DV QTL") +
+  scale_x_continuous(breaks=seq(1,10,1)) +
+  ylab("Prediction accuracy") +
+  xlab("GS cycle") + 
+  theme_minimal() + labs(color='repulsion') +
+  facet_grid(Matrix  ~ Recombination)
+```
+
+  </details> 
+
+
+<details>
+  <summary>Click to expand: QTL/Chr: 200, H^2: 0.2 </summary>
+
+```{r, echo = FALSE, message = FALSE}
+# summary
+my_ASR_summary(measurement_df = (pa %>% filter(QTL == 200, H2 == 2)), measurement = "prediction accuracy", df_name = "pa")
+
+info <- str_split_fixed(pa_summary$legend, "_", 3) %>% as.data.frame()
+colnames(info) <- c("type", "map", "cond")
+pa_summary <- cbind(pa_summary, info)
+pa_summary$legend <- factor(pa_summary$legend, levels = c("R_WT_1", "R_WT_2", "R_WT_3", "R_WT_4", "R_WT_5",    "R_Peri_1", "R_Peri_2", "R_Peri_3", "R_Peri_4","R_Peri_5",   "R_Chr_1", "R_Chr_2", "R_Chr_3", "R_Chr_4", "R_Chr_5",   "DV_WT_1", "DV_WT_2", "DV_WT_3", "DV_WT_4", "DV_WT_5",   "DV_Peri_1", "DV_Peri_2", "DV_Peri_3", "DV_Peri_4", "DV_Peri_5",   "DV_Chr_1", "DV_Chr_2", "DV_Chr_3", "DV_Chr_4", "DV_Chr_5"))
+# pa_summary$simulation[pa_summary$simulation == 1] <- "GW matrix"
+# pa_summary$simulation[pa_summary$simulation == 2] <- "CV matrix"
+# pa_summary$simulation <- factor(pa_summary$simulation, levels = c("GW matrix", "CV matrix"))
+pa_summary$Matrix <- factor(pa_summary$Matrix, levels = c("GW", "CV"))
+pa_summary$Recombination <- factor(pa_summary$Recombination, levels = c("2X", "20X"))
+
+for(i in 1:nrow(pa_summary)){
+  if(pa_summary$cond[i] == 1){
+    pa_summary$cycle[i] = pa_summary$cycle[i] - 0.3
+  }else if(pa_summary$cond[i] == 2){
+    pa_summary$cycle[i] = pa_summary$cycle[i] - 0.15
+  }else if(pa_summary$cond[i] == 3){
+    pa_summary$cycle[i] = pa_summary$cycle[i] + 0
+  }else if(pa_summary$cond[i] == 4){
+    pa_summary$cycle[i] = pa_summary$cycle[i] + 0.15
+  }else if(pa_summary$cond[i] == 5){
+    pa_summary$cycle[i] = pa_summary$cycle[i] + 0.3
+  }
+}
+
+pa_summary %>% 
+  filter(type == "R") %>% 
+  ggplot(aes(x = cycle, y = value, color = cond, shape = map)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=value-se, ymax=value+se, width=0.15)) +
+  scale_color_jco(alpha = 0.6) + 
+  ggtitle("Prediction accuracy, R QTL") +
+  scale_x_continuous(breaks=seq(1,10,1)) +
+  ylab("Prediction accuracy") +
+  xlab("GS cycle") + 
+  theme_minimal() + labs(color='repulsion') +
+  facet_grid(Matrix  ~ Recombination)
+
+pa_summary %>% 
+  filter(type == "DV") %>% 
+  ggplot(aes(x = cycle, y = value, color = cond, shape = map)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=value-se, ymax=value+se, width=0.15)) +
+  scale_color_jco(alpha = 0.6) + 
+  ggtitle("Prediction accuracy, DV QTL") +
+  scale_x_continuous(breaks=seq(1,10,1)) +
+  ylab("Prediction accuracy") +
+  xlab("GS cycle") + 
+  theme_minimal() + labs(color='repulsion') +
+  facet_grid(Matrix  ~ Recombination)
+```
+
+  </details>
+
+
+<details>
+  <summary>Click to expand: QTL/Chr: 2, H^2: 0.8 </summary>
+
+```{r, echo = FALSE, message = FALSE, warning=FALSE}
+# summary
+my_ASR_summary(measurement_df = (pa %>% filter(QTL == 2, H2 == 8)), measurement = "prediction accuracy", df_name = "pa")
+
+info <- str_split_fixed(pa_summary$legend, "_", 3) %>% as.data.frame()
+colnames(info) <- c("type", "map", "cond")
+pa_summary <- cbind(pa_summary, info)
+pa_summary$legend <- factor(pa_summary$legend, levels = c("R_WT_1", "R_WT_2", "R_WT_3", "R_WT_4", "R_WT_5",    "R_Peri_1", "R_Peri_2", "R_Peri_3", "R_Peri_4","R_Peri_5",   "R_Chr_1", "R_Chr_2", "R_Chr_3", "R_Chr_4", "R_Chr_5",   "DV_WT_1", "DV_WT_2", "DV_WT_3", "DV_WT_4", "DV_WT_5",   "DV_Peri_1", "DV_Peri_2", "DV_Peri_3", "DV_Peri_4", "DV_Peri_5",   "DV_Chr_1", "DV_Chr_2", "DV_Chr_3", "DV_Chr_4", "DV_Chr_5"))
+# pa_summary$simulation[pa_summary$simulation == 1] <- "GW matrix"
+# pa_summary$simulation[pa_summary$simulation == 2] <- "CV matrix"
+# pa_summary$simulation <- factor(pa_summary$simulation, levels = c("GW matrix", "CV matrix"))
+pa_summary$Matrix <- factor(pa_summary$Matrix, levels = c("GW", "CV"))
+pa_summary$Recombination <- factor(pa_summary$Recombination, levels = c("2X", "20X"))
+
+for(i in 1:nrow(pa_summary)){
+  if(pa_summary$cond[i] == 1){
+    pa_summary$cycle[i] = pa_summary$cycle[i] - 0.3
+  }else if(pa_summary$cond[i] == 2){
+    pa_summary$cycle[i] = pa_summary$cycle[i] - 0.15
+  }else if(pa_summary$cond[i] == 3){
+    pa_summary$cycle[i] = pa_summary$cycle[i] + 0
+  }else if(pa_summary$cond[i] == 4){
+    pa_summary$cycle[i] = pa_summary$cycle[i] + 0.15
+  }else if(pa_summary$cond[i] == 5){
+    pa_summary$cycle[i] = pa_summary$cycle[i] + 0.3
+  }
+}
+
+pa_summary %>% 
+  filter(type == "R") %>% 
+  ggplot(aes(x = cycle, y = value, color = cond, shape = map)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=value-se, ymax=value+se, width=0.15)) +
+  scale_color_jco(alpha = 0.6) + 
+  ggtitle("Prediction accuracy, R QTL") +
+  scale_x_continuous(breaks=seq(1,10,1)) +
+  ylab("Prediction accuracy") +
+  xlab("GS cycle") + 
+  theme_minimal() + labs(color='repulsion') +
+  facet_grid(Matrix  ~ Recombination)
+
+pa_summary %>% 
+  filter(type == "DV") %>% 
+  ggplot(aes(x = cycle, y = value, color = cond, shape = map)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=value-se, ymax=value+se, width=0.15)) +
+  scale_color_jco(alpha = 0.6) + 
+  ggtitle("Prediction accuracy, DV QTL") +
+  scale_x_continuous(breaks=seq(1,10,1)) +
+  ylab("Prediction accuracy") +
+  xlab("GS cycle") + 
+  theme_minimal() + labs(color='repulsion') +
+  facet_grid(Matrix  ~ Recombination)
+```
+
+  </details>
+
+
+<details>
+  <summary>Click to expand: QTL/Chr: 2, H^2: 0.2 </summary>
+
+```{r, echo = FALSE, message = FALSE, warning=FALSE}
+# summary
+my_ASR_summary(measurement_df = (pa %>% filter(QTL == 2, H2 == 2)), measurement = "prediction accuracy", df_name = "pa")
+
+info <- str_split_fixed(pa_summary$legend, "_", 3) %>% as.data.frame()
+colnames(info) <- c("type", "map", "cond")
+pa_summary <- cbind(pa_summary, info)
+pa_summary$legend <- factor(pa_summary$legend, levels = c("R_WT_1", "R_WT_2", "R_WT_3", "R_WT_4", "R_WT_5",    "R_Peri_1", "R_Peri_2", "R_Peri_3", "R_Peri_4","R_Peri_5",   "R_Chr_1", "R_Chr_2", "R_Chr_3", "R_Chr_4", "R_Chr_5",   "DV_WT_1", "DV_WT_2", "DV_WT_3", "DV_WT_4", "DV_WT_5",   "DV_Peri_1", "DV_Peri_2", "DV_Peri_3", "DV_Peri_4", "DV_Peri_5",   "DV_Chr_1", "DV_Chr_2", "DV_Chr_3", "DV_Chr_4", "DV_Chr_5"))
+# pa_summary$simulation[pa_summary$simulation == 1] <- "GW matrix"
+# pa_summary$simulation[pa_summary$simulation == 2] <- "CV matrix"
+# pa_summary$simulation <- factor(pa_summary$simulation, levels = c("GW matrix", "CV matrix"))
+pa_summary$Matrix <- factor(pa_summary$Matrix, levels = c("GW", "CV"))
+pa_summary$Recombination <- factor(pa_summary$Recombination, levels = c("2X", "20X"))
+
+for(i in 1:nrow(pa_summary)){
+  if(pa_summary$cond[i] == 1){
+    pa_summary$cycle[i] = pa_summary$cycle[i] - 0.3
+  }else if(pa_summary$cond[i] == 2){
+    pa_summary$cycle[i] = pa_summary$cycle[i] - 0.15
+  }else if(pa_summary$cond[i] == 3){
+    pa_summary$cycle[i] = pa_summary$cycle[i] + 0
+  }else if(pa_summary$cond[i] == 4){
+    pa_summary$cycle[i] = pa_summary$cycle[i] + 0.15
+  }else if(pa_summary$cond[i] == 5){
+    pa_summary$cycle[i] = pa_summary$cycle[i] + 0.3
+  }
+}
+
+pa_summary %>% 
+  filter(type == "R") %>% 
+  ggplot(aes(x = cycle, y = value, color = cond, shape = map)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=value-se, ymax=value+se, width=0.15)) +
+  scale_color_jco(alpha = 0.6) + 
+  ggtitle("Prediction accuracy, R QTL") +
+  scale_x_continuous(breaks=seq(1,10,1)) +
+  ylab("Prediction accuracy") +
+  xlab("GS cycle") + 
+  theme_minimal() + labs(color='repulsion') +
+  facet_grid(Matrix  ~ Recombination)
+
+pa_summary %>% 
+  filter(type == "DV") %>% 
+  ggplot(aes(x = cycle, y = value, color = cond, shape = map)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=value-se, ymax=value+se, width=0.15)) +
+  scale_color_jco(alpha = 0.6) + 
+  ggtitle("Prediction accuracy, DV QTL") +
+  scale_x_continuous(breaks=seq(1,10,1)) +
+  ylab("Prediction accuracy") +
+  xlab("GS cycle") + 
+  theme_minimal() + labs(color='repulsion') +
+  facet_grid(Matrix  ~ Recombination)
+```
+
+  </details>
+
+
+
+### QTL fixation   
+
+
+
+  **Plots**  
+  
+<details>
+  <summary>Click to expand: QTL/Chr: 200, H^2: 0.8 </summary>
+  
+```{r, echo = FALSE, message = FALSE}
+# summary
+my_ASR_summary(measurement_df = (qtl %>% filter(QTL == 200, H2 == 8)), measurement = "QTL allele fixation", df_name = "qtl")
+
+info <- str_split_fixed(qtl_summary$legend, "_", 3) %>% as.data.frame()
+colnames(info) <- c("type", "map", "cond")
+qtl_summary <- cbind(qtl_summary, info)
+qtl_summary$legend <- factor(qtl_summary$legend, levels = c("R_WT_1", "R_WT_2", "R_WT_3", "R_WT_4", "R_WT_5",    "R_Peri_1", "R_Peri_2", "R_Peri_3", "R_Peri_4","R_Peri_5",   "R_Chr_1", "R_Chr_2", "R_Chr_3", "R_Chr_4", "R_Chr_5",   "DV_WT_1", "DV_WT_2", "DV_WT_3", "DV_WT_4", "DV_WT_5",   "DV_Peri_1", "DV_Peri_2", "DV_Peri_3", "DV_Peri_4", "DV_Peri_5",   "DV_Chr_1", "DV_Chr_2", "DV_Chr_3", "DV_Chr_4", "DV_Chr_5"))
+
+# qtl_summary$simulation[qtl_summary$simulation == 1] <- "GW matrix"
+# qtl_summary$simulation[qtl_summary$simulation == 2] <- "CV matrix"
+# qtl_summary$simulation <- factor(qtl_summary$simulation, levels = c("GW matrix", "CV matrix"))
+qtl_summary$Matrix <- factor(qtl_summary$Matrix, levels = c("GW", "CV"))
+qtl_summary$Recombination <- factor(qtl_summary$Recombination, levels = c("2X", "20X"))
+
+qtl_summary <- qtl_summary %>% filter(!cycle == "founder")
+qtl_summary$cycle[qtl_summary$cycle == "burnin"] <- 0
+qtl_summary$cycle <- as.numeric(qtl_summary$cycle)
+
+qtl_summary$cycle <- as.numeric(qtl_summary$cycle)
+for(i in 1:nrow(qtl_summary)){
+  if(qtl_summary$cond[i] == 1){
+    qtl_summary$cycle[i] <- qtl_summary$cycle[i] - 0.3
+  }else if(qtl_summary$cond[i] == 2){
+    qtl_summary$cycle[i] <- qtl_summary$cycle[i] - 0.15
+  }else if(qtl_summary$cond[i] == 3){
+    qtl_summary$cycle[i] <- qtl_summary$cycle[i] + 0
+  }else if(qtl_summary$cond[i] == 4){
+    qtl_summary$cycle[i] <- qtl_summary$cycle[i] + 0.15
+  }else if(qtl_summary$cond[i] == 5){
+    qtl_summary$cycle[i] <- qtl_summary$cycle[i] + 0.3
+  }
+}
+qtl_summary$cycle <- factor(qtl_summary$cycle, 
+                           levels = c(-0.30, -0.15,  0.00,  0.15,  0.30,  0.70,  0.85,  1.00,
+                                      1.15,  1.30,  1.70,  1.85,  2.0,  2.15,  2.30,  2.70,
+                                      2.85,  3.00, 3.15,  3.30,  3.70,  3.85,  4.00,  4.15,
+                                      4.30,  4.70,  4.85,  5.00,  5.15,  5.30,  5.70,  5.85,
+                                      6.00,  6.15,  6.30,  6.70, 6.85,  7.00,  7.15,  7.30,
+                                      7.70,  7.85,  8.00,  8.15,  8.30,  8.70,  8.85,  9.00,
+                                      9.15,  9.30,  9.70,  9.85, 10.00, 10.15, 10.30))
+
+qtl_summary %>%
+  filter(type == "R") %>%
+  ggplot(aes(x = cycle, y = value, color = cond, shape = map)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=value-se, ymax=value+se, width=0.15)) +
+  scale_color_jco(alpha = 0.6) +
+  scale_x_discrete(breaks=0:10)+
+  ggtitle("QTL allele fixation ratio, R QTL") +
+  ylab("QTL allele fixation") +
+  xlab("Breeding cycle") +
+  theme_minimal() + labs(color='allele') +
+  facet_grid(Matrix  ~ Recombination + measurement)
+
+qtl_summary %>%
+  filter(type == "DV") %>%
+  ggplot(aes(x = cycle, y = value, color = cond, shape = map)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=value-se, ymax=value+se, width=0.15)) +
+  scale_color_jco(alpha = 0.6) +
+  scale_x_discrete(breaks=0:10)+
+  ggtitle("QTL allele fixation ratio, DV QTL") +
+  ylab("QTL allele fixation") +
+  xlab("Breeding cycle") +
+  theme_minimal() + labs(color='allele') +
+  facet_grid(Matrix  ~ Recombination + measurement)
+```
+
+  </details> 
+
+
+<details>
+  <summary>Click to expand: QTL/Chr: 200, H^2: 0.2 </summary>
+  
+```{r, echo = FALSE, message = FALSE}
+# summary
+my_ASR_summary(measurement_df = (qtl %>% filter(QTL == 200, H2 == 2)), measurement = "QTL allele fixation", df_name = "qtl")
+
+info <- str_split_fixed(qtl_summary$legend, "_", 3) %>% as.data.frame()
+colnames(info) <- c("type", "map", "cond")
+qtl_summary <- cbind(qtl_summary, info)
+qtl_summary$legend <- factor(qtl_summary$legend, levels = c("R_WT_1", "R_WT_2", "R_WT_3", "R_WT_4", "R_WT_5",    "R_Peri_1", "R_Peri_2", "R_Peri_3", "R_Peri_4","R_Peri_5",   "R_Chr_1", "R_Chr_2", "R_Chr_3", "R_Chr_4", "R_Chr_5",   "DV_WT_1", "DV_WT_2", "DV_WT_3", "DV_WT_4", "DV_WT_5",   "DV_Peri_1", "DV_Peri_2", "DV_Peri_3", "DV_Peri_4", "DV_Peri_5",   "DV_Chr_1", "DV_Chr_2", "DV_Chr_3", "DV_Chr_4", "DV_Chr_5"))
+
+# qtl_summary$simulation[qtl_summary$simulation == 1] <- "GW matrix"
+# qtl_summary$simulation[qtl_summary$simulation == 2] <- "CV matrix"
+# qtl_summary$simulation <- factor(qtl_summary$simulation, levels = c("GW matrix", "CV matrix"))
+qtl_summary$Matrix <- factor(qtl_summary$Matrix, levels = c("GW", "CV"))
+qtl_summary$Recombination <- factor(qtl_summary$Recombination, levels = c("2X", "20X"))
+
+qtl_summary <- qtl_summary %>% filter(!cycle == "founder")
+qtl_summary$cycle[qtl_summary$cycle == "burnin"] <- 0
+qtl_summary$cycle <- as.numeric(qtl_summary$cycle)
+
+qtl_summary$cycle <- as.numeric(qtl_summary$cycle)
+for(i in 1:nrow(qtl_summary)){
+  if(qtl_summary$cond[i] == 1){
+    qtl_summary$cycle[i] <- qtl_summary$cycle[i] - 0.3
+  }else if(qtl_summary$cond[i] == 2){
+    qtl_summary$cycle[i] <- qtl_summary$cycle[i] - 0.15
+  }else if(qtl_summary$cond[i] == 3){
+    qtl_summary$cycle[i] <- qtl_summary$cycle[i] + 0
+  }else if(qtl_summary$cond[i] == 4){
+    qtl_summary$cycle[i] <- qtl_summary$cycle[i] + 0.15
+  }else if(qtl_summary$cond[i] == 5){
+    qtl_summary$cycle[i] <- qtl_summary$cycle[i] + 0.3
+  }
+}
+qtl_summary$cycle <- factor(qtl_summary$cycle, 
+                           levels = c(-0.30, -0.15,  0.00,  0.15,  0.30,  0.70,  0.85,  1.00,
+                                      1.15,  1.30,  1.70,  1.85,  2.0,  2.15,  2.30,  2.70,
+                                      2.85,  3.00, 3.15,  3.30,  3.70,  3.85,  4.00,  4.15,
+                                      4.30,  4.70,  4.85,  5.00,  5.15,  5.30,  5.70,  5.85,
+                                      6.00,  6.15,  6.30,  6.70, 6.85,  7.00,  7.15,  7.30,
+                                      7.70,  7.85,  8.00,  8.15,  8.30,  8.70,  8.85,  9.00,
+                                      9.15,  9.30,  9.70,  9.85, 10.00, 10.15, 10.30))
+
+qtl_summary %>%
+  filter(type == "R") %>%
+  ggplot(aes(x = cycle, y = value, color = cond, shape = map)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=value-se, ymax=value+se, width=0.15)) +
+  scale_color_jco(alpha = 0.6) +
+  scale_x_discrete(breaks=0:10)+
+  ggtitle("QTL allele fixation ratio, R QTL") +
+  ylab("QTL allele fixation") +
+  xlab("Breeding cycle") +
+  theme_minimal() + labs(color='allele') +
+  facet_grid(Matrix  ~ Recombination + measurement)
+
+qtl_summary %>%
+  filter(type == "DV") %>%
+  ggplot(aes(x = cycle, y = value, color = cond, shape = map)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=value-se, ymax=value+se, width=0.15)) +
+  scale_color_jco(alpha = 0.6) +
+  scale_x_discrete(breaks=0:10)+
+  ggtitle("QTL allele fixation ratio, DV QTL") +
+  ylab("QTL allele fixation") +
+  xlab("Breeding cycle") +
+  theme_minimal() + labs(color='allele') +
+  facet_grid(Matrix  ~ Recombination + measurement)
+```
+
+  </details> 
+
+
+<details>
+  <summary>Click to expand: QTL/Chr: 2, H^2: 0.8 </summary>
+  
+```{r, echo = FALSE, message = FALSE}
+# summary
+my_ASR_summary(measurement_df = (qtl %>% filter(QTL == 2, H2 == 8)), measurement = "QTL allele fixation", df_name = "qtl")
+
+info <- str_split_fixed(qtl_summary$legend, "_", 3) %>% as.data.frame()
+colnames(info) <- c("type", "map", "cond")
+qtl_summary <- cbind(qtl_summary, info)
+qtl_summary$legend <- factor(qtl_summary$legend, levels = c("R_WT_1", "R_WT_2", "R_WT_3", "R_WT_4", "R_WT_5",    "R_Peri_1", "R_Peri_2", "R_Peri_3", "R_Peri_4","R_Peri_5",   "R_Chr_1", "R_Chr_2", "R_Chr_3", "R_Chr_4", "R_Chr_5",   "DV_WT_1", "DV_WT_2", "DV_WT_3", "DV_WT_4", "DV_WT_5",   "DV_Peri_1", "DV_Peri_2", "DV_Peri_3", "DV_Peri_4", "DV_Peri_5",   "DV_Chr_1", "DV_Chr_2", "DV_Chr_3", "DV_Chr_4", "DV_Chr_5"))
+
+# qtl_summary$simulation[qtl_summary$simulation == 1] <- "GW matrix"
+# qtl_summary$simulation[qtl_summary$simulation == 2] <- "CV matrix"
+# qtl_summary$simulation <- factor(qtl_summary$simulation, levels = c("GW matrix", "CV matrix"))
+qtl_summary$Matrix <- factor(qtl_summary$Matrix, levels = c("GW", "CV"))
+qtl_summary$Recombination <- factor(qtl_summary$Recombination, levels = c("2X", "20X"))
+
+qtl_summary <- qtl_summary %>% filter(!cycle == "founder")
+qtl_summary$cycle[qtl_summary$cycle == "burnin"] <- 0
+qtl_summary$cycle <- as.numeric(qtl_summary$cycle)
+
+qtl_summary$cycle <- as.numeric(qtl_summary$cycle)
+for(i in 1:nrow(qtl_summary)){
+  if(qtl_summary$cond[i] == 1){
+    qtl_summary$cycle[i] <- qtl_summary$cycle[i] - 0.3
+  }else if(qtl_summary$cond[i] == 2){
+    qtl_summary$cycle[i] <- qtl_summary$cycle[i] - 0.15
+  }else if(qtl_summary$cond[i] == 3){
+    qtl_summary$cycle[i] <- qtl_summary$cycle[i] + 0
+  }else if(qtl_summary$cond[i] == 4){
+    qtl_summary$cycle[i] <- qtl_summary$cycle[i] + 0.15
+  }else if(qtl_summary$cond[i] == 5){
+    qtl_summary$cycle[i] <- qtl_summary$cycle[i] + 0.3
+  }
+}
+qtl_summary$cycle <- factor(qtl_summary$cycle, 
+                           levels = c(-0.30, -0.15,  0.00,  0.15,  0.30,  0.70,  0.85,  1.00,
+                                      1.15,  1.30,  1.70,  1.85,  2.0,  2.15,  2.30,  2.70,
+                                      2.85,  3.00, 3.15,  3.30,  3.70,  3.85,  4.00,  4.15,
+                                      4.30,  4.70,  4.85,  5.00,  5.15,  5.30,  5.70,  5.85,
+                                      6.00,  6.15,  6.30,  6.70, 6.85,  7.00,  7.15,  7.30,
+                                      7.70,  7.85,  8.00,  8.15,  8.30,  8.70,  8.85,  9.00,
+                                      9.15,  9.30,  9.70,  9.85, 10.00, 10.15, 10.30))
+
+qtl_summary %>%
+  filter(type == "R") %>%
+  ggplot(aes(x = cycle, y = value, color = cond, shape = map)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=value-se, ymax=value+se, width=0.15)) +
+  scale_color_jco(alpha = 0.6) +
+  scale_x_discrete(breaks=0:10)+
+  ggtitle("QTL allele fixation ratio, R QTL") +
+  ylab("QTL allele fixation") +
+  xlab("Breeding cycle") +
+  theme_minimal() + labs(color='allele') +
+  facet_grid(Matrix  ~ Recombination + measurement)
+
+qtl_summary %>%
+  filter(type == "DV") %>%
+  ggplot(aes(x = cycle, y = value, color = cond, shape = map)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=value-se, ymax=value+se, width=0.15)) +
+  scale_color_jco(alpha = 0.6) +
+  scale_x_discrete(breaks=0:10)+
+  ggtitle("QTL allele fixation ratio, DV QTL") +
+  ylab("QTL allele fixation") +
+  xlab("Breeding cycle") +
+  theme_minimal() + labs(color='allele') +
+  facet_grid(Matrix  ~ Recombination + measurement)
+```
+
+  </details> 
+
+
+<details>
+  <summary>Click to expand: QTL/Chr: 2, H^2: 0.2 </summary>
+  
+```{r, echo = FALSE, message = FALSE}
+# summary
+my_ASR_summary(measurement_df = (qtl %>% filter(QTL == 2, H2 == 2)), measurement = "QTL allele fixation", df_name = "qtl")
+
+info <- str_split_fixed(qtl_summary$legend, "_", 3) %>% as.data.frame()
+colnames(info) <- c("type", "map", "cond")
+qtl_summary <- cbind(qtl_summary, info)
+qtl_summary$legend <- factor(qtl_summary$legend, levels = c("R_WT_1", "R_WT_2", "R_WT_3", "R_WT_4", "R_WT_5",    "R_Peri_1", "R_Peri_2", "R_Peri_3", "R_Peri_4","R_Peri_5",   "R_Chr_1", "R_Chr_2", "R_Chr_3", "R_Chr_4", "R_Chr_5",   "DV_WT_1", "DV_WT_2", "DV_WT_3", "DV_WT_4", "DV_WT_5",   "DV_Peri_1", "DV_Peri_2", "DV_Peri_3", "DV_Peri_4", "DV_Peri_5",   "DV_Chr_1", "DV_Chr_2", "DV_Chr_3", "DV_Chr_4", "DV_Chr_5"))
+
+# qtl_summary$simulation[qtl_summary$simulation == 1] <- "GW matrix"
+# qtl_summary$simulation[qtl_summary$simulation == 2] <- "CV matrix"
+# qtl_summary$simulation <- factor(qtl_summary$simulation, levels = c("GW matrix", "CV matrix"))
+qtl_summary$Matrix <- factor(qtl_summary$Matrix, levels = c("GW", "CV"))
+qtl_summary$Recombination <- factor(qtl_summary$Recombination, levels = c("2X", "20X"))
+
+qtl_summary <- qtl_summary %>% filter(!cycle == "founder")
+qtl_summary$cycle[qtl_summary$cycle == "burnin"] <- 0
+qtl_summary$cycle <- as.numeric(qtl_summary$cycle)
+
+qtl_summary$cycle <- as.numeric(qtl_summary$cycle)
+for(i in 1:nrow(qtl_summary)){
+  if(qtl_summary$cond[i] == 1){
+    qtl_summary$cycle[i] <- qtl_summary$cycle[i] - 0.3
+  }else if(qtl_summary$cond[i] == 2){
+    qtl_summary$cycle[i] <- qtl_summary$cycle[i] - 0.15
+  }else if(qtl_summary$cond[i] == 3){
+    qtl_summary$cycle[i] <- qtl_summary$cycle[i] + 0
+  }else if(qtl_summary$cond[i] == 4){
+    qtl_summary$cycle[i] <- qtl_summary$cycle[i] + 0.15
+  }else if(qtl_summary$cond[i] == 5){
+    qtl_summary$cycle[i] <- qtl_summary$cycle[i] + 0.3
+  }
+}
+qtl_summary$cycle <- factor(qtl_summary$cycle, 
+                           levels = c(-0.30, -0.15,  0.00,  0.15,  0.30,  0.70,  0.85,  1.00,
+                                      1.15,  1.30,  1.70,  1.85,  2.0,  2.15,  2.30,  2.70,
+                                      2.85,  3.00, 3.15,  3.30,  3.70,  3.85,  4.00,  4.15,
+                                      4.30,  4.70,  4.85,  5.00,  5.15,  5.30,  5.70,  5.85,
+                                      6.00,  6.15,  6.30,  6.70, 6.85,  7.00,  7.15,  7.30,
+                                      7.70,  7.85,  8.00,  8.15,  8.30,  8.70,  8.85,  9.00,
+                                      9.15,  9.30,  9.70,  9.85, 10.00, 10.15, 10.30))
+
+qtl_summary %>%
+  filter(type == "R") %>%
+  ggplot(aes(x = cycle, y = value, color = cond, shape = map)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=value-se, ymax=value+se, width=0.15)) +
+  scale_color_jco(alpha = 0.6) +
+  scale_x_discrete(breaks=0:10)+
+  ggtitle("QTL allele fixation ratio, R QTL") +
+  ylab("QTL allele fixation") +
+  xlab("Breeding cycle") +
+  theme_minimal() + labs(color='allele') +
+  facet_grid(Matrix  ~ Recombination + measurement)
+
+qtl_summary %>%
+  filter(type == "DV") %>%
+  ggplot(aes(x = cycle, y = value, color = cond, shape = map)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=value-se, ymax=value+se, width=0.15)) +
+  scale_color_jco(alpha = 0.6) +
+  scale_x_discrete(breaks=0:10)+
+  ggtitle("QTL allele fixation ratio, DV QTL") +
+  ylab("QTL allele fixation") +
+  xlab("Breeding cycle") +
+  theme_minimal() + labs(color='allele') +
+  facet_grid(Matrix  ~ Recombination + measurement)
+```
+
+  </details> 
+
+
+### QTL positive allele frequency change 
+
+**Plots**    
+
+<details>
+  <summary>Click to expand: QTL/Chr: 200, H^2: 0.8 </summary>
+  
+```{r, echo = FALSE, message = FALSE, message = FALSE}
+# summary 
+my_ASR_summary(measurement_df = (qtl_af %>% filter(QTL == 200, H2 == 8)), measurement = "QTL AF change", df_name = "qtl_af")
+
+info <- str_split_fixed(qtl_af_summary$legend, "_", 3) %>% as.data.frame()
+colnames(info) <- c("type", "map", "cond")
+qtl_af_summary <- cbind(qtl_af_summary, info)
+
+# qtl_af_summary$simulation[qtl_af_summary$simulation == 1] <- "GW"
+# qtl_af_summary$simulation[qtl_af_summary$simulation == 2] <- "CV"
+# qtl_af_summary$simulation <- factor(qtl_af_summary$simulation, levels = c("GW", "CV"))
+qtl_af_summary$Matrix <- factor(qtl_af_summary$Matrix, levels = c("GW", "CV"))
+qtl_af_summary$type...2 <- factor(qtl_af_summary$type...2, 
+                                  levels = c("small_neg", "med_neg", "large_neg",
+                                             "small_pos", "med_pos", "large_pos"))
+names(qtl_af_summary)[2] <- "Effect size and Allele"
+
+qtl_af_summary$Recombination <- factor(qtl_af_summary$Recombination, levels = c("2X", "20X"))
+
+qtl_af_summary$cond <- as.numeric(qtl_af_summary$cond)
+for(i in 1:nrow(qtl_af_summary)){
+  if(qtl_af_summary$map[i] == "WT"){
+    qtl_af_summary$cond[i] = qtl_af_summary$cond[i] - 0.2
+  }else if(qtl_af_summary$map[i] == "Peri"){
+    qtl_af_summary$cond[i] = qtl_af_summary$cond[i] + 0
+  }else if(qtl_af_summary$map[i] == "Chr"){
+    qtl_af_summary$cond[i] = qtl_af_summary$cond[i] + 0.2
+    }
+}
+
+qtl_af_summary %>% 
+  filter(type...9 == "R", `Effect size and Allele` %in% c("small_pos",
+                                                          "med_pos",
+                                                          "large_pos")) %>% #, simulation == "GW matrix"
+  ggplot(aes(x = cond, y = value, color = `Effect size and Allele`, shape = map)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=value-se, ymax=value+se, width=0.15)) +
+  scale_color_manual(values = alpha(c("#767575", "#B83535", "dodgerblue3"), 0.6)) + 
+  ggtitle("QTL allele frequency change, R QTL") +
+  ylab("AF change") +
+  scale_x_continuous(breaks=seq(1,5,1)) +
+  xlab("Condition") + 
+  theme_minimal() + labs(color='allele') +
+  facet_grid(Matrix  ~ Recombination)
+
+qtl_af_summary %>% 
+  filter(type...9 == "DV", `Effect size and Allele` %in% c("small_pos",
+                                                          "med_pos",
+                                                          "large_pos")) %>% #, simulation == "GW matrix"
+  ggplot(aes(x = cond, y = value, color = `Effect size and Allele`, shape = map)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=value-se, ymax=value+se, width=0.15)) +
+  scale_color_manual(values = alpha(c("#767575", "#B83535", "dodgerblue3"), 0.6)) + 
+  ggtitle("QTL allele frequency change, DV QTL") +
+  ylab("AF change") +
+  scale_x_continuous(breaks=seq(1,5,1)) +
+  xlab("Condition") + 
+  theme_minimal() + labs(color='allele') +
+  facet_grid(Matrix  ~ Recombination)
+
+```
+
+  </details> 
+
+
+<details>
+  <summary>Click to expand: QTL/Chr: 200, H^2: 0.2 </summary>
+  
+```{r, echo = FALSE, message = FALSE, message = FALSE}
+# summary 
+my_ASR_summary(measurement_df = (qtl_af %>% filter(QTL == 200, H2 == 2)), measurement = "QTL AF change", df_name = "qtl_af")
+
+info <- str_split_fixed(qtl_af_summary$legend, "_", 3) %>% as.data.frame()
+colnames(info) <- c("type", "map", "cond")
+qtl_af_summary <- cbind(qtl_af_summary, info)
+
+# qtl_af_summary$simulation[qtl_af_summary$simulation == 1] <- "GW"
+# qtl_af_summary$simulation[qtl_af_summary$simulation == 2] <- "CV"
+# qtl_af_summary$simulation <- factor(qtl_af_summary$simulation, levels = c("GW", "CV"))
+qtl_af_summary$Matrix <- factor(qtl_af_summary$Matrix, levels = c("GW", "CV"))
+qtl_af_summary$type...2 <- factor(qtl_af_summary$type...2, 
+                                  levels = c("small_neg", "med_neg", "large_neg",
+                                             "small_pos", "med_pos", "large_pos"))
+names(qtl_af_summary)[2] <- "Effect size and Allele"
+
+qtl_af_summary$Recombination <- factor(qtl_af_summary$Recombination, levels = c("2X", "20X"))
+
+qtl_af_summary$cond <- as.numeric(qtl_af_summary$cond)
+for(i in 1:nrow(qtl_af_summary)){
+  if(qtl_af_summary$map[i] == "WT"){
+    qtl_af_summary$cond[i] = qtl_af_summary$cond[i] - 0.2
+  }else if(qtl_af_summary$map[i] == "Peri"){
+    qtl_af_summary$cond[i] = qtl_af_summary$cond[i] + 0
+  }else if(qtl_af_summary$map[i] == "Chr"){
+    qtl_af_summary$cond[i] = qtl_af_summary$cond[i] + 0.2
+    }
+}
+
+qtl_af_summary %>% 
+  filter(type...9 == "R", `Effect size and Allele` %in% c("small_pos",
+                                                          "med_pos",
+                                                          "large_pos")) %>% #, simulation == "GW matrix"
+  ggplot(aes(x = cond, y = value, color = `Effect size and Allele`, shape = map)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=value-se, ymax=value+se, width=0.15)) +
+  scale_color_manual(values = alpha(c("#767575", "#B83535", "dodgerblue3"), 0.6)) + 
+  ggtitle("QTL allele frequency change, R QTL") +
+  ylab("AF change") +
+  scale_x_continuous(breaks=seq(1,5,1)) +
+  xlab("Condition") + 
+  theme_minimal() + labs(color='allele') +
+  facet_grid(Matrix  ~ Recombination)
+
+qtl_af_summary %>% 
+  filter(type...9 == "DV", `Effect size and Allele` %in% c("small_pos",
+                                                          "med_pos",
+                                                          "large_pos")) %>% #, simulation == "GW matrix"
+  ggplot(aes(x = cond, y = value, color = `Effect size and Allele`, shape = map)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=value-se, ymax=value+se, width=0.15)) +
+  scale_color_manual(values = alpha(c("#767575", "#B83535", "dodgerblue3"), 0.6)) + 
+  ggtitle("QTL allele frequency change, DV QTL") +
+  ylab("AF change") +
+  scale_x_continuous(breaks=seq(1,5,1)) +
+  xlab("Condition") + 
+  theme_minimal() + labs(color='allele') +
+  facet_grid(Matrix  ~ Recombination)
+
+```
+
+  </details> 
+
+
+<details>
+  <summary>Click to expand: QTL/Chr: 2, H^2: 0.8 </summary>
+  
+```{r, echo = FALSE, message = FALSE, message = FALSE}
+# summary 
+my_ASR_summary(measurement_df = (qtl_af %>% filter(QTL == 2, H2 == 8)), measurement = "QTL AF change", df_name = "qtl_af")
+
+info <- str_split_fixed(qtl_af_summary$legend, "_", 3) %>% as.data.frame()
+colnames(info) <- c("type", "map", "cond")
+qtl_af_summary <- cbind(qtl_af_summary, info)
+
+# qtl_af_summary$simulation[qtl_af_summary$simulation == 1] <- "GW"
+# qtl_af_summary$simulation[qtl_af_summary$simulation == 2] <- "CV"
+# qtl_af_summary$simulation <- factor(qtl_af_summary$simulation, levels = c("GW", "CV"))
+qtl_af_summary$Matrix <- factor(qtl_af_summary$Matrix, levels = c("GW", "CV"))
+qtl_af_summary$type...2 <- factor(qtl_af_summary$type...2, 
+                                  levels = c("small_neg", "med_neg", "large_neg",
+                                             "small_pos", "med_pos", "large_pos"))
+names(qtl_af_summary)[2] <- "Effect size and Allele"
+
+qtl_af_summary$Recombination <- factor(qtl_af_summary$Recombination, levels = c("2X", "20X"))
+
+qtl_af_summary$cond <- as.numeric(qtl_af_summary$cond)
+for(i in 1:nrow(qtl_af_summary)){
+  if(qtl_af_summary$map[i] == "WT"){
+    qtl_af_summary$cond[i] = qtl_af_summary$cond[i] - 0.2
+  }else if(qtl_af_summary$map[i] == "Peri"){
+    qtl_af_summary$cond[i] = qtl_af_summary$cond[i] + 0
+  }else if(qtl_af_summary$map[i] == "Chr"){
+    qtl_af_summary$cond[i] = qtl_af_summary$cond[i] + 0.2
+    }
+}
+
+qtl_af_summary %>% 
+  filter(type...9 == "R", `Effect size and Allele` %in% c("small_pos",
+                                                          "med_pos",
+                                                          "large_pos")) %>% #, simulation == "GW matrix"
+  ggplot(aes(x = cond, y = value, color = `Effect size and Allele`, shape = map)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=value-se, ymax=value+se, width=0.15)) +
+  scale_color_manual(values = alpha(c("#767575", "#B83535", "dodgerblue3"), 0.6)) + 
+  ggtitle("QTL allele frequency change, R QTL") +
+  ylab("AF change") +
+  scale_x_continuous(breaks=seq(1,5,1)) +
+  xlab("Condition") + 
+  theme_minimal() + labs(color='allele') +
+  facet_grid(Matrix  ~ Recombination)
+
+qtl_af_summary %>% 
+  filter(type...9 == "DV", `Effect size and Allele` %in% c("small_pos",
+                                                          "med_pos",
+                                                          "large_pos")) %>% #, simulation == "GW matrix"
+  ggplot(aes(x = cond, y = value, color = `Effect size and Allele`, shape = map)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=value-se, ymax=value+se, width=0.15)) +
+  scale_color_manual(values = alpha(c("#767575", "#B83535", "dodgerblue3"), 0.6)) + 
+  ggtitle("QTL allele frequency change, DV QTL") +
+  ylab("AF change") +
+  scale_x_continuous(breaks=seq(1,5,1)) +
+  xlab("Condition") + 
+  theme_minimal() + labs(color='allele') +
+  facet_grid(Matrix  ~ Recombination)
+
+```
+
+  </details> 
+
+
+<details>
+  <summary>Click to expand: QTL/Chr: 2, H^2: 0.2 </summary>
+  
+```{r, echo = FALSE, message = FALSE, message = FALSE}
+# summary 
+my_ASR_summary(measurement_df = (qtl_af %>% filter(QTL == 2, H2 == 2)), measurement = "QTL AF change", df_name = "qtl_af")
+
+info <- str_split_fixed(qtl_af_summary$legend, "_", 3) %>% as.data.frame()
+colnames(info) <- c("type", "map", "cond")
+qtl_af_summary <- cbind(qtl_af_summary, info)
+
+# qtl_af_summary$simulation[qtl_af_summary$simulation == 1] <- "GW"
+# qtl_af_summary$simulation[qtl_af_summary$simulation == 2] <- "CV"
+# qtl_af_summary$simulation <- factor(qtl_af_summary$simulation, levels = c("GW", "CV"))
+qtl_af_summary$Matrix <- factor(qtl_af_summary$Matrix, levels = c("GW", "CV"))
+qtl_af_summary$type...2 <- factor(qtl_af_summary$type...2, 
+                                  levels = c("small_neg", "med_neg", "large_neg",
+                                             "small_pos", "med_pos", "large_pos"))
+names(qtl_af_summary)[2] <- "Effect size and Allele"
+
+qtl_af_summary$Recombination <- factor(qtl_af_summary$Recombination, levels = c("2X", "20X"))
+
+qtl_af_summary$cond <- as.numeric(qtl_af_summary$cond)
+for(i in 1:nrow(qtl_af_summary)){
+  if(qtl_af_summary$map[i] == "WT"){
+    qtl_af_summary$cond[i] = qtl_af_summary$cond[i] - 0.2
+  }else if(qtl_af_summary$map[i] == "Peri"){
+    qtl_af_summary$cond[i] = qtl_af_summary$cond[i] + 0
+  }else if(qtl_af_summary$map[i] == "Chr"){
+    qtl_af_summary$cond[i] = qtl_af_summary$cond[i] + 0.2
+    }
+}
+
+qtl_af_summary %>% 
+  filter(type...9 == "R", `Effect size and Allele` %in% c("small_pos",
+                                                          "med_pos",
+                                                          "large_pos")) %>% #, simulation == "GW matrix"
+  ggplot(aes(x = cond, y = value, color = `Effect size and Allele`, shape = map)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=value-se, ymax=value+se, width=0.15)) +
+  scale_color_manual(values = alpha(c("#767575", "#B83535", "dodgerblue3"), 0.6)) + 
+  ggtitle("QTL allele frequency change, R QTL") +
+  ylab("AF change") +
+  scale_x_continuous(breaks=seq(1,5,1)) +
+  xlab("Condition") + 
+  theme_minimal() + labs(color='allele') +
+  facet_grid(Matrix  ~ Recombination)
+
+qtl_af_summary %>% 
+  filter(type...9 == "DV", `Effect size and Allele` %in% c("small_pos",
+                                                          "med_pos",
+                                                          "large_pos")) %>% #, simulation == "GW matrix"
+  ggplot(aes(x = cond, y = value, color = `Effect size and Allele`, shape = map)) +
+  geom_point() +
+  geom_errorbar(aes(ymin=value-se, ymax=value+se, width=0.15)) +
+  scale_color_manual(values = alpha(c("#767575", "#B83535", "dodgerblue3"), 0.6)) + 
+  ggtitle("QTL allele frequency change, DV QTL") +
+  ylab("AF change") +
+  scale_x_continuous(breaks=seq(1,5,1)) +
+  xlab("Condition") + 
+  theme_minimal() + labs(color='allele') +
+  facet_grid(Matrix  ~ Recombination)
+
+```
+
+  </details> 
+
