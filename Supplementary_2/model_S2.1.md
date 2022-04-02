@@ -42,18 +42,14 @@ library(emmeans)
 library(car)
 library(broom.mixed)
 
-# anova and summary plot functions
-source("/Users/ellietaagen/Desktop/github/cr_simulation/Functions/master_functions/summary_stats_anova.R")
-source("/Users/ellietaagen/Desktop/github/cr_simulation/Results/table_view_function.R")
-
-gg <- fread("/Users/ellietaagen/Desktop/github/cr_simulation/Results/BP_F_master_results_csv/f_gg.csv") %>% as.data.frame()
-gv <- fread("/Users/ellietaagen/Desktop/github/cr_simulation/Results/BP_F_master_results_csv/f_gv.csv") %>% as.data.frame()
-pa <- fread("/Users/ellietaagen/Desktop/github/cr_simulation/Results/BP_F_master_results_csv/f_pa.csv") %>% as.data.frame()
-be <- fread("/Users/ellietaagen/Desktop/github/cr_simulation/Results/BP_F_master_results_csv/f_be.csv") %>% as.data.frame()
+gg <- fread("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_2/results_S2.1/f_gg.csv") %>% as.data.frame()
+gv <- fread("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_2/results_S2.1/f_gv.csv") %>% as.data.frame()
+pa <- fread("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_2/results_S2.1/f_pa.csv") %>% as.data.frame()
+be <- fread("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_2/results_S2.1/f_be.csv") %>% as.data.frame()
 # be `value` is 2-fold higher than it should be (ASR does not know how to treat VarA/GenicVarA for DH)
 be$value <- be$value/2
-qtl <- fread("/Users/ellietaagen/Desktop/github/cr_simulation/Results/BP_F_master_results_csv/f_qtl.csv") %>% as.data.frame()
-qtl_af <- fread("/Users/ellietaagen/Desktop/github/cr_simulation/Results/BP_F_master_results_csv/f_qtl_af.csv") %>% as.data.frame()
+qtl <- fread("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_2/results_S2.1/f_qtl.csv") %>% as.data.frame()
+qtl_af <- fread("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_2/results_S2.1/f_qtl_af.csv") %>% as.data.frame()
 ```
 
 **Data frames**
@@ -162,15 +158,15 @@ summaries
 
 #### Cycle 6, WT map
 
-![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-3-2.png)<!-- -->![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-3-3.png)<!-- -->![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-3-4.png)<!-- -->
+![](model_S2.1_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-3-2.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-3-3.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-3-4.png)<!-- -->
 
 #### Cycle 6, Pericentromere map
 
-![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-4-2.png)<!-- -->![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-4-3.png)<!-- -->![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-4-4.png)<!-- -->
+![](model_S2.1_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-4-2.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-4-3.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-4-4.png)<!-- -->
 
 #### Cycle 6, Chromosome map
 
-![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-5-2.png)<!-- -->![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-5-3.png)<!-- -->![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-5-4.png)<!-- -->
+![](model_S2.1_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-5-2.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-5-3.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-5-4.png)<!-- -->
 
 </details>
 
@@ -235,15 +231,15 @@ parameter prediction summaries
 
 #### Cycle 6, WT map
 
-![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-8-2.png)<!-- -->![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-8-3.png)<!-- -->![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-8-4.png)<!-- -->
+![](model_S2.1_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-8-2.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-8-3.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-8-4.png)<!-- -->
 
 #### Cycle 6, Pericentromere map
 
-![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-9-2.png)<!-- -->![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-9-3.png)<!-- -->![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-9-4.png)<!-- -->
+![](model_S2.1_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-9-2.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-9-3.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-9-4.png)<!-- -->
 
 #### Cycle 6, Chromosome map
 
-![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-10-2.png)<!-- -->![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-10-3.png)<!-- -->![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-10-4.png)<!-- -->
+![](model_S2.1_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-10-2.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-10-3.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-10-4.png)<!-- -->
 
 </details>
 
@@ -308,15 +304,15 @@ summaries
 
 #### Cycle 6, WT map
 
-![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-13-2.png)<!-- -->![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-13-3.png)<!-- -->![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-13-4.png)<!-- -->
+![](model_S2.1_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-13-2.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-13-3.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-13-4.png)<!-- -->
 
 #### Cycle 6, Pericentromere map
 
-![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-14-2.png)<!-- -->![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-14-3.png)<!-- -->![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-14-4.png)<!-- -->
+![](model_S2.1_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-14-2.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-14-3.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-14-4.png)<!-- -->
 
 #### Cycle 6, Chromosome map
 
-![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-15-2.png)<!-- -->![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-15-3.png)<!-- -->![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-15-4.png)<!-- -->
+![](model_S2.1_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-15-2.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-15-3.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-15-4.png)<!-- -->
 
 </details>
 
@@ -381,15 +377,15 @@ summaries
 
 #### Cycle 6, WT map
 
-![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-18-2.png)<!-- -->![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-18-3.png)<!-- -->![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-18-4.png)<!-- -->
+![](model_S2.1_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-18-2.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-18-3.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-18-4.png)<!-- -->
 
 #### Cycle 6, Pericentromere map
 
-![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-19-2.png)<!-- -->![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-19-3.png)<!-- -->![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-19-4.png)<!-- -->
+![](model_S2.1_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-19-2.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-19-3.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-19-4.png)<!-- -->
 
 #### Cycle 6, Chromosome map
 
-![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-20-2.png)<!-- -->![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-20-3.png)<!-- -->![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-20-4.png)<!-- -->
+![](model_S2.1_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-20-2.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-20-3.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-20-4.png)<!-- -->
 
 </details>
 
@@ -464,12 +460,12 @@ Click here: Best and worst simulation parameter prediction summaries
 
 #### WT map
 
-<div id="hozddgfprz" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="uoywgxeufq" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#hozddgfprz .gt_table {
+#uoywgxeufq .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -494,7 +490,7 @@ Click here: Best and worst simulation parameter prediction summaries
   border-left-color: #D3D3D3;
 }
 
-#hozddgfprz .gt_heading {
+#uoywgxeufq .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -506,7 +502,7 @@ Click here: Best and worst simulation parameter prediction summaries
   border-right-color: #D3D3D3;
 }
 
-#hozddgfprz .gt_title {
+#uoywgxeufq .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -516,7 +512,7 @@ Click here: Best and worst simulation parameter prediction summaries
   border-bottom-width: 0;
 }
 
-#hozddgfprz .gt_subtitle {
+#uoywgxeufq .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -526,13 +522,13 @@ Click here: Best and worst simulation parameter prediction summaries
   border-top-width: 0;
 }
 
-#hozddgfprz .gt_bottom_border {
+#uoywgxeufq .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#hozddgfprz .gt_col_headings {
+#uoywgxeufq .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -547,7 +543,7 @@ Click here: Best and worst simulation parameter prediction summaries
   border-right-color: #D3D3D3;
 }
 
-#hozddgfprz .gt_col_heading {
+#uoywgxeufq .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -567,7 +563,7 @@ Click here: Best and worst simulation parameter prediction summaries
   overflow-x: hidden;
 }
 
-#hozddgfprz .gt_column_spanner_outer {
+#uoywgxeufq .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -579,15 +575,15 @@ Click here: Best and worst simulation parameter prediction summaries
   padding-right: 4px;
 }
 
-#hozddgfprz .gt_column_spanner_outer:first-child {
+#uoywgxeufq .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#hozddgfprz .gt_column_spanner_outer:last-child {
+#uoywgxeufq .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#hozddgfprz .gt_column_spanner {
+#uoywgxeufq .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -599,7 +595,7 @@ Click here: Best and worst simulation parameter prediction summaries
   width: 100%;
 }
 
-#hozddgfprz .gt_group_heading {
+#uoywgxeufq .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -621,7 +617,7 @@ Click here: Best and worst simulation parameter prediction summaries
   vertical-align: middle;
 }
 
-#hozddgfprz .gt_empty_group_heading {
+#uoywgxeufq .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -636,15 +632,15 @@ Click here: Best and worst simulation parameter prediction summaries
   vertical-align: middle;
 }
 
-#hozddgfprz .gt_from_md > :first-child {
+#uoywgxeufq .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#hozddgfprz .gt_from_md > :last-child {
+#uoywgxeufq .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#hozddgfprz .gt_row {
+#uoywgxeufq .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -663,7 +659,7 @@ Click here: Best and worst simulation parameter prediction summaries
   overflow-x: hidden;
 }
 
-#hozddgfprz .gt_stub {
+#uoywgxeufq .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -675,7 +671,7 @@ Click here: Best and worst simulation parameter prediction summaries
   padding-left: 12px;
 }
 
-#hozddgfprz .gt_summary_row {
+#uoywgxeufq .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -685,7 +681,7 @@ Click here: Best and worst simulation parameter prediction summaries
   padding-right: 5px;
 }
 
-#hozddgfprz .gt_first_summary_row {
+#uoywgxeufq .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -695,7 +691,7 @@ Click here: Best and worst simulation parameter prediction summaries
   border-top-color: #D3D3D3;
 }
 
-#hozddgfprz .gt_grand_summary_row {
+#uoywgxeufq .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -705,7 +701,7 @@ Click here: Best and worst simulation parameter prediction summaries
   padding-right: 5px;
 }
 
-#hozddgfprz .gt_first_grand_summary_row {
+#uoywgxeufq .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -715,11 +711,11 @@ Click here: Best and worst simulation parameter prediction summaries
   border-top-color: #D3D3D3;
 }
 
-#hozddgfprz .gt_striped {
+#uoywgxeufq .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#hozddgfprz .gt_table_body {
+#uoywgxeufq .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -728,7 +724,7 @@ Click here: Best and worst simulation parameter prediction summaries
   border-bottom-color: #D3D3D3;
 }
 
-#hozddgfprz .gt_footnotes {
+#uoywgxeufq .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -742,13 +738,13 @@ Click here: Best and worst simulation parameter prediction summaries
   border-right-color: #D3D3D3;
 }
 
-#hozddgfprz .gt_footnote {
+#uoywgxeufq .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#hozddgfprz .gt_sourcenotes {
+#uoywgxeufq .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -762,41 +758,41 @@ Click here: Best and worst simulation parameter prediction summaries
   border-right-color: #D3D3D3;
 }
 
-#hozddgfprz .gt_sourcenote {
+#uoywgxeufq .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#hozddgfprz .gt_left {
+#uoywgxeufq .gt_left {
   text-align: left;
 }
 
-#hozddgfprz .gt_center {
+#uoywgxeufq .gt_center {
   text-align: center;
 }
 
-#hozddgfprz .gt_right {
+#uoywgxeufq .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#hozddgfprz .gt_font_normal {
+#uoywgxeufq .gt_font_normal {
   font-weight: normal;
 }
 
-#hozddgfprz .gt_font_bold {
+#uoywgxeufq .gt_font_bold {
   font-weight: bold;
 }
 
-#hozddgfprz .gt_font_italic {
+#uoywgxeufq .gt_font_italic {
   font-style: italic;
 }
 
-#hozddgfprz .gt_super {
+#uoywgxeufq .gt_super {
   font-size: 65%;
 }
 
-#hozddgfprz .gt_footnote_marks {
+#uoywgxeufq .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
@@ -910,14 +906,14 @@ Click here: Best and worst simulation parameter prediction summaries
 </table>
 </div>
 
-![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-23-2.png)<!-- -->![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-23-3.png)<!-- -->![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-23-4.png)<!-- -->
+![](model_S2.1_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-23-2.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-23-3.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-23-4.png)<!-- -->
 
 #### Pericentromere map
 
-![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-24-1.png)<!-- -->![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-24-2.png)<!-- -->![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-24-3.png)<!-- -->![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-24-4.png)<!-- -->
+![](model_S2.1_files/figure-gfm/unnamed-chunk-24-1.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-24-2.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-24-3.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-24-4.png)<!-- -->
 
 #### Chromosome map
 
-![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-25-1.png)<!-- -->![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-25-2.png)<!-- -->![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-25-3.png)<!-- -->![](master_results_ASR_models_cycle6_files/figure-gfm/unnamed-chunk-25-4.png)<!-- -->
+![](model_S2.1_files/figure-gfm/unnamed-chunk-25-1.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-25-2.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-25-3.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-25-4.png)<!-- -->
 
 </details>
