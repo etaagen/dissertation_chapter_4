@@ -16,8 +16,8 @@ Data, analysis, and scripts for reviewing or reproducing results presented in ch
 * **figure_S2.1.pdf**, PCA plots for 29 and 26 founders
 
 * **figure_S2.2.pdf**, Genetic map types for all 21 chromosomes  
-* 
-* **/results_S2.1/**, file path for master summary .csv files for all simulations, organized by population_response (f: full founder, bp: biparental, gv: genetic variance, gg: genetic gain, be: bulmer effect, pa: prediction accuracy, qtl: qtl fixation, qtl_af: qtl allele frequency change).   
+
+* **[/results_S2.1/](https://github.com/etaagen/dissertation_chapter_4/tree/main/Supplementary_2/results_S2.1/)**, file path for master summary .csv files for all simulations, organized by population_response (f: full founder, bp: biparental, gv: genetic variance, gg: genetic gain, be: bulmer effect, pa: prediction accuracy, qtl: qtl fixation, qtl_af: qtl allele frequency change).   
 
 * **/results_S2.2/**, file path for script and master summary .csv files for pairwise contrasts with Tukey multiple-test correction  
 
