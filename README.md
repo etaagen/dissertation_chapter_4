@@ -3,7 +3,7 @@
 ### Reproducibility index  
 Data, analysis, and scripts for reviewing or reproducing results presented in chapter 4 of Taagen dissertation. To view the final analysis output, please see the **.md** files. To view the entire script or download and reproduce analysis in R or command line, please see the **.Rmd** files. All of the data is accessible within .Rmd file via GitHub (no need to download data). 
 
-### [Reproduce (raw data, custom functions, scripts, etc.), supplementary_1](https://github.com/etaagen/dissertation_chapter_4/tree/main/supplementary_1) 
+### [Supplementary_1: Reproduce (raw data, custom functions, scripts, etc.)](https://github.com/etaagen/dissertation_chapter_4/tree/main/Supplementary_1) 
 
 * **script_S1.md and script_S1.Rmd**, SynOpDH analysis   
 
@@ -25,7 +25,7 @@ Data, analysis, and scripts for reviewing or reproducing results presented in ch
 
 * **file_S1.9.csv**, SynOpDH genetic map (export)  
 
-### [Results (simulation output, model analysis, figures, etc.), supplementary_2](https://github.com/etaagen/dissertation_chapter_4/tree/main/supplementary_2)  
+### [Supplementary_2: Results (simulation output, model analysis, figures, etc.)](https://github.com/etaagen/dissertation_chapter_4/tree/main/Supplementary_2)  
 
 * **script_S2.md and script_S2.Rmd**, SynOp HIF analysis  
 
