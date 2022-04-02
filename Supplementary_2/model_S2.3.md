@@ -44,18 +44,15 @@ library(emmeans)
 library(car)
 library(broom.mixed)
 
-# anova and summary plot functions
-source("/Users/ellietaagen/Desktop/github/cr_simulation/Functions/master_functions/summary_stats_anova.R")
-source("/Users/ellietaagen/Desktop/github/cr_simulation/Results/table_view_function.R")
 
-gg <- fread("/Users/ellietaagen/Desktop/github/cr_simulation/Results/BP_F_master_results_csv/bp_gg.csv") %>% as.data.frame()
-gv <- fread("/Users/ellietaagen/Desktop/github/cr_simulation/Results/BP_F_master_results_csv/bp_gv.csv") %>% as.data.frame()
-pa <- fread("/Users/ellietaagen/Desktop/github/cr_simulation/Results/BP_F_master_results_csv/bp_pa.csv") %>% as.data.frame()
-be <- fread("/Users/ellietaagen/Desktop/github/cr_simulation/Results/BP_F_master_results_csv/bp_be.csv") %>% as.data.frame()
+gg <- fread("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_2/results_S2.1/bp_gg.csv") %>% as.data.frame()
+gv <- fread("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_2/results_S2.1/bp_gv.csv") %>% as.data.frame()
+pa <- fread("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_2/results_S2.1/bp_pa.csv") %>% as.data.frame()
+be <- fread("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_2/results_S2.1/bp_be.csv") %>% as.data.frame()
 # be `value` is 2-fold higher than it should be (ASR does not know how to treat VarA/GenicVarA for DH)
 be$value <- be$value/2
-qtl <- fread("/Users/ellietaagen/Desktop/github/cr_simulation/Results/BP_F_master_results_csv/bp_qtl.csv") %>% as.data.frame()
-qtl_af <- fread("/Users/ellietaagen/Desktop/github/cr_simulation/Results/BP_F_master_results_csv/bp_qtl_af.csv") %>% as.data.frame()
+qtl <- fread("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_2/results_S2.1/bp_qtl.csv") %>% as.data.frame()
+qtl_af <- fread("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_2/results_S2.1/bp_qtl_af.csv") %>% as.data.frame()
 ```
 
 **Data frames**
@@ -147,15 +144,15 @@ summaries
 
 #### Cycle 6, WT map
 
-![](master_results_ASR_BP_models_cycle6_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->![](master_results_ASR_BP_models_cycle6_files/figure-gfm/unnamed-chunk-3-2.png)<!-- -->
+![](model_S2.3_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->![](model_S2.3_files/figure-gfm/unnamed-chunk-3-2.png)<!-- -->
 
 #### Cycle 6, Pericentromere map
 
-![](master_results_ASR_BP_models_cycle6_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->![](master_results_ASR_BP_models_cycle6_files/figure-gfm/unnamed-chunk-4-2.png)<!-- -->
+![](model_S2.3_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->![](model_S2.3_files/figure-gfm/unnamed-chunk-4-2.png)<!-- -->
 
 #### Cycle 6, Chromosome map
 
-![](master_results_ASR_BP_models_cycle6_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->![](master_results_ASR_BP_models_cycle6_files/figure-gfm/unnamed-chunk-5-2.png)<!-- -->
+![](model_S2.3_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->![](model_S2.3_files/figure-gfm/unnamed-chunk-5-2.png)<!-- -->
 
 </details>
 
@@ -213,15 +210,15 @@ parameter prediction summaries
 
 #### Cycle 6, WT map
 
-![](master_results_ASR_BP_models_cycle6_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->![](master_results_ASR_BP_models_cycle6_files/figure-gfm/unnamed-chunk-8-2.png)<!-- -->
+![](model_S2.3_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->![](model_S2.3_files/figure-gfm/unnamed-chunk-8-2.png)<!-- -->
 
 #### Cycle 6, Pericentromere map
 
-![](master_results_ASR_BP_models_cycle6_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->![](master_results_ASR_BP_models_cycle6_files/figure-gfm/unnamed-chunk-9-2.png)<!-- -->
+![](model_S2.3_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->![](model_S2.3_files/figure-gfm/unnamed-chunk-9-2.png)<!-- -->
 
 #### Cycle 6, Chromosome map
 
-![](master_results_ASR_BP_models_cycle6_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->![](master_results_ASR_BP_models_cycle6_files/figure-gfm/unnamed-chunk-10-2.png)<!-- -->
+![](model_S2.3_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->![](model_S2.3_files/figure-gfm/unnamed-chunk-10-2.png)<!-- -->
 
 </details>
 
@@ -279,15 +276,15 @@ summaries
 
 #### Cycle 6, WT map
 
-![](master_results_ASR_BP_models_cycle6_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->![](master_results_ASR_BP_models_cycle6_files/figure-gfm/unnamed-chunk-13-2.png)<!-- -->
+![](model_S2.3_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->![](model_S2.3_files/figure-gfm/unnamed-chunk-13-2.png)<!-- -->
 
 #### Cycle 6, Pericentromere map
 
-![](master_results_ASR_BP_models_cycle6_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->![](master_results_ASR_BP_models_cycle6_files/figure-gfm/unnamed-chunk-14-2.png)<!-- -->
+![](model_S2.3_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->![](model_S2.3_files/figure-gfm/unnamed-chunk-14-2.png)<!-- -->
 
 #### Cycle 6, Chromosome map
 
-![](master_results_ASR_BP_models_cycle6_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->![](master_results_ASR_BP_models_cycle6_files/figure-gfm/unnamed-chunk-15-2.png)<!-- -->
+![](model_S2.3_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->![](model_S2.3_files/figure-gfm/unnamed-chunk-15-2.png)<!-- -->
 
 </details>
 
@@ -345,15 +342,15 @@ summaries
 
 #### Cycle 6, WT map
 
-![](master_results_ASR_BP_models_cycle6_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->![](master_results_ASR_BP_models_cycle6_files/figure-gfm/unnamed-chunk-18-2.png)<!-- -->
+![](model_S2.3_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->![](model_S2.3_files/figure-gfm/unnamed-chunk-18-2.png)<!-- -->
 
 #### Cycle 6, Pericentromere map
 
-![](master_results_ASR_BP_models_cycle6_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->![](master_results_ASR_BP_models_cycle6_files/figure-gfm/unnamed-chunk-19-2.png)<!-- -->
+![](model_S2.3_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->![](model_S2.3_files/figure-gfm/unnamed-chunk-19-2.png)<!-- -->
 
 #### Cycle 6, Chromosome map
 
-![](master_results_ASR_BP_models_cycle6_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->![](master_results_ASR_BP_models_cycle6_files/figure-gfm/unnamed-chunk-20-2.png)<!-- -->
+![](model_S2.3_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->![](model_S2.3_files/figure-gfm/unnamed-chunk-20-2.png)<!-- -->
 
 </details>
 
@@ -420,14 +417,14 @@ Click here: Best and worst simulation parameter prediction summaries
 
 #### WT map
 
-![](master_results_ASR_BP_models_cycle6_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->![](master_results_ASR_BP_models_cycle6_files/figure-gfm/unnamed-chunk-23-2.png)<!-- -->
+![](model_S2.3_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->![](model_S2.3_files/figure-gfm/unnamed-chunk-23-2.png)<!-- -->
 
 #### Pericentromere map
 
-![](master_results_ASR_BP_models_cycle6_files/figure-gfm/unnamed-chunk-24-1.png)<!-- -->![](master_results_ASR_BP_models_cycle6_files/figure-gfm/unnamed-chunk-24-2.png)<!-- -->
+![](model_S2.3_files/figure-gfm/unnamed-chunk-24-1.png)<!-- -->![](model_S2.3_files/figure-gfm/unnamed-chunk-24-2.png)<!-- -->
 
 #### Chromosome map
 
-![](master_results_ASR_BP_models_cycle6_files/figure-gfm/unnamed-chunk-25-1.png)<!-- -->![](master_results_ASR_BP_models_cycle6_files/figure-gfm/unnamed-chunk-25-2.png)<!-- -->
+![](model_S2.3_files/figure-gfm/unnamed-chunk-25-1.png)<!-- -->![](model_S2.3_files/figure-gfm/unnamed-chunk-25-2.png)<!-- -->
 
 </details>
