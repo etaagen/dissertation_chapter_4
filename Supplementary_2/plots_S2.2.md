@@ -38,17 +38,16 @@ library(data.table)
 library(kableExtra)
 
 # anova and summary plot functions
-source("/Users/ellietaagen/Desktop/github/cr_simulation/Functions/master_functions/summary_stats_anova.R")
-source("/Users/ellietaagen/Desktop/github/cr_simulation/Results/table_view_function.R")
+source("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_1/summary_stats.R")
 
-gg <- fread("/Users/ellietaagen/Desktop/github/cr_simulation/Results/BP_F_master_results_csv/bp_gg.csv") %>% as.data.frame()
-gv <- fread("/Users/ellietaagen/Desktop/github/cr_simulation/Results/BP_F_master_results_csv/bp_gv.csv") %>% as.data.frame()
-pa <- fread("/Users/ellietaagen/Desktop/github/cr_simulation/Results/BP_F_master_results_csv/bp_pa.csv") %>% as.data.frame()
-be <- fread("/Users/ellietaagen/Desktop/github/cr_simulation/Results/BP_F_master_results_csv/bp_be.csv") %>% as.data.frame()
+gg <- fread("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_2/results_S2.1/bp_gg.csv") %>% as.data.frame()
+gv <- fread("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_2/results_S2.1/bp_gv.csv") %>% as.data.frame()
+pa <- fread("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_2/results_S2.1/bp_pa.csv") %>% as.data.frame()
+be <- fread("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_2/results_S2.1/bp_be.csv") %>% as.data.frame()
 # be `value` is 2-fold higher than it should be (ASR does not know how to treat VarA/GenicVarA for DH)
 be$value <- be$value/2
-qtl <- fread("/Users/ellietaagen/Desktop/github/cr_simulation/Results/BP_F_master_results_csv/bp_qtl.csv") %>% as.data.frame()
-qtl_af <- fread("/Users/ellietaagen/Desktop/github/cr_simulation/Results/BP_F_master_results_csv/bp_qtl_af.csv") %>% as.data.frame()
+qtl <- fread("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_2/results_S2.1/bp_qtl.csv") %>% as.data.frame()
+qtl_af <- fread("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_2/results_S2.1/bp_qtl_af.csv") %>% as.data.frame()
 ```
 
 **Data frames**
@@ -95,7 +94,7 @@ ratios
 Click to expand: QTL/Chr: 200, H^2: 0.8
 </summary>
 
-![](master_results_ASR_BP_plots_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
+![](plots_S2.2_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
 
 </details>
 <details>
@@ -103,7 +102,7 @@ Click to expand: QTL/Chr: 200, H^2: 0.8
 Click to expand: QTL/Chr: 200, H^2: 0.2
 </summary>
 
-![](master_results_ASR_BP_plots_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+![](plots_S2.2_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
 
 </details>
 <details>
@@ -111,7 +110,7 @@ Click to expand: QTL/Chr: 200, H^2: 0.2
 Click to expand: QTL/Chr: 2, H^2: 0.8
 </summary>
 
-![](master_results_ASR_BP_plots_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+![](plots_S2.2_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
 </details>
 <details>
@@ -119,7 +118,7 @@ Click to expand: QTL/Chr: 2, H^2: 0.8
 Click to expand: QTL/Chr: 2, H^2: 0.2
 </summary>
 
-![](master_results_ASR_BP_plots_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+![](plots_S2.2_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
 </details>
 
@@ -132,7 +131,7 @@ Click to expand: QTL/Chr: 2, H^2: 0.2
 Click to expand: QTL/Chr: 200, H^2: 0.8
 </summary>
 
-![](master_results_ASR_BP_plots_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+![](plots_S2.2_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
 </details>
 <details>
@@ -140,7 +139,7 @@ Click to expand: QTL/Chr: 200, H^2: 0.8
 Click to expand: QTL/Chr: 200, H^2: 0.2
 </summary>
 
-![](master_results_ASR_BP_plots_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![](plots_S2.2_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
 </details>
 <details>
@@ -148,7 +147,7 @@ Click to expand: QTL/Chr: 200, H^2: 0.2
 Click to expand: QTL/Chr: 2, H^2: 0.8
 </summary>
 
-![](master_results_ASR_BP_plots_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+![](plots_S2.2_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
 </details>
 <details>
@@ -156,7 +155,7 @@ Click to expand: QTL/Chr: 2, H^2: 0.8
 Click to expand: QTL/Chr: 2, H^2: 0.2
 </summary>
 
-![](master_results_ASR_BP_plots_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+![](plots_S2.2_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
 </details>
 
@@ -168,7 +167,7 @@ Click to expand: QTL/Chr: 2, H^2: 0.2
 Click to expand: QTL/Chr: 200, H^2: 0.8
 </summary>
 
-![](master_results_ASR_BP_plots_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+![](plots_S2.2_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
 </details>
 <details>
@@ -176,7 +175,7 @@ Click to expand: QTL/Chr: 200, H^2: 0.8
 Click to expand: QTL/Chr: 200, H^2: 0.2
 </summary>
 
-![](master_results_ASR_BP_plots_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+![](plots_S2.2_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
 </details>
 <details>
@@ -184,7 +183,7 @@ Click to expand: QTL/Chr: 200, H^2: 0.2
 Click to expand: QTL/Chr: 2, H^2: 0.8
 </summary>
 
-![](master_results_ASR_BP_plots_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+![](plots_S2.2_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
 
 </details>
 <details>
@@ -192,7 +191,7 @@ Click to expand: QTL/Chr: 2, H^2: 0.8
 Click to expand: QTL/Chr: 2, H^2: 0.2
 </summary>
 
-![](master_results_ASR_BP_plots_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+![](plots_S2.2_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
 </details>
 
@@ -205,7 +204,7 @@ Click to expand: QTL/Chr: 2, H^2: 0.2
 Click to expand: QTL/Chr: 200, H^2: 0.8
 </summary>
 
-![](master_results_ASR_BP_plots_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+![](plots_S2.2_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
 
 </details>
 <details>
@@ -213,7 +212,7 @@ Click to expand: QTL/Chr: 200, H^2: 0.8
 Click to expand: QTL/Chr: 200, H^2: 0.2
 </summary>
 
-![](master_results_ASR_BP_plots_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+![](plots_S2.2_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
 
 </details>
 <details>
@@ -221,7 +220,7 @@ Click to expand: QTL/Chr: 200, H^2: 0.2
 Click to expand: QTL/Chr: 2, H^2: 0.8
 </summary>
 
-![](master_results_ASR_BP_plots_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+![](plots_S2.2_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
 
 </details>
 <details>
@@ -229,7 +228,7 @@ Click to expand: QTL/Chr: 2, H^2: 0.8
 Click to expand: QTL/Chr: 2, H^2: 0.2
 </summary>
 
-![](master_results_ASR_BP_plots_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+![](plots_S2.2_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
 
 </details>
 
@@ -242,7 +241,7 @@ Click to expand: QTL/Chr: 2, H^2: 0.2
 Click to expand: QTL/Chr: 200, H^2: 0.8
 </summary>
 
-![](master_results_ASR_BP_plots_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
+![](plots_S2.2_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
 
 </details>
 <details>
@@ -250,7 +249,7 @@ Click to expand: QTL/Chr: 200, H^2: 0.8
 Click to expand: QTL/Chr: 200, H^2: 0.2
 </summary>
 
-![](master_results_ASR_BP_plots_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
+![](plots_S2.2_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
 
 </details>
 <details>
@@ -258,7 +257,7 @@ Click to expand: QTL/Chr: 200, H^2: 0.2
 Click to expand: QTL/Chr: 2, H^2: 0.8
 </summary>
 
-![](master_results_ASR_BP_plots_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
+![](plots_S2.2_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
 
 </details>
 <details>
@@ -266,7 +265,7 @@ Click to expand: QTL/Chr: 2, H^2: 0.8
 Click to expand: QTL/Chr: 2, H^2: 0.2
 </summary>
 
-![](master_results_ASR_BP_plots_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
+![](plots_S2.2_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
 
 </details>
 
@@ -279,7 +278,7 @@ Click to expand: QTL/Chr: 2, H^2: 0.2
 Click to expand: QTL/Chr: 200, H^2: 0.8
 </summary>
 
-![](master_results_ASR_BP_plots_files/figure-gfm/unnamed-chunk-21-1.png)<!-- -->
+![](plots_S2.2_files/figure-gfm/unnamed-chunk-21-1.png)<!-- -->
 
 </details>
 <details>
@@ -287,7 +286,7 @@ Click to expand: QTL/Chr: 200, H^2: 0.8
 Click to expand: QTL/Chr: 200, H^2: 0.2
 </summary>
 
-![](master_results_ASR_BP_plots_files/figure-gfm/unnamed-chunk-22-1.png)<!-- -->
+![](plots_S2.2_files/figure-gfm/unnamed-chunk-22-1.png)<!-- -->
 
 </details>
 <details>
@@ -295,7 +294,7 @@ Click to expand: QTL/Chr: 200, H^2: 0.2
 Click to expand: QTL/Chr: 2, H^2: 0.8
 </summary>
 
-![](master_results_ASR_BP_plots_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
+![](plots_S2.2_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
 
 </details>
 <details>
@@ -303,6 +302,6 @@ Click to expand: QTL/Chr: 2, H^2: 0.8
 Click to expand: QTL/Chr: 2, H^2: 0.2
 </summary>
 
-![](master_results_ASR_BP_plots_files/figure-gfm/unnamed-chunk-24-1.png)<!-- -->
+![](plots_S2.2_files/figure-gfm/unnamed-chunk-24-1.png)<!-- -->
 
 </details>

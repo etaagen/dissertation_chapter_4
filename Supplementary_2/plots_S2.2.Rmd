@@ -36,17 +36,16 @@ library(data.table)
 library(kableExtra)
 
 # anova and summary plot functions
-source("/Users/ellietaagen/Desktop/github/cr_simulation/Functions/master_functions/summary_stats_anova.R")
-source("/Users/ellietaagen/Desktop/github/cr_simulation/Results/table_view_function.R")
+source("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_1/summary_stats.R")
 
-gg <- fread("/Users/ellietaagen/Desktop/github/cr_simulation/Results/BP_F_master_results_csv/bp_gg.csv") %>% as.data.frame()
-gv <- fread("/Users/ellietaagen/Desktop/github/cr_simulation/Results/BP_F_master_results_csv/bp_gv.csv") %>% as.data.frame()
-pa <- fread("/Users/ellietaagen/Desktop/github/cr_simulation/Results/BP_F_master_results_csv/bp_pa.csv") %>% as.data.frame()
-be <- fread("/Users/ellietaagen/Desktop/github/cr_simulation/Results/BP_F_master_results_csv/bp_be.csv") %>% as.data.frame()
+gg <- fread("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_2/results_S2.1/bp_gg.csv") %>% as.data.frame()
+gv <- fread("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_2/results_S2.1/bp_gv.csv") %>% as.data.frame()
+pa <- fread("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_2/results_S2.1/bp_pa.csv") %>% as.data.frame()
+be <- fread("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_2/results_S2.1/bp_be.csv") %>% as.data.frame()
 # be `value` is 2-fold higher than it should be (ASR does not know how to treat VarA/GenicVarA for DH)
 be$value <- be$value/2
-qtl <- fread("/Users/ellietaagen/Desktop/github/cr_simulation/Results/BP_F_master_results_csv/bp_qtl.csv") %>% as.data.frame()
-qtl_af <- fread("/Users/ellietaagen/Desktop/github/cr_simulation/Results/BP_F_master_results_csv/bp_qtl_af.csv") %>% as.data.frame()
+qtl <- fread("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_2/results_S2.1/bp_qtl.csv") %>% as.data.frame()
+qtl_af <- fread("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_2/results_S2.1/bp_qtl_af.csv") %>% as.data.frame()
 
 ```
 
