@@ -9,7 +9,9 @@ Data, analysis, and scripts for reviewing or reproducing results presented in ch
 
 * **file_S1.2.csv.zip**, biparental founder population raw data  
 
-* **summary_stats.R**, custom functions called upon while running simmulatinons, and summarizing results  
+* **master_simulation_f.R**, parallel script for running replicates of all simulation parameters, full founder population  
+
+* **master_simulation_bp.R**, parallel script for running replicates of all simulation parameters, biparental founder population  
 
 * **[/master_functions/](https://github.com/etaagen/dissertation_chapter_4/tree/main/Supplementary_1/master_functions)**, custom functions for preparing simulation input data, running simulations, and evaluating the output, *see Read_Me within folder for function descriptions*  
 
