@@ -11,7 +11,7 @@ Data, analysis, and scripts for reviewing or reproducing results presented in ch
 
 * **summary_stats.R**, custom functions called upon while running simmulatinons, and summarizing results  
 
-* **[/master_functions/](https://github.com/etaagen/dissertation_chapter_4/tree/main/Supplementary_1/master_functions)**, custom functions for preparing simulation input data, running simulations, and evaluating the output, *see Read_Me* within folder for function descriptions*  
+* **[/master_functions/](https://github.com/etaagen/dissertation_chapter_4/tree/main/Supplementary_1/master_functions)**, custom functions for preparing simulation input data, running simulations, and evaluating the output, *see Read_Me within folder for function descriptions*  
 
 
 ### [Supplementary_2: Results (simulation output, model analysis, figures, etc.)](https://github.com/etaagen/dissertation_chapter_4/tree/main/Supplementary_2)  
