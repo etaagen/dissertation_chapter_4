@@ -1,6 +1,6 @@
 # Taagen dissertation chapter 4 
 
-### Reproducibility index  
+### Supplemental material index  
 Data, analysis, and scripts for reviewing or reproducing results presented in chapter 4 of Taagen dissertation. To view the final analysis output, please see the **.md** files. To view the entire script or download and reproduce analysis in R or command line, please see the **.Rmd** files. All of the data is accessible within .Rmd file via GitHub (no need to download data). 
 
 ### [Supplementary_1: Reproduce (raw data, custom functions, scripts, etc.)](https://github.com/etaagen/dissertation_chapter_4/tree/main/Supplementary_1) 
