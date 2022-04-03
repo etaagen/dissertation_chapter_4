@@ -11,6 +11,7 @@ Data, analysis, and scripts for reviewing or reproducing results presented in ch
 
 * **summary_stats.R**, custom functions called upon while running simmulatinons, and summarizing results  
 
+* **[/master_functions/](https://github.com/etaagen/dissertation_chapter_4/tree/main/Supplementary_1/master_functions)**, custom functions for preparing simulation input data, running simulations, and evaluating the output, *see Read_Me* within folder for function descriptions*  
 
 
 ### [Supplementary_2: Results (simulation output, model analysis, figures, etc.)](https://github.com/etaagen/dissertation_chapter_4/tree/main/Supplementary_2)  
@@ -33,7 +34,9 @@ Data, analysis, and scripts for reviewing or reproducing results presented in ch
 
 * **model_S2.3.md & .Rmd**, response variable linear models, cycle 6, biparental
  
-* **model_S2.4.md & .Rmd**, response variable linear models, cycle 10, biparental
+* **model_S2.4.md & .Rmd**, response variable linear models, cycle 10, biparental    
+
+* **script_S2.1**, genetic map changes and recombination frequency response  
 
 
 
