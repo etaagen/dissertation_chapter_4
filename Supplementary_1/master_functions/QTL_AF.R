@@ -1,3 +1,7 @@
+# my_QTL_AF_change
+
+# track AF change of QTL in ASR simulation wrapper functions
+
 my_QTL_AF_change <- function(trait, pop_1, pop_2, simParam){ #burnin and gsPop gives entry for GS and end of GS
   # pull QTL genotypes 
   start_QTL_geno <- pullQtlGeno(pop = pop_1, simParam = simParam) %>% as.data.frame()
