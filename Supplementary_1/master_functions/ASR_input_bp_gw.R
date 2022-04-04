@@ -1,24 +1,6 @@
-##### 2.28.22
-# select for most SNPs / chr 
-# biparental appraoch
-##### NOTE: this version considers "HIGH" SnpEff AND "" as DV, and tracks these loci across _R and _DV 
-# The _R approach these are segregating sites, but if on SnpChip or QTL they are random
-# The _DV approach intentionally uses these sites as QTL 
+##### ASR_input_max_SNP_bp
 
-##### Shift recombination distribution approach
-##### take `founder_data_impute.csv` and prep the ASR genetic map and haplotype dataframe 
-
-library(dplyr)
-library(data.table)
-
-#founder_data <- fread("/Users/ellietaagen/Dropbox/LOA 2021/snpeff impute/founder_data_impute.csv")
-#founder_data <- as.data.frame(founder_data)
-# str(founder_data) # genotype 1 = major allele, 0 = minor allele
-
-# can adapt alpha_input_snp and alpha_input_snpeff for addTraitA() QTL 
-# need to use apha_input_snp to select the genetic map for addSnpChip()
-
-### ASR_input() 
+# get ASR formatted input variables from raw bp data, using GW matrix 
 
 ASR_input_max_SNP_bp <- function(founder_data, QTL_n){
   ### STEP 0 
