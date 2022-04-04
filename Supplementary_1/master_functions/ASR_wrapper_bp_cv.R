@@ -1,7 +1,5 @@
-##### 02.04.22
-# update: the GS RRBLUP uses the QTL, instead of SNP, for prediction (second "QTL" in file name)
-# update: the QTL effects are kept constant across the different R and DV studies (first "QTL" in file name)
-##### Wrapper function for creating ASR founder haplotypes, setting simulation parameters, and modeling the breeding program
+##### ASR_wrapper_CV_bp
+# Wrapper function for creating ASR founder haplotypes, setting simulation parameters, and modeling the breeding program
 
 ASR_wrapper_CV_bp <- function(type, map_scale, peri_scale, genMap_input, haplotypes_input, info_ASR_input, dv_loci, QTL_effects, QTL_effect_ratio,
                         heritability, legend){
