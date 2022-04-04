@@ -1,9 +1,5 @@
-# Function for tracking QTL fixation ratio for better / worse allele 
-
-# need to consider based on the QTL_effect_ratio which genotype is preferred at each QTL
-# a positive QTL effect favors 1, and netative favors -1
-# note that founder genotypes 1 (major) and -1 (minor), become 2 and 0 during ASR newpop
-# these are under trait@addEff
+# QTL_fixation
+# Function for tracking QTL fixation, called upon by ASR simulation wrapper functions
 
 QTL_fixation <- function(trait, pop, simParam, pop_name){
   my_QTL_effects <- trait@addEff
