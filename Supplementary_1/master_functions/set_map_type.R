@@ -1,4 +1,7 @@
-# function for 10X genetic map in 20 cM with most DV
+##### DV_scale_map()
+
+# based on pericentromere positons, designate the 20 cM region to increase genetic map 
+# called upon in ASR simulation wrapper functions
 
 DV_scale_map <- function(genMap_change, DV_scale, BP){
     genMap_1 <- genMap_change[[1]]
