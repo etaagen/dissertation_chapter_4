@@ -1,6 +1,6 @@
-### master function descriptions   
+### Master function descriptions   
 
-All the master functions are called within (master_simulation_f.R)[https://github.com/etaagen/dissertation_chapter_4/blob/main/Supplementary_1/master_simulation_f.R] or (master_simulation_bp.R)[https://github.com/etaagen/dissertation_chapter_4/blob/main/Supplementary_1/master_simulation_bp.R]. To reproduce the simulations we recommend downloading the master scripts and running on a server's Terminal in parallel (the master functions do not need to be downloaded, accessible via GitHub raw HTML links).  
+All the master functions are called within [master_simulation_f.R](https://github.com/etaagen/dissertation_chapter_4/blob/main/Supplementary_1/master_simulation_f.R) or [master_simulation_bp.R](https://github.com/etaagen/dissertation_chapter_4/blob/main/Supplementary_1/master_simulation_bp.R). To reproduce the simulations we recommend downloading the master scripts and running on a server's Terminal in parallel (the master functions do not need to be downloaded, accessible via GitHub raw HTML links).  
 
 ---- 
 
