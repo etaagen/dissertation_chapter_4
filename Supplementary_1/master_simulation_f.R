@@ -1,20 +1,22 @@
 ######## master parallel script ######## 
-# increased SnpChip for all conditions (WT, 10X, 10X_peri), mean 2,050 SNP / chr
-# 2 parallel loops, first is WT vs 10X vs 10X_peri, second is CV matrix 
 
-# set to run in BioHPC
-# in BioHPC navigate to workdir
-# mkdir et395/results
-# copy in founder data and master_functions, and this script 
-# screen -S my_code
+# set to run on multiple cores
+# we recommend copying the master_functions onto your server directories to run reps in parallel on terminal
+# need to mkdir "results" folder, and screen -S 
 
+# NOTE!
+# the raw data is large and must be downloaded and unzipped: https://github.com/etaagen/dissertation_chapter_4/blob/main/Supplementary_1/file_S1.1.csv.zip
+# and define your file path to the raw data
+my_file_path <- ""
+
+# edit master variables as desired 
 ######## master variables ######## 
 replicates = 100
 QTL_per_chr = 200 # 2, 200
 H2 = 0.8 # 0.2, 0.8
 wt_rec = 1
-peri_rec = 2 # 2, 20
-chr_rec = 2 # 2, 20
+peri_rec = 20 # 2, 20
+chr_rec = 20 # 2, 20
 i = rep(QTL_per_chr, replicates)
 
 ######## load packages ######## 
@@ -26,41 +28,32 @@ library(doParallel)
 
 ######## load functions ######## 
 
-# custom ASR_input functions to select QTL and SnpChip (max SNP or causal varaint relationship matrix approach)  
-#source("/Users/ellietaagen/Desktop/github/cr_simulation/Functions/master_functions/ASR_input_max_SNP_WT.R") 
-source("/workdir/et395/master_functions/ASR_input_max_SNP_WT.R") 
-#source("/Users/ellietaagen/Desktop/github/cr_simulation/Functions/master_functions/ASR_input_Custom_DV_causal_variant.R")
-source("/workdir/et395/master_functions/ASR_input_Custom_DV_causal_variant.R")
+# custom ASR_input functions to select QTL and SnpChip 
+# GW
+source("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_1/master_functions/ASR_input_f_gw.R") 
+# CV
+source("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_1/master_functions/ASR_input_f_cv.R")
 
-# custom ASR_wrapper function (either genomewide or causal variant relationship matrix)
-#source("/Users/ellietaagen/Desktop/github/cr_simulation/Functions/master_functions/ASR_wrapper_GSrec_genomewide.R")
-source("/workdir/et395/master_functions/ASR_wrapper_GSrec_genomewide.R")
-#source("/Users/ellietaagen/Desktop/github/cr_simulation/Functions/master_functions/ASR_wrapper_GSrec_causal_variant.R")
-source("/workdir/et395/master_functions/ASR_wrapper_GSrec_causal_variant.R")
+# custom ASR_wrapper function 
+# GW
+source("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_1/master_functions/ASR_wrapper_f_gw.R")
+# CV
+source("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_1/master_functions/ASR_wrapper_f_cv.R")
 
-# function that scales up genetic map in pericentromere, where deleterious variants are most frequent 
-#source("/Users/ellietaagen/Desktop/github/cr_simulation/Functions/master_functions/DV_scaled_map.R")
-source("/workdir/et395/master_functions/DV_scaled_map.R")
+# function that scales up genetic map in pericentromere 
+source("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_1/master_functions/set_map_type.R")
 
-# function that measures LD between QTL and SNPs - called upon by ASR_wrapper
-#source("/Users/ellietaagen/Desktop/github/cr_simulation/Functions/master_functions/QTL_SNP_LD.R")
-#source("/workdir/et395/master_functions/QTL_SNP_LD.R")
+# function that measures QTL fixation ratio 
+source("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_1/master_functions/QTL_fixation.R")
 
-# function that measures QTL fixation ratio - called upon by ASR_wrapper
-#source("/Users/ellietaagen/Desktop/github/cr_simulation/Functions/master_functions/QTL_fixation_ratio.R")
-source("/workdir/et395/master_functions/QTL_fixation_ratio.R")
+# function that measures QTL AF change 
+source("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_1/master_functions/QTL_AF.R")
 
-# function that measures QTL AF change (end - beginning) for effect size and +/- variant
-#source("/Users/ellietaagen/Desktop/github/cr_simulation/Functions/master_functions/QTL_AF_change.R")
-source("/workdir/et395/master_functions/QTL_AF_change.R")
-
-# summary stats and df prep for anova functions 
-#source("/Users/ellietaagen/Desktop/github/cr_simulation/Functions/master_functions/summary_stats_anova.R")
-source("/workdir/et395/master_functions/summary_stats_anova.R")
+# summary stats 
+source("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_1/master_functions/summary_stats.R")
 
 ######## load data ######## 
-#founder_data <- fread("/Users/ellietaagen/Dropbox/LOA 2021/snpeff impute/founder_data_impute_2.csv")
-founder_data <- fread("/workdir/et395/founder_data_impute_2.csv")
+founder_data <- fread(my_file_path)
 founder_data <- as.data.frame(founder_data)
 #str(founder_data) # genotype 1 = major allele, 0 = minor allele
 #for AlphaSimR have to convert founder_data$Pos.cM. to Morgan (currently in cM)
@@ -78,7 +71,7 @@ doParallel::registerDoParallel(cl = my.cluster)
 
 
 ################################################################################################ 
-######## my_ASR_output_1: SnpChip/Map WT, SnpChip/Map Peri 10X, SnpChip/Map Chr 10X, genomewide relationship matrix ######## 
+######## my_ASR_output_1: SnpChip/Map WT, SnpChip/Map Peri X, SnpChip/Map Chr X, genomewide relationship matrix ######## 
 my_ASR_output_1 <- foreach(
   i = rep(QTL_per_chr, replicates), #number of QTL, and number of sampling reps to run
   z = 1:length(i), #keep track of rep
@@ -129,43 +122,43 @@ my_ASR_output_1 <- foreach(
   rep_name = "R_WT_5"
   ASR_wrapper(type = "R", map_scale = wt_rec, peri_scale = wt_rec, genMap_input = genMap_input_R_WT, haplotypes_input = haplotype_input_R_WT, info_ASR_input = info_ASR_input_R_WT, dv_loci = dv_loci, QTL_effects = R_QTL_effects, QTL_effect_ratio = c(0.3333, 0.6666), heritability = H2, legend = rep_name)
   
-  # R1, 10X scaled pericentromere genetic map, QTL effect c(1, 0)
+  # R1, X scaled pericentromere genetic map, QTL effect c(1, 0)
   rep_name = "R_Peri_1"
   ASR_wrapper(type = "R", map_scale = wt_rec, peri_scale = peri_rec, genMap_input = genMap_input_R_WT, haplotypes_input = haplotype_input_R_WT, info_ASR_input = info_ASR_input_R_WT, dv_loci = dv_loci, QTL_effects = R_QTL_effects, QTL_effect_ratio = c(1, 0), heritability = H2, legend = rep_name)
   
-  # R2, 10X scaled pericentromere genetic map, QTL effect c(0.6666, 0.3333)
+  # R2, X scaled pericentromere genetic map, QTL effect c(0.6666, 0.3333)
   rep_name = "R_Peri_2"
   ASR_wrapper(type = "R", map_scale = wt_rec, peri_scale = peri_rec, genMap_input = genMap_input_R_WT, haplotypes_input = haplotype_input_R_WT, info_ASR_input = info_ASR_input_R_WT, dv_loci = dv_loci, QTL_effects = R_QTL_effects, QTL_effect_ratio = c(0.6666, 0.3333), heritability = H2, legend = rep_name)
   
-  # R3, 10X scaled pericentromere genetic map, QTL effect c(0.5, 0.5)
+  # R3, X scaled pericentromere genetic map, QTL effect c(0.5, 0.5)
   rep_name = "R_Peri_3"
   ASR_wrapper(type = "R", map_scale = wt_rec, peri_scale = peri_rec, genMap_input = genMap_input_R_WT, haplotypes_input = haplotype_input_R_WT, info_ASR_input = info_ASR_input_R_WT, dv_loci = dv_loci, QTL_effects = R_QTL_effects, QTL_effect_ratio = c(0.5, 0.5), heritability = H2, legend = rep_name)
   
-  # R4, 10X scaled pericentromere genetic map, QTL effect "alternate" 
+  # R4, X scaled pericentromere genetic map, QTL effect "alternate" 
   rep_name = "R_Peri_4"
   ASR_wrapper(type = "R", map_scale = wt_rec, peri_scale = peri_rec, genMap_input = genMap_input_R_WT, haplotypes_input = haplotype_input_R_WT, info_ASR_input = info_ASR_input_R_WT, dv_loci = dv_loci, QTL_effects = R_QTL_effects, QTL_effect_ratio = "alternate", heritability = H2, legend = rep_name)
   
-  # R5, 10X scaled pericentromere genetic map, QTL effect c(0.3333, 0.6666)
+  # R5, X scaled pericentromere genetic map, QTL effect c(0.3333, 0.6666)
   rep_name = "R_Peri_5"
   ASR_wrapper(type = "R", map_scale = wt_rec, peri_scale = peri_rec, genMap_input = genMap_input_R_WT, haplotypes_input = haplotype_input_R_WT, info_ASR_input = info_ASR_input_R_WT, dv_loci = dv_loci, QTL_effects = R_QTL_effects, QTL_effect_ratio = c(0.3333, 0.6666), heritability = H2, legend = rep_name)
   
-  # R1, 10X scaled genetic map, QTL effect c(1, 0)
+  # R1, X scaled genetic map, QTL effect c(1, 0)
   rep_name = "R_Chr_1"
   ASR_wrapper(type = "R", map_scale = chr_rec, peri_scale = wt_rec, genMap_input = genMap_input_R_WT, haplotypes_input = haplotype_input_R_WT, info_ASR_input = info_ASR_input_R_WT, dv_loci = dv_loci, QTL_effects = R_QTL_effects, QTL_effect_ratio = c(1, 0), heritability = H2, legend = rep_name)
   
-  # R2, 10X scaled genetic map, QTL effect c(0.6666, 0.3333)
+  # R2, X scaled genetic map, QTL effect c(0.6666, 0.3333)
   rep_name = "R_Chr_2"
   ASR_wrapper(type = "R", map_scale = chr_rec, peri_scale = wt_rec, genMap_input = genMap_input_R_WT, haplotypes_input = haplotype_input_R_WT, info_ASR_input = info_ASR_input_R_WT, dv_loci = dv_loci, QTL_effects = R_QTL_effects, QTL_effect_ratio = c(0.6666, 0.3333), heritability = H2, legend = rep_name)
   
-  # R3, 10X scaled genetic map, QTL effect c(0.5, 0.5)
+  # R3, X scaled genetic map, QTL effect c(0.5, 0.5)
   rep_name = "R_Chr_3"
   ASR_wrapper(type = "R", map_scale = chr_rec, peri_scale = wt_rec, genMap_input = genMap_input_R_WT, haplotypes_input = haplotype_input_R_WT, info_ASR_input = info_ASR_input_R_WT, dv_loci = dv_loci, QTL_effects = R_QTL_effects, QTL_effect_ratio = c(0.5, 0.5), heritability = H2, legend = rep_name)
   
-  # R4, 10X scaled genetic map, QTL effect "alternate" 
+  # R4, X scaled genetic map, QTL effect "alternate" 
   rep_name = "R_Chr_4"
   ASR_wrapper(type = "R", map_scale = chr_rec, peri_scale = wt_rec, genMap_input = genMap_input_R_WT, haplotypes_input = haplotype_input_R_WT, info_ASR_input = info_ASR_input_R_WT, dv_loci = dv_loci, QTL_effects = R_QTL_effects, QTL_effect_ratio = "alternate", heritability = H2, legend = rep_name)
   
-  # R5, 10X scaled genetic map, QTL effect c(0.3333, 0.6666)
+  # R5, X scaled genetic map, QTL effect c(0.3333, 0.6666)
   rep_name = "R_Chr_5"
   ASR_wrapper(type = "R", map_scale = chr_rec, peri_scale = wt_rec, genMap_input = genMap_input_R_WT, haplotypes_input = haplotype_input_R_WT, info_ASR_input = info_ASR_input_R_WT, dv_loci = dv_loci, QTL_effects = R_QTL_effects, QTL_effect_ratio = c(0.3333, 0.6666), heritability = H2, legend = rep_name)
   
@@ -190,43 +183,43 @@ my_ASR_output_1 <- foreach(
   rep_name = "DV_WT_5"
   ASR_wrapper(type = "DV", map_scale = wt_rec, peri_scale = wt_rec, genMap_input = genMap_input_DV_WT, haplotypes_input = haplotype_input_DV_WT, info_ASR_input = info_ASR_input_DV_WT, dv_loci = dv_loci, QTL_effects = DV_QTL_effects, QTL_effect_ratio = c(0.3333, 0.6666), heritability = H2, legend = rep_name)
   
-  # DV1, 10X scaled pericentromere DV genetic map, QTL effect c(1, 0) 
+  # DV1, X scaled pericentromere DV genetic map, QTL effect c(1, 0) 
   rep_name = "DV_Peri_1"
   ASR_wrapper(type = "DV", map_scale = wt_rec, peri_scale = peri_rec, genMap_input = genMap_input_DV_WT, haplotypes_input = haplotype_input_DV_WT, info_ASR_input = info_ASR_input_DV_WT, dv_loci = dv_loci, QTL_effects = DV_QTL_effects, QTL_effect_ratio = c(1, 0), heritability = H2, legend = rep_name)
   
-  # DV2, 10X scaled pericentromere DV genetic map, QTL effect c(0.6666, 0.3333)
+  # DV2, X scaled pericentromere DV genetic map, QTL effect c(0.6666, 0.3333)
   rep_name = "DV_Peri_2"
   ASR_wrapper(type = "DV", map_scale = wt_rec, peri_scale = peri_rec, genMap_input = genMap_input_DV_WT, haplotypes_input = haplotype_input_DV_WT, info_ASR_input = info_ASR_input_DV_WT, dv_loci = dv_loci, QTL_effects = DV_QTL_effects, QTL_effect_ratio = c(0.6666, 0.3333), heritability = H2, legend = rep_name)
   
-  # DV3, 10X scaled pericentromere DV genetic map, QTL effect c(0.5, 0.5)
+  # DV3, X scaled pericentromere DV genetic map, QTL effect c(0.5, 0.5)
   rep_name = "DV_Peri_3"
   ASR_wrapper(type = "DV", map_scale = wt_rec, peri_scale = peri_rec, genMap_input = genMap_input_DV_WT, haplotypes_input = haplotype_input_DV_WT, info_ASR_input = info_ASR_input_DV_WT, dv_loci = dv_loci, QTL_effects = DV_QTL_effects, QTL_effect_ratio = c(0.5, 0.5), heritability = H2, legend = rep_name)
   
-  # DV4, 10X scaled pericentromere DV genetic map, QTL effect "alternate"
+  # DV4, X scaled pericentromere DV genetic map, QTL effect "alternate"
   rep_name = "DV_Peri_4"
   ASR_wrapper(type = "DV", map_scale = wt_rec, peri_scale = peri_rec, genMap_input = genMap_input_DV_WT, haplotypes_input = haplotype_input_DV_WT, info_ASR_input = info_ASR_input_DV_WT, dv_loci = dv_loci, QTL_effects = DV_QTL_effects, QTL_effect_ratio = "alternate", heritability = H2, legend = rep_name)
   
-  # DV5, 10X scaled pericentromere DV genetic map, QTL effect c(0.3333, 0.6666)
+  # DV5, X scaled pericentromere DV genetic map, QTL effect c(0.3333, 0.6666)
   rep_name = "DV_Peri_5"
   ASR_wrapper(type = "DV", map_scale = wt_rec, peri_scale = peri_rec, genMap_input = genMap_input_DV_WT, haplotypes_input = haplotype_input_DV_WT, info_ASR_input = info_ASR_input_DV_WT, dv_loci = dv_loci, QTL_effects = DV_QTL_effects, QTL_effect_ratio = c(0.3333, 0.6666), heritability = H2, legend = rep_name)
   
-  # DV1, 10X scaled  DV genetic map, QTL effect c(1, 0) 
+  # DV1, X scaled  DV genetic map, QTL effect c(1, 0) 
   rep_name = "DV_Chr_1"
   ASR_wrapper(type = "DV", map_scale = chr_rec, peri_scale = wt_rec, genMap_input = genMap_input_DV_WT, haplotypes_input = haplotype_input_DV_WT, info_ASR_input = info_ASR_input_DV_WT, dv_loci = dv_loci, QTL_effects = DV_QTL_effects, QTL_effect_ratio = c(1, 0), heritability = H2, legend = rep_name)
   
-  # DV2, 10X scaled  DV genetic map, QTL effect c(0.6666, 0.3333)
+  # DV2, X scaled  DV genetic map, QTL effect c(0.6666, 0.3333)
   rep_name = "DV_Chr_2"
   ASR_wrapper(type = "DV", map_scale = chr_rec, peri_scale = wt_rec, genMap_input = genMap_input_DV_WT, haplotypes_input = haplotype_input_DV_WT, info_ASR_input = info_ASR_input_DV_WT, dv_loci = dv_loci, QTL_effects = DV_QTL_effects, QTL_effect_ratio = c(0.6666, 0.3333), heritability = H2, legend = rep_name)
   
-  # DV3, 10X scaled  DV genetic map, QTL effect c(0.5, 0.5)
+  # DV3, X scaled  DV genetic map, QTL effect c(0.5, 0.5)
   rep_name = "DV_Chr_3"
   ASR_wrapper(type = "DV", map_scale = chr_rec, peri_scale = wt_rec, genMap_input = genMap_input_DV_WT, haplotypes_input = haplotype_input_DV_WT, info_ASR_input = info_ASR_input_DV_WT, dv_loci = dv_loci, QTL_effects = DV_QTL_effects, QTL_effect_ratio = c(0.5, 0.5), heritability = H2, legend = rep_name)
   
-  # DV4, 10X scaled  DV genetic map, QTL effect "alternate"
+  # DV4, X scaled  DV genetic map, QTL effect "alternate"
   rep_name = "DV_Chr_4"
   ASR_wrapper(type = "DV", map_scale = chr_rec, peri_scale = wt_rec, genMap_input = genMap_input_DV_WT, haplotypes_input = haplotype_input_DV_WT, info_ASR_input = info_ASR_input_DV_WT, dv_loci = dv_loci, QTL_effects = DV_QTL_effects, QTL_effect_ratio = "alternate", heritability = H2, legend = rep_name)
   
-  # DV5, 10X scaled  DV genetic map, QTL effect c(0.3333, 0.6666)
+  # DV5, X scaled  DV genetic map, QTL effect c(0.3333, 0.6666)
   rep_name = "DV_Chr_5"
   ASR_wrapper(type = "DV", map_scale = chr_rec, peri_scale = wt_rec, genMap_input = genMap_input_DV_WT, haplotypes_input = haplotype_input_DV_WT, info_ASR_input = info_ASR_input_DV_WT, dv_loci = dv_loci, QTL_effects = DV_QTL_effects, QTL_effect_ratio = c(0.3333, 0.6666), heritability = H2, legend = rep_name)
   
@@ -363,43 +356,43 @@ my_ASR_output_2 <- foreach(
   rep_name = "R_WT_5"
   ASR_wrapper_CV(type = "R", map_scale = wt_rec, peri_scale = wt_rec, genMap_input = genMap_input_R, haplotypes_input = haplotype_input_R, info_ASR_input = info_ASR_input_R,  QTL_effects = R_QTL_effects, QTL_effect_ratio = c(0.3333, 0.6666), heritability = H2, legend = rep_name)
 
-  # R1, 10X scaled pericentromere genetic map, QTL effect c(1, 0)
+  # R1, X scaled pericentromere genetic map, QTL effect c(1, 0)
   rep_name = "R_Peri_1"
   ASR_wrapper_CV(type = "R", map_scale = wt_rec, peri_scale = peri_rec, genMap_input = genMap_input_R, haplotypes_input = haplotype_input_R, info_ASR_input = info_ASR_input_R, QTL_effects = R_QTL_effects, QTL_effect_ratio = c(1, 0), heritability = H2, legend = rep_name)
   
-  # R2, 10X scaled pericentromere genetic map, QTL effect c(0.6666, 0.3333)
+  # R2, X scaled pericentromere genetic map, QTL effect c(0.6666, 0.3333)
   rep_name = "R_Peri_2"
   ASR_wrapper_CV(type = "R", map_scale = wt_rec, peri_scale = peri_rec, genMap_input = genMap_input_R, haplotypes_input = haplotype_input_R, info_ASR_input = info_ASR_input_R, QTL_effects = R_QTL_effects, QTL_effect_ratio = c(0.6666, 0.3333), heritability = H2, legend = rep_name)
   
-  # R3, 10X scaled pericentromere genetic map, QTL effect c(0.5, 0.5)
+  # R3, X scaled pericentromere genetic map, QTL effect c(0.5, 0.5)
   rep_name = "R_Peri_3"
   ASR_wrapper_CV(type = "R", map_scale = wt_rec, peri_scale = peri_rec, genMap_input = genMap_input_R, haplotypes_input = haplotype_input_R, info_ASR_input = info_ASR_input_R, QTL_effects = R_QTL_effects, QTL_effect_ratio = c(0.5, 0.5), heritability = H2, legend = rep_name)
   
-  # R4, 10X scaled pericentromere genetic map, QTL effect "alternate" 
+  # R4, X scaled pericentromere genetic map, QTL effect "alternate" 
   rep_name = "R_Peri_4"
   ASR_wrapper_CV(type = "R", map_scale = wt_rec, peri_scale = peri_rec, genMap_input = genMap_input_R, haplotypes_input = haplotype_input_R, info_ASR_input = info_ASR_input_R, QTL_effects = R_QTL_effects, QTL_effect_ratio = "alternate", heritability = H2, legend = rep_name)
   
-  # R5, 10X scaled pericentromere genetic map, QTL effect c(0.3333, 0.6666)
+  # R5, X scaled pericentromere genetic map, QTL effect c(0.3333, 0.6666)
   rep_name = "R_Peri_5"
   ASR_wrapper_CV(type = "R", map_scale = wt_rec, peri_scale = peri_rec, genMap_input = genMap_input_R, haplotypes_input = haplotype_input_R, info_ASR_input = info_ASR_input_R, QTL_effects = R_QTL_effects, QTL_effect_ratio = c(0.3333, 0.6666), heritability = H2, legend = rep_name)
   
-  # R1, 10X scaled genetic map, QTL effect c(1, 0)
+  # R1, X scaled genetic map, QTL effect c(1, 0)
   rep_name = "R_Chr_1"
   ASR_wrapper_CV(type = "R", map_scale = chr_rec, peri_scale = wt_rec, genMap_input = genMap_input_R, haplotypes_input = haplotype_input_R, info_ASR_input = info_ASR_input_R, QTL_effects = R_QTL_effects, QTL_effect_ratio = c(1, 0), heritability = H2, legend = rep_name)
   
-  # R2, 10X scaled genetic map, QTL effect c(0.6666, 0.3333)
+  # R2, X scaled genetic map, QTL effect c(0.6666, 0.3333)
   rep_name = "R_Chr_2"
   ASR_wrapper_CV(type = "R", map_scale = chr_rec, peri_scale = wt_rec, genMap_input = genMap_input_R, haplotypes_input = haplotype_input_R, info_ASR_input = info_ASR_input_R, QTL_effects = R_QTL_effects, QTL_effect_ratio = c(0.6666, 0.3333), heritability = H2, legend = rep_name)
   
-  # R3, 10X scaled genetic map, QTL effect c(0.5, 0.5)
+  # R3, X scaled genetic map, QTL effect c(0.5, 0.5)
   rep_name = "R_Chr_3"
   ASR_wrapper_CV(type = "R", map_scale = chr_rec, peri_scale = wt_rec, genMap_input = genMap_input_R, haplotypes_input = haplotype_input_R, info_ASR_input = info_ASR_input_R, QTL_effects = R_QTL_effects, QTL_effect_ratio = c(0.5, 0.5), heritability = H2, legend = rep_name)
   
-  # R4, 10X scaled genetic map, QTL effect "alternate" 
+  # R4, X scaled genetic map, QTL effect "alternate" 
   rep_name = "R_Chr_4"
   ASR_wrapper_CV(type = "R", map_scale = chr_rec, peri_scale = wt_rec, genMap_input = genMap_input_R, haplotypes_input = haplotype_input_R, info_ASR_input = info_ASR_input_R, QTL_effects = R_QTL_effects, QTL_effect_ratio = "alternate", heritability = H2, legend = rep_name)
   
-  # R5, 10X scaled genetic map, QTL effect c(0.3333, 0.6666)
+  # R5, X scaled genetic map, QTL effect c(0.3333, 0.6666)
   rep_name = "R_Chr_5"
   ASR_wrapper_CV(type = "R", map_scale = chr_rec, peri_scale = wt_rec, genMap_input = genMap_input_R, haplotypes_input = haplotype_input_R, info_ASR_input = info_ASR_input_R, QTL_effects = R_QTL_effects, QTL_effect_ratio = c(0.3333, 0.6666), heritability = H2, legend = rep_name)
   
@@ -424,43 +417,43 @@ my_ASR_output_2 <- foreach(
   rep_name = "DV_WT_5"
   ASR_wrapper_CV(type = "DV", map_scale = wt_rec, peri_scale = wt_rec, genMap_input = genMap_input_DV, haplotypes_input = haplotype_input_DV, info_ASR_input = info_ASR_input_DV,  QTL_effects = DV_QTL_effects, QTL_effect_ratio = c(0.3333, 0.6666), heritability = H2, legend = rep_name)
 
-  # DV1, 10X scaled pericentromere DV genetic map, QTL effect c(1, 0) 
+  # DV1, X scaled pericentromere DV genetic map, QTL effect c(1, 0) 
   rep_name = "DV_Peri_1"
   ASR_wrapper_CV(type = "DV", map_scale = wt_rec, peri_scale = peri_rec, genMap_input = genMap_input_DV, haplotypes_input = haplotype_input_DV, info_ASR_input = info_ASR_input_DV, QTL_effects = DV_QTL_effects, QTL_effect_ratio = c(1, 0), heritability = H2, legend = rep_name)
   
-  # DV2, 10X scaled pericentromere DV genetic map, QTL effect c(0.6666, 0.3333)
+  # DV2, X scaled pericentromere DV genetic map, QTL effect c(0.6666, 0.3333)
   rep_name = "DV_Peri_2"
   ASR_wrapper_CV(type = "DV", map_scale = wt_rec, peri_scale = peri_rec, genMap_input = genMap_input_DV, haplotypes_input = haplotype_input_DV, info_ASR_input = info_ASR_input_DV, QTL_effects = DV_QTL_effects, QTL_effect_ratio = c(0.6666, 0.3333), heritability = H2, legend = rep_name)
   
-  # DV3, 10X scaled pericentromere DV genetic map, QTL effect c(0.5, 0.5)
+  # DV3, X scaled pericentromere DV genetic map, QTL effect c(0.5, 0.5)
   rep_name = "DV_Peri_3"
   ASR_wrapper_CV(type = "DV", map_scale = wt_rec, peri_scale = peri_rec, genMap_input = genMap_input_DV, haplotypes_input = haplotype_input_DV, info_ASR_input = info_ASR_input_DV, QTL_effects = DV_QTL_effects, QTL_effect_ratio = c(0.5, 0.5), heritability = H2, legend = rep_name)
   
-  # DV4, 10X scaled pericentromere DV genetic map, QTL effect "alternate"
+  # DV4, X scaled pericentromere DV genetic map, QTL effect "alternate"
   rep_name = "DV_Peri_4"
   ASR_wrapper_CV(type = "DV", map_scale = wt_rec, peri_scale = peri_rec, genMap_input = genMap_input_DV, haplotypes_input = haplotype_input_DV, info_ASR_input = info_ASR_input_DV, QTL_effects = DV_QTL_effects, QTL_effect_ratio = "alternate", heritability = H2, legend = rep_name)
   
-  # DV5, 10X scaled pericentromere DV genetic map, QTL effect c(0.3333, 0.6666)
+  # DV5, X scaled pericentromere DV genetic map, QTL effect c(0.3333, 0.6666)
   rep_name = "DV_Peri_5"
   ASR_wrapper_CV(type = "DV", map_scale = wt_rec, peri_scale = peri_rec, genMap_input = genMap_input_DV, haplotypes_input = haplotype_input_DV, info_ASR_input = info_ASR_input_DV, QTL_effects = DV_QTL_effects, QTL_effect_ratio = c(0.3333, 0.6666), heritability = H2, legend = rep_name)
   
-  # DV1, 10X scaled  DV genetic map, QTL effect c(1, 0) 
+  # DV1, X scaled  DV genetic map, QTL effect c(1, 0) 
   rep_name = "DV_Chr_1"
   ASR_wrapper_CV(type = "DV", map_scale = chr_rec, peri_scale = wt_rec, genMap_input = genMap_input_DV, haplotypes_input = haplotype_input_DV, info_ASR_input = info_ASR_input_DV, QTL_effects = DV_QTL_effects, QTL_effect_ratio = c(1, 0), heritability = H2, legend = rep_name)
   
-  # DV2, 10X scaled  DV genetic map, QTL effect c(0.6666, 0.3333)
+  # DV2, X scaled  DV genetic map, QTL effect c(0.6666, 0.3333)
   rep_name = "DV_Chr_2"
   ASR_wrapper_CV(type = "DV", map_scale = chr_rec, peri_scale = wt_rec, genMap_input = genMap_input_DV, haplotypes_input = haplotype_input_DV, info_ASR_input = info_ASR_input_DV, QTL_effects = DV_QTL_effects, QTL_effect_ratio = c(0.6666, 0.3333), heritability = H2, legend = rep_name)
   
-  # DV3, 10X scaled  DV genetic map, QTL effect c(0.5, 0.5)
+  # DV3, X scaled  DV genetic map, QTL effect c(0.5, 0.5)
   rep_name = "DV_Chr_3"
   ASR_wrapper_CV(type = "DV", map_scale = chr_rec, peri_scale = wt_rec, genMap_input = genMap_input_DV, haplotypes_input = haplotype_input_DV, info_ASR_input = info_ASR_input_DV, QTL_effects = DV_QTL_effects, QTL_effect_ratio = c(0.5, 0.5), heritability = H2, legend = rep_name)
   
-  # DV4, 10X scaled  DV genetic map, QTL effect "alternate"
+  # DV4, X scaled  DV genetic map, QTL effect "alternate"
   rep_name = "DV_Chr_4"
   ASR_wrapper_CV(type = "DV", map_scale = chr_rec, peri_scale = wt_rec, genMap_input = genMap_input_DV, haplotypes_input = haplotype_input_DV, info_ASR_input = info_ASR_input_DV, QTL_effects = DV_QTL_effects, QTL_effect_ratio = "alternate", heritability = H2, legend = rep_name)
   
-  # DV5, 10X scaled  DV genetic map, QTL effect c(0.3333, 0.6666)
+  # DV5, X scaled  DV genetic map, QTL effect c(0.3333, 0.6666)
   rep_name = "DV_Chr_5"
   ASR_wrapper_CV(type = "DV", map_scale = chr_rec, peri_scale = wt_rec, genMap_input = genMap_input_DV, haplotypes_input = haplotype_input_DV, info_ASR_input = info_ASR_input_DV, QTL_effects = DV_QTL_effects, QTL_effect_ratio = c(0.3333, 0.6666), heritability = H2, legend = rep_name)
   
