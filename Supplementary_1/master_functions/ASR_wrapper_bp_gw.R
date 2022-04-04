@@ -1,6 +1,5 @@
-##### 1.20.22
-# update: the QTL effects are kept constant across the different R and DV studies
-##### Wrapper function for creating ASR founder haplotypes, setting simulation parameters, and modeling the breeding program
+##### ASR_wrapper_bp
+# Wrapper function for creating ASR founder haplotypes, setting simulation parameters, and modeling the breeding program
 
 ASR_wrapper_bp <- function(type, map_scale, peri_scale, genMap_input, haplotypes_input, info_ASR_input, dv_loci, QTL_effects, QTL_effect_ratio,
                         heritability, legend){
