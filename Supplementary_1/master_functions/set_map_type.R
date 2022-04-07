@@ -13,8 +13,11 @@ DV_scale_map <- function(genMap_change, DV_scale, BP){
     peri_1 <- peri_1*DV_scale
     # get right distal positions
     r_distal_1 <- genMap_1[genMap_1 > 0.55] 
-    # adjust for difference between peri_1[length(peri_1)] and r_distal_1[1], and distance from l_distal
-    r_distal_1 <- r_distal_1 + peri_1[length(peri_1)] + peri_1[1]
+    # adjust for difference between 
+    my_gap <- peri_1[1] - l_distal_1[length(l_distal_1)]
+    peri_1 <- peri_1 - my_gap
+    my_gap2 <- peri_1[length(peri_1)] - r_distal_1[1]
+    r_distal_1 <- r_distal_1 + my_gap2
     # combine
     if(length(l_distal_1) == 0 | length(peri_1) == 0 | length(r_distal_1) == 0){
         genMap_1 <- genMap_1
@@ -32,8 +35,11 @@ DV_scale_map <- function(genMap_change, DV_scale, BP){
     peri_2 <- peri_2*DV_scale
     # get right distal positions
     r_distal_2 <- genMap_2[genMap_2 > 0.62] 
-    # adjust for difference between peri_2[length(peri_2)] and r_distal_2[2]
-    r_distal_2 <- r_distal_2 + peri_2[length(peri_2)]  + peri_2[1]
+    # adjust for difference between 
+    my_gap <- peri_2[1] - l_distal_2[length(l_distal_2)]
+    peri_2 <- peri_2 - my_gap
+    my_gap2 <- peri_2[length(peri_2)] - r_distal_2[1]
+    r_distal_2 <- r_distal_2 + my_gap2
     # combine
     if(length(l_distal_2) == 0 | length(peri_2) == 0 | length(r_distal_2) == 0){
         genMap_2 <- genMap_2
@@ -51,8 +57,11 @@ DV_scale_map <- function(genMap_change, DV_scale, BP){
     peri_3 <- peri_3*DV_scale
     # get right distal positions
     r_distal_3 <- genMap_3[genMap_3 > 0.55] 
-    # adjust for difference between peri_3[length(peri_3)] and r_distal_3[3]
-    r_distal_3 <- r_distal_3 + peri_3[length(peri_3)] + peri_3[1]
+    # adjust for difference between 
+    my_gap <- peri_3[1] - l_distal_3[length(l_distal_3)]
+    peri_3 <- peri_3 - my_gap
+    my_gap2 <- peri_3[length(peri_3)] - r_distal_3[1]
+    r_distal_3 <- r_distal_3 + my_gap2
     # combine
     if(length(l_distal_3) == 0 | length(peri_3) == 0 | length(r_distal_3) == 0){
         genMap_3 <- genMap_3
@@ -70,8 +79,11 @@ DV_scale_map <- function(genMap_change, DV_scale, BP){
     peri_4 <- peri_4*DV_scale
     # get right distal positions
     r_distal_4 <- genMap_4[genMap_4 > 0.77] 
-    # adjust for difference between peri_4[length(peri_4)] and r_distal_4[4]
-    r_distal_4 <- r_distal_4 + peri_4[length(peri_4)]+ peri_4[1]
+    # adjust for difference between 
+    my_gap <- peri_4[1] - l_distal_4[length(l_distal_4)]
+    peri_4 <- peri_4 - my_gap
+    my_gap2 <- peri_4[length(peri_4)] - r_distal_4[1]
+    r_distal_4 <- r_distal_4 + my_gap2
     # combine
     if(length(l_distal_4) == 0 | length(peri_4) == 0 | length(r_distal_4) == 0){
         genMap_4 <- genMap_4
@@ -89,8 +101,11 @@ DV_scale_map <- function(genMap_change, DV_scale, BP){
     peri_5 <- peri_5*DV_scale
     # get right distal positions
     r_distal_5 <- genMap_5[genMap_5 > 0.73] 
-    # adjust for difference between peri_5[length(peri_5)] and r_distal_5[5]
-    r_distal_5 <- r_distal_5 + peri_5[length(peri_5)] + peri_5[1]
+    # adjust for difference between 
+    my_gap <- peri_5[1] - l_distal_5[length(l_distal_5)]
+    peri_5 <- peri_5 - my_gap
+    my_gap2 <- peri_5[length(peri_5)] - r_distal_5[1]
+    r_distal_5 <- r_distal_5 + my_gap2
     # combine
     if(length(l_distal_5) == 0 | length(peri_5) == 0 | length(r_distal_5) == 0){
         genMap_5 <- genMap_5
@@ -108,8 +123,11 @@ DV_scale_map <- function(genMap_change, DV_scale, BP){
     peri_6 <- peri_6*DV_scale
     # get right distal positions
     r_distal_6 <- genMap_6[genMap_6 > 0.75] 
-    # adjust for difference between peri_6[length(peri_6)] and r_distal_6[6]
-    r_distal_6 <- r_distal_6 + peri_6[length(peri_6)] + peri_6[1]
+    # adjust for difference between 
+    my_gap <- peri_6[1] - l_distal_6[length(l_distal_6)]
+    peri_6 <- peri_6 - my_gap
+    my_gap2 <- peri_6[length(peri_6)] - r_distal_6[1]
+    r_distal_6 <- r_distal_6 + my_gap2
     # combine
     if(length(l_distal_6) == 0 | length(peri_6) == 0 | length(r_distal_6) == 0){
         genMap_6 <- genMap_6
@@ -127,8 +145,11 @@ DV_scale_map <- function(genMap_change, DV_scale, BP){
     peri_7 <- peri_7*DV_scale
     # get right distal positions
     r_distal_7 <- genMap_7[genMap_7 > 0.59] 
-    # adjust for difference between peri_7[length(peri_7)] and r_distal_7[7]
-    r_distal_7 <- r_distal_7 + peri_7[length(peri_7)] + peri_7[1]
+    # adjust for difference between 
+    my_gap <- peri_7[1] - l_distal_7[length(l_distal_7)]
+    peri_7 <- peri_7 - my_gap
+    my_gap2 <- peri_7[length(peri_7)] - r_distal_7[1]
+    r_distal_7 <- r_distal_7 + my_gap2
     # combine
     if(length(l_distal_7) == 0 | length(peri_7) == 0 | length(r_distal_7) == 0){
         genMap_7 <- genMap_7
@@ -146,8 +167,11 @@ DV_scale_map <- function(genMap_change, DV_scale, BP){
     peri_8 <- peri_8*DV_scale
     # get right distal positions
     r_distal_8 <- genMap_8[genMap_8 > 0.62] 
-    # adjust for difference between peri_8[length(peri_8)] and r_distal_8[8]
-    r_distal_8 <- r_distal_8 + peri_8[length(peri_8)]+ peri_8[1]
+    # adjust for difference between 
+    my_gap <- peri_8[1] - l_distal_8[length(l_distal_8)]
+    peri_8 <- peri_8 - my_gap
+    my_gap2 <- peri_8[length(peri_8)] - r_distal_8[1]
+    r_distal_8 <- r_distal_8 + my_gap2
     # combine
     if(length(l_distal_8) == 0 | length(peri_8) == 0 | length(r_distal_8) == 0){
         genMap_8 <- genMap_8
@@ -166,8 +190,11 @@ DV_scale_map <- function(genMap_change, DV_scale, BP){
         peri_9 <- peri_9*DV_scale
         # get right distal positions
         r_distal_9 <- genMap_9[genMap_9 > 1] 
-        # adjust for difference between peri_9[length(peri_9)] and r_distal_9[9]
-        r_distal_9 <- r_distal_9 + peri_9[length(peri_9)]+ peri_9[1]
+        # adjust for difference between 
+        my_gap <- peri_9[1] - l_distal_9[length(l_distal_9)]
+        peri_9 <- peri_9 - my_gap
+        my_gap2 <- peri_9[length(peri_9)] - r_distal_9[1]
+        r_distal_9 <- r_distal_9 + my_gap2
         # combine
         if(length(l_distal_9) == 0 | length(peri_9) == 0 | length(r_distal_9) == 0){
             genMap_9 <- genMap_9
@@ -184,8 +211,11 @@ DV_scale_map <- function(genMap_change, DV_scale, BP){
         peri_9 <- peri_9*DV_scale
         # get right distal positions
         r_distal_9 <- genMap_9[genMap_9 > 0.55] 
-        # adjust for difference between peri_9[length(peri_9)] and r_distal_9[9]
-        r_distal_9 <- r_distal_9 + peri_9[length(peri_9)]+ peri_9[1]
+        # adjust for difference between 
+        my_gap <- peri_9[1] - l_distal_9[length(l_distal_9)]
+        peri_9 <- peri_9 - my_gap
+        my_gap2 <- peri_9[length(peri_9)] - r_distal_9[1]
+        r_distal_9 <- r_distal_9 + my_gap2
         # combine
         if(length(l_distal_9) == 0 | length(peri_9) == 0 | length(r_distal_9) == 0){
             genMap_9 <- genMap_9
@@ -193,7 +223,7 @@ DV_scale_map <- function(genMap_change, DV_scale, BP){
             genMap_9 <- c(l_distal_9, peri_9, r_distal_9)
         }
     }
- 
+    
     # chr 10
     genMap_10 <- genMap_change[[10]] #%>% as.data.frame()
     # get left distal positions
@@ -204,8 +234,11 @@ DV_scale_map <- function(genMap_change, DV_scale, BP){
     peri_10 <- peri_10*DV_scale
     # get right distal positions
     r_distal_10 <- genMap_10[genMap_10 > 1.2] 
-    # adjust for difference between peri_10[length(peri_10)] and r_distal_10[10]
-    r_distal_10 <- r_distal_10 + peri_10[length(peri_10)] + peri_10[1]
+    # adjust for difference between 
+    my_gap <- peri_10[1] - l_distal_10[length(l_distal_10)]
+    peri_10 <- peri_10 - my_gap
+    my_gap2 <- peri_10[length(peri_10)] - r_distal_10[1]
+    r_distal_10 <- r_distal_10 + my_gap2
     # combine
     if(length(l_distal_10) == 0 | length(peri_10) == 0 | length(r_distal_10) == 0){
         genMap_10 <- genMap_10
@@ -223,8 +256,11 @@ DV_scale_map <- function(genMap_change, DV_scale, BP){
     peri_11 <- peri_11*DV_scale
     # get right distal positions
     r_distal_11 <- genMap_11[genMap_11 > 0.63] 
-    # adjust for difference between peri_11[length(peri_11)] and r_distal_11[11]
-    r_distal_11 <- r_distal_11 + peri_11[length(peri_11)] + peri_11[1]
+    # adjust for difference between 
+    my_gap <- peri_11[1] - l_distal_11[length(l_distal_11)]
+    peri_11 <- peri_11 - my_gap
+    my_gap2 <- peri_11[length(peri_11)] - r_distal_11[1]
+    r_distal_11 <- r_distal_11 + my_gap2
     # combine
     if(length(l_distal_11) == 0 | length(peri_11) == 0 | length(r_distal_11) == 0){
         genMap_11 <- genMap_11
@@ -243,8 +279,11 @@ DV_scale_map <- function(genMap_change, DV_scale, BP){
         peri_12 <- peri_12*DV_scale
         # get right distal positions
         r_distal_12 <- genMap_12[genMap_12 > 0.3] 
-        # adjust for difference between peri_12[length(peri_12)] and r_distal_12[12]
-        r_distal_12 <- r_distal_12 + peri_12[length(peri_12)]+ peri_12[1]
+        # adjust for difference between 
+        my_gap <- peri_12[1] - l_distal_12[length(l_distal_12)]
+        peri_12 <- peri_12 - my_gap
+        my_gap2 <- peri_12[length(peri_12)] - r_distal_12[1]
+        r_distal_12 <- r_distal_12 + my_gap2
         # combine
         if(length(l_distal_12) == 0 | length(peri_12) == 0 | length(r_distal_12) == 0){
             genMap_12 <- genMap_12
@@ -261,8 +300,11 @@ DV_scale_map <- function(genMap_change, DV_scale, BP){
         peri_12 <- peri_12*DV_scale
         # get right distal positions
         r_distal_12 <- genMap_12[genMap_12 > 0.65] 
-        # adjust for difference between peri_12[length(peri_12)] and r_distal_12[12]
-        r_distal_12 <- r_distal_12 + peri_12[length(peri_12)]+ peri_12[1]
+        # adjust for difference between 
+        my_gap <- peri_12[1] - l_distal_12[length(l_distal_12)]
+        peri_12 <- peri_12 - my_gap
+        my_gap2 <- peri_12[length(peri_12)] - r_distal_12[1]
+        r_distal_12 <- r_distal_12 + my_gap2
         # combine
         if(length(l_distal_12) == 0 | length(peri_12) == 0 | length(r_distal_12) == 0){
             genMap_12 <- genMap_12
@@ -270,7 +312,7 @@ DV_scale_map <- function(genMap_change, DV_scale, BP){
             genMap_12 <- c(l_distal_12, peri_12, r_distal_12)
         }
     }
-   
+    
     
     # chr 13
     genMap_13 <- genMap_change[[13]] #%>% as.data.frame()
@@ -282,8 +324,11 @@ DV_scale_map <- function(genMap_change, DV_scale, BP){
     peri_13 <- peri_13*DV_scale
     # get right distal positions
     r_distal_13 <- genMap_13[genMap_13 > 0.64] 
-    # adjust for difference between peri_13[length(peri_13)] and r_distal_13[13]
-    r_distal_13 <- r_distal_13 + peri_13[length(peri_13)]+ peri_13[1]
+    # adjust for difference between 
+    my_gap <- peri_13[1] - l_distal_13[length(l_distal_13)]
+    peri_13 <- peri_13 - my_gap
+    my_gap2 <- peri_13[length(peri_13)] - r_distal_13[1]
+    r_distal_13 <- r_distal_13 + my_gap2
     # combine
     if(length(l_distal_13) == 0 | length(peri_13) == 0 | length(r_distal_13) == 0){
         genMap_13 <- genMap_13
@@ -301,8 +346,11 @@ DV_scale_map <- function(genMap_change, DV_scale, BP){
     peri_14 <- peri_14*DV_scale
     # get right distal positions
     r_distal_14 <- genMap_14[genMap_14 > 0.53] 
-    # adjust for difference between peri_14[length(peri_14)] and r_distal_14[14]
-    r_distal_14 <- r_distal_14 + peri_14[length(peri_14)]+ peri_14[1]
+    # adjust for difference between 
+    my_gap <- peri_14[1] - l_distal_14[length(l_distal_14)]
+    peri_14 <- peri_14 - my_gap
+    my_gap2 <- peri_14[length(peri_14)] - r_distal_14[1]
+    r_distal_14 <- r_distal_14 + my_gap2
     # combine
     if(length(l_distal_14) == 0 | length(peri_14) == 0 | length(r_distal_14) == 0){
         genMap_14 <- genMap_14
@@ -321,8 +369,11 @@ DV_scale_map <- function(genMap_change, DV_scale, BP){
         peri_15 <- peri_15*DV_scale
         # get right distal positions
         r_distal_15 <- genMap_15[genMap_15 > 1.3] 
-        # adjust for difference between peri_15[length(peri_15)] and r_distal_15[15]
-        r_distal_15 <- r_distal_15 + peri_15[length(peri_15)]+ peri_15[1]
+        # adjust for difference between 
+        my_gap <- peri_15[1] - l_distal_15[length(l_distal_15)]
+        peri_15 <- peri_15 - my_gap
+        my_gap2 <- peri_15[length(peri_15)] - r_distal_15[1]
+        r_distal_15 <- r_distal_15 + my_gap2
         # combine
         if(length(l_distal_15) == 0 | length(peri_15) == 0 | length(r_distal_15) == 0){
             genMap_15 <- genMap_15
@@ -339,8 +390,11 @@ DV_scale_map <- function(genMap_change, DV_scale, BP){
         peri_15 <- peri_15*DV_scale
         # get right distal positions
         r_distal_15 <- genMap_15[genMap_15 > 0.68] 
-        # adjust for difference between peri_15[length(peri_15)] and r_distal_15[15]
-        r_distal_15 <- r_distal_15 + peri_15[length(peri_15)]+ peri_15[1]
+        # adjust for difference between 
+        my_gap <- peri_15[1] - l_distal_15[length(l_distal_15)]
+        peri_15 <- peri_15 - my_gap
+        my_gap2 <- peri_15[length(peri_15)] - r_distal_15[1]
+        r_distal_15 <- r_distal_15 + my_gap2
         # combine
         if(length(l_distal_15) == 0 | length(peri_15) == 0 | length(r_distal_15) == 0){
             genMap_15 <- genMap_15
@@ -348,7 +402,7 @@ DV_scale_map <- function(genMap_change, DV_scale, BP){
             genMap_15 <- c(l_distal_15, peri_15, r_distal_15)
         }
     }
-   
+    
     
     # chr 16
     genMap_16 <- genMap_change[[16]] #%>% as.data.frame()
@@ -360,8 +414,11 @@ DV_scale_map <- function(genMap_change, DV_scale, BP){
     peri_16 <- peri_16*DV_scale
     # get right distal positions
     r_distal_16 <- genMap_16[genMap_16 > 0.62] 
-    # adjust for difference between peri_16[length(peri_16)] and r_distal_16[16]
-    r_distal_16 <- r_distal_16 + peri_16[length(peri_16)]+ peri_16[1]
+    # adjust for difference between 
+    my_gap <- peri_16[1] - l_distal_16[length(l_distal_16)]
+    peri_16 <- peri_16 - my_gap
+    my_gap2 <- peri_16[length(peri_16)] - r_distal_16[1]
+    r_distal_16 <- r_distal_16 + my_gap2
     # combine
     if(length(l_distal_16) == 0 | length(peri_16) == 0 | length(r_distal_16) == 0){
         genMap_16 <- genMap_16
@@ -379,8 +436,11 @@ DV_scale_map <- function(genMap_change, DV_scale, BP){
     peri_17 <- peri_17*DV_scale
     # get right distal positions
     r_distal_17 <- genMap_17[genMap_17 > 0.59] 
-    # adjust for difference between peri_17[length(peri_17)] and r_distal_17[17]
-    r_distal_17 <- r_distal_17 + peri_17[length(peri_17)]+ peri_17[1]
+    # adjust for difference between 
+    my_gap <- peri_17[1] - l_distal_17[length(l_distal_17)]
+    peri_17 <- peri_17 - my_gap
+    my_gap2 <- peri_17[length(peri_17)] - r_distal_17[1]
+    r_distal_17 <- r_distal_17 + my_gap2
     # combine
     if(length(l_distal_17) == 0 | length(peri_17) == 0 | length(r_distal_17) == 0){
         genMap_17 <- genMap_17
@@ -398,8 +458,11 @@ DV_scale_map <- function(genMap_change, DV_scale, BP){
     peri_18 <- peri_18*DV_scale
     # get right distal positions
     r_distal_18 <- genMap_18[genMap_18 > 0.6] 
-    # adjust for difference between peri_18[length(peri_18)] and r_distal_18[18]
-    r_distal_18 <- r_distal_18 + peri_18[length(peri_18)]+ peri_18[1]
+    # adjust for difference between 
+    my_gap <- peri_18[1] - l_distal_18[length(l_distal_18)]
+    peri_18 <- peri_18 - my_gap
+    my_gap2 <- peri_18[length(peri_18)] - r_distal_18[1]
+    r_distal_18 <- r_distal_18 + my_gap2
     # combine
     if(length(l_distal_18) == 0 | length(peri_18) == 0 | length(r_distal_18) == 0){
         genMap_18 <- genMap_18
@@ -417,8 +480,11 @@ DV_scale_map <- function(genMap_change, DV_scale, BP){
     peri_19 <- peri_19*DV_scale
     # get right distal positions
     r_distal_19 <- genMap_19[genMap_19 > 0.75] 
-    # adjust for difference between peri_19[length(peri_19)] and r_distal_19[19]
-    r_distal_19 <- r_distal_19 + peri_19[length(peri_19)]+ peri_19[1]
+    # adjust for difference between 
+    my_gap <- peri_19[1] - l_distal_19[length(l_distal_19)]
+    peri_19 <- peri_19 - my_gap
+    my_gap2 <- peri_19[length(peri_19)] - r_distal_19[1]
+    r_distal_19 <- r_distal_19 + my_gap2
     # combine
     if(length(l_distal_19) == 0 | length(peri_19) == 0 | length(r_distal_19) == 0){
         genMap_19 <- genMap_19
@@ -436,8 +502,11 @@ DV_scale_map <- function(genMap_change, DV_scale, BP){
     peri_20 <- peri_20*DV_scale
     # get right distal positions
     r_distal_20 <- genMap_20[genMap_20 > 0.65] 
-    # adjust for difference between peri_20[length(peri_20)] and r_distal_20[20]
-    r_distal_20 <- r_distal_20 + peri_20[length(peri_20)]+ peri_20[1]
+    # adjust for difference between 
+    my_gap <- peri_20[1] - l_distal_20[length(l_distal_20)]
+    peri_20 <- peri_20 - my_gap
+    my_gap2 <- peri_20[length(peri_20)] - r_distal_20[1]
+    r_distal_20 <- r_distal_20 + my_gap2
     # combine
     if(length(l_distal_20) == 0 | length(peri_20) == 0 | length(r_distal_20) == 0){
         genMap_20 <- genMap_20
@@ -455,8 +524,11 @@ DV_scale_map <- function(genMap_change, DV_scale, BP){
     peri_21 <- peri_21*DV_scale
     # get right distal positions
     r_distal_21 <- genMap_21[genMap_21 > 0.94] 
-    # adjust for difference between peri_21[length(peri_21)] and r_distal_21[21]
-    r_distal_21 <- r_distal_21 + peri_21[length(peri_21)] + peri_21[1]
+    # adjust for difference between 
+    my_gap <- peri_21[1] - l_distal_21[length(l_distal_21)]
+    peri_21 <- peri_21 - my_gap
+    my_gap2 <- peri_21[length(peri_21)] - r_distal_21[1]
+    r_distal_21 <- r_distal_21 + my_gap2
     # combine
     if(length(l_distal_21) == 0 | length(peri_21) == 0 | length(r_distal_21) == 0){
         genMap_21 <- genMap_21
@@ -465,7 +537,7 @@ DV_scale_map <- function(genMap_change, DV_scale, BP){
     }
     
     genMap_change_output <- list(genMap_1, genMap_2, genMap_3, genMap_4, genMap_5, genMap_6, genMap_7, genMap_8, genMap_9, genMap_10, genMap_11, 
-                          genMap_12, genMap_13, genMap_14, genMap_15, genMap_16, genMap_17, genMap_18, genMap_19, genMap_20, genMap_21)
+                                 genMap_12, genMap_13, genMap_14, genMap_15, genMap_16, genMap_17, genMap_18, genMap_19, genMap_20, genMap_21)
     genMap_change_output <<- genMap_change_output
 }
 
