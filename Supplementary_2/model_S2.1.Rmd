@@ -89,7 +89,7 @@ qtl_af: change in QTL negative allele frequency, subset by small (Q1), medium, o
 
 ### Genetic gain  
 
-**Linear model, ANOVA table, best and worst simulation parameters by genetic map and QTL type** 
+**Linear model, ANOVA table** 
 
 <details><summary>Click here: Model, ANOVA tables cycle 6 & 10</summary>
 
@@ -145,7 +145,7 @@ print(my_Anova_10)
 
 ### Genetic variance
 
-**Linear model, ANOVA table, best and worst simulation parameters by genetic map and QTL type**  
+**Linear model,  ANOVA table**  
 
 <details><summary>Click here: Model, ANOVA tables cycle 6 & 10</summary> 
 
@@ -202,7 +202,7 @@ print(my_Anova_10)
 
 ### Bulmer effect  
 
-**Linear model, ANOVA table, best and worst simulation parameters by genetic map and QTL type**  
+**Linear model,  ANOVA table**  
 
 <details><summary>Click here: Model, ANOVA tables cycle 6 & 10</summary>
 
@@ -258,7 +258,7 @@ print(my_Anova_10)
 
 ### Prediction accuracy
 
-**Linear model, ANOVA table, best and worst simulation parameters by genetic map and QTL type**  
+**Linear model,  ANOVA table**  
 
 <details><summary>Click here: Model, ANOVA tables cycle 6 & 10</summary>
 
@@ -319,7 +319,7 @@ print(my_Anova_10)
 
 ### QTL allele frequency change 
 
-**Linear model, ANOVA table, best and worst simulation parameters by genetic map and QTL type**  
+**Linear model,  ANOVA table**  
 
 <details><summary>Click here: Model, ANOVA table</summary>
 

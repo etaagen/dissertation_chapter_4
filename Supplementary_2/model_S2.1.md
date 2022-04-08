@@ -99,8 +99,7 @@ ratios
 
 ### Genetic gain
 
-**Linear model, ANOVA table, best and worst simulation parameters by
-genetic map and QTL type**
+**Linear model, ANOVA table**
 
 <details>
 <summary>
@@ -190,8 +189,7 @@ ANOVA table, cycle 10:
 
 ### Genetic variance
 
-**Linear model, ANOVA table, best and worst simulation parameters by
-genetic map and QTL type**
+**Linear model, ANOVA table**
 
 <details>
 <summary>
@@ -284,8 +282,7 @@ ANOVA table, cycle 10:
 
 ### Bulmer effect
 
-**Linear model, ANOVA table, best and worst simulation parameters by
-genetic map and QTL type**
+**Linear model, ANOVA table**
 
 <details>
 <summary>
@@ -379,8 +376,7 @@ ANOVA table, cycle 10:
 
 ### Prediction accuracy
 
-**Linear model, ANOVA table, best and worst simulation parameters by
-genetic map and QTL type**
+**Linear model, ANOVA table**
 
 <details>
 <summary>
@@ -476,8 +472,7 @@ ANOVA table, cycle 10:
 
 ### QTL allele frequency change
 
-**Linear model, ANOVA table, best and worst simulation parameters by
-genetic map and QTL type**
+**Linear model, ANOVA table**
 
 <details>
 <summary>
