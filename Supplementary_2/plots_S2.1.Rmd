@@ -36,7 +36,7 @@ library(kableExtra)
 library(ggsci)
 
 # anova and summary plot functions
-source("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_1/summary_stats.R")
+source("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_1/master_functions/summary_stats.R")
 
 gg <- fread("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_2/results_S2.1/f_gg.csv") %>% as.data.frame()
 gv <- fread("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_2/results_S2.1/f_gv.csv") %>% as.data.frame()
