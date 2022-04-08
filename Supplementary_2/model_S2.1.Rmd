@@ -1,5 +1,5 @@
 ---
-title: "Controlled recombination simulation, model analysis, cycle 6"
+title: "Controlled recombination simulation, model analysis, cycle 6 & 10"
 output: github_document
 always_allow_html: true
 editor_options: 
@@ -91,7 +91,7 @@ qtl_af: change in QTL negative allele frequency, subset by small (Q1), medium, o
 
 **Linear model, ANOVA table, best and worst simulation parameters by genetic map and QTL type** 
 
-<details><summary>Click here:  Model, ANOVA tables cycle 6</summary>
+<details><summary>Click here: Model, ANOVA tables cycle 6 & 10</summary>
 
 **Note:** filtered for cycle 6 or cycle 10 observations. See .Rmd file for code.  
 
@@ -116,7 +116,7 @@ my_data_10 <- my_data %>% filter(cycle == 10)
 
 # run mixed model 
 my_lmer_6 <- lmer(value ~ (Map_type + Recombination+QTL+H2+Repulsion+Matrix+QTL_type)^2 + (1|rep), data = my_data_6)
-# my_lmer_10 <- lmer(value ~ (Map_type + Recombination+QTL+H2+Repulsion+Matrix+QTL_type)^2 + (1|rep), data = my_data_10)
+my_lmer_10 <- lmer(value ~ (Map_type + Recombination+QTL+H2+Repulsion+Matrix+QTL_type)^2 + (1|rep), data = my_data_10)
 
 ```
   
@@ -129,194 +129,25 @@ my_Anova_6 <- Anova(my_lmer_6)
 print(my_Anova_6)
 ```
   
+ANOVA table, cycle 10:  
+```{r, echo=FALSE, message=FALSE}
+# run Anova
+my_Anova_10 <- Anova(my_lmer_10) 
+# print the 10th cycle of selection ANOVA table
+print(my_Anova_10)
+```
+  
 
  </details>
 
 
-<details><summary>Click here: Cycle 6, best and worst simulation parameter prediction summaries</summary>
-#### Cycle 6, WT map  
-
-```{r, echo=FALSE, message=FALSE}
-
-response_6 <- emmeans(my_lmer_6, ~ Recombination+QTL+H2+Repulsion+Matrix | Map_type + QTL_type) %>% tidy() %>% as.data.frame() %>% as.data.frame()
-
-a = (response_6 %>% arrange(estimate) %>% 
-  filter(Map_type == "WT", QTL_type == "R") %>%
-  arrange(-estimate) %>% 
-  select(QTL, H2, Repulsion, Matrix, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Genetic gain estimates, top 2%, cycle 6**"),
-      subtitle = md("**Map type:** WT, **QTL type:** R")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-
-a = (response_6 %>% 
-  arrange(estimate) %>% 
-  filter(Map_type == "WT", QTL_type == "R") %>% 
-  select(QTL, H2, Repulsion, Matrix, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Genetic gain estimates, worst 2%, cycle 6**"),
-      subtitle = md("**Map type:** WT, **QTL type:** R")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-
-a = (response_6 %>% arrange(estimate) %>% 
-  filter(Map_type == "WT", QTL_type == "DV") %>%
-  arrange(-estimate) %>% 
-  select(QTL, H2, Repulsion, Matrix, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Genetic gain estimates, top 2%, cycle 6**"),
-      subtitle = md("**Map type:** WT, **QTL type:** DV")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-
-a = (response_6 %>% 
-  arrange(estimate) %>% 
-  filter(Map_type == "WT", QTL_type == "DV") %>% 
-  select(QTL, H2, Repulsion, Matrix, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Genetic gain estimates, worst 2%, cycle 6**"),
-      subtitle = md("**Map type:** WT, **QTL type:** DV")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-```
-
-#### Cycle 6, Pericentromere map  
-
-```{r, echo=FALSE, message=FALSE}
-response_6 <- emmeans(my_lmer_6, ~ Recombination+QTL+H2+Repulsion+Matrix | Map_type + QTL_type) %>% tidy() %>% as.data.frame()
-
-a = (response_6 %>% arrange(estimate) %>% 
-  filter(Map_type == "Peri", QTL_type == "R") %>%
-  arrange(-estimate) %>% 
-  select(Recombination, QTL, H2, Repulsion, Matrix, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Genetic gain estimates, top 2%, cycle 6**"),
-      subtitle = md("**Map type:** Peri, **QTL type:** R")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-
-a = (response_6 %>% 
-  arrange(estimate) %>% 
-  filter(Map_type == "Peri", QTL_type == "R") %>% 
-  select(Recombination, QTL, H2, Repulsion, Matrix, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Genetic gain estimates, worst 2%, cycle 6**"),
-      subtitle = md("**Map type:** Peri, **QTL type:** R")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-
-a = (response_6 %>% arrange(estimate) %>% 
-  filter(Map_type == "Peri", QTL_type == "DV") %>%
-  arrange(-estimate) %>% 
-  select(Recombination, QTL, H2, Repulsion, Matrix, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Genetic gain estimates, top 2%, cycle 6**"),
-      subtitle = md("**Map type:** Peri, **QTL type:** DV")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-
-a = (response_6 %>% 
-  arrange(estimate) %>% 
-  filter(Map_type == "Peri", QTL_type == "DV") %>% 
-  select(Recombination, QTL, H2, Repulsion, Matrix, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Genetic gain estimates, worst 2%, cycle 6**"),
-      subtitle = md("**Map type:** Peri, **QTL type:** DV")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-```
-
-#### Cycle 6, Chromosome map  
-
-```{r, echo=FALSE, message=FALSE}
-response_6 <- emmeans(my_lmer_6, ~ Recombination+QTL+H2+Repulsion+Matrix | Map_type + QTL_type) %>% tidy() %>% as.data.frame()
-
-a = (response_6 %>% arrange(estimate) %>% 
-  filter(Map_type == "Chr", QTL_type == "R") %>%
-  arrange(-estimate) %>% 
-  select(Recombination, QTL, H2, Repulsion, Matrix, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Genetic gain estimates, top 2%, cycle 6**"),
-      subtitle = md("**Map type:** Chr, **QTL type:** R")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-
-a = (response_6 %>% 
-  arrange(estimate) %>% 
-  filter(Map_type == "Chr", QTL_type == "R") %>% 
-  select(Recombination, QTL, H2, Repulsion, Matrix, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Genetic gain estimates, worst 2%, cycle 6**"),
-      subtitle = md("**Map type:** Chr, **QTL type:** R")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-
-a = (response_6 %>% arrange(estimate) %>% 
-  filter(Map_type == "Chr", QTL_type == "DV") %>%
-  arrange(-estimate) %>% 
-  select(Recombination, QTL, H2, Repulsion, Matrix, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Genetic gain estimates, top 2%, cycle 6**"),
-      subtitle = md("**Map type:** Chr, **QTL type:** DV")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-
-a = (response_6 %>% 
-  arrange(estimate) %>% 
-  filter(Map_type == "Chr", QTL_type == "DV") %>% 
-  select(Recombination, QTL, H2, Repulsion, Matrix, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Genetic gain estimates, worst 2%, cycle 6**"),
-      subtitle = md("**Map type:** Chr, **QTL type:** DV")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-```
-
-</details>
 
 
 ### Genetic variance
 
 **Linear model, ANOVA table, best and worst simulation parameters by genetic map and QTL type**  
 
-<details><summary>Click here: Model, ANOVA tables cycle 6</summary> 
+<details><summary>Click here: Model, ANOVA tables cycle 6 & 10</summary> 
 
 **Note:** filtered for cycle 6 or cycle 10 observations. See .Rmd file for code.  
 
@@ -342,7 +173,7 @@ my_data_10 <- my_data %>% filter(cycle == 10)
 
 # run mixed model 
 my_lmer_6 <- lmer(value ~ (Map_type + Recombination+QTL+H2+Repulsion+Matrix+QTL_type)^2 + (1|rep), data = my_data_6)
-# my_lmer_10 <- lmer(value ~ (Map_type + Recombination+QTL+H2+Repulsion+Matrix+QTL_type)^2 + (1|rep), data = my_data_10)
+my_lmer_10 <- lmer(value ~ (Map_type + Recombination+QTL+H2+Repulsion+Matrix+QTL_type)^2 + (1|rep), data = my_data_10)
 
 ```
   
@@ -355,194 +186,25 @@ my_Anova_6 <- Anova(my_lmer_6)
 print(my_Anova_6)
 ```
   
-
+ANOVA table, cycle 10:  
+```{r, echo=FALSE, message=FALSE}
+# run Anova
+my_Anova_10 <- Anova(my_lmer_10) 
+# print the 10th cycle of selection ANOVA table
+print(my_Anova_10)
+```
+  
 </details>   
 
 
-<details><summary>Click here: Click to expand: Cycle 6, best and worst simulation parameter prediction summaries</summary>
 
-#### Cycle 6, WT map  
-
-```{r, echo=FALSE, message=FALSE}
-response_6 <- emmeans(my_lmer_6, ~ Recombination+QTL+H2+Repulsion+Matrix | Map_type + QTL_type) %>% tidy() %>% as.data.frame()
-
-a = (response_6 %>% arrange(estimate) %>% 
-  filter(Map_type == "WT", QTL_type == "R") %>%
-  arrange(-estimate) %>% 
-  select(QTL, H2, Repulsion, Matrix, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Genetic variance estimates, top 2%, cycle 6**"),
-      subtitle = md("**Map type:** WT, **QTL type:** R")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-
-a = (response_6 %>% 
-  arrange(estimate) %>% 
-  filter(Map_type == "WT", QTL_type == "R") %>% 
-  select(QTL, H2, Repulsion, Matrix, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Genetic variance estimates, worst 2%, cycle 6**"),
-      subtitle = md("**Map type:** WT, **QTL type:** R")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-
-a = (response_6 %>% arrange(estimate) %>% 
-  filter(Map_type == "WT", QTL_type == "DV") %>%
-  arrange(-estimate) %>% 
-  select( QTL, H2, Repulsion, Matrix, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Genetic variance estimates, top 2%, cycle 6**"),
-      subtitle = md("**Map type:** WT, **QTL type:** DV")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-
-a = (response_6 %>% 
-  arrange(estimate) %>% 
-  filter(Map_type == "WT", QTL_type == "DV") %>% 
-  select(QTL, H2, Repulsion, Matrix, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Genetic variance estimates, worst 2%, cycle 6**"),
-      subtitle = md("**Map type:** WT, **QTL type:** DV")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-```
-
-#### Cycle 6, Pericentromere map  
-
-```{r, echo=FALSE, message=FALSE}
-response_6 <- emmeans(my_lmer_6, ~ Recombination+QTL+H2+Repulsion+Matrix | Map_type + QTL_type) %>% tidy() %>% as.data.frame()
-
-a = (response_6 %>% arrange(estimate) %>% 
-  filter(Map_type == "Peri", QTL_type == "R") %>%
-  arrange(-estimate) %>% 
-  select(Recombination, QTL, H2, Repulsion, Matrix, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Genetic variance estimates, top 2%, cycle 6**"),
-      subtitle = md("**Map type:** Peri, **QTL type:** R")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-
-a = (response_6 %>% 
-  arrange(estimate) %>% 
-  filter(Map_type == "Peri", QTL_type == "R") %>% 
-  select(Recombination, QTL, H2, Repulsion, Matrix, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Genetic variance estimates, worst 2%, cycle 6**"),
-      subtitle = md("**Map type:** Peri, **QTL type:** R")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-
-a = (response_6 %>% arrange(estimate) %>% 
-  filter(Map_type == "Peri", QTL_type == "DV") %>%
-  arrange(-estimate) %>% 
-  select(Recombination, QTL, H2, Repulsion, Matrix, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Genetic variance estimates, top 2%, cycle 6**"),
-      subtitle = md("**Map type:** Peri, **QTL type:** DV")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-
-a = (response_6 %>% 
-  arrange(estimate) %>% 
-  filter(Map_type == "Peri", QTL_type == "DV") %>% 
-  select(Recombination, QTL, H2, Repulsion, Matrix, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Genetic variance estimates, worst 2%, cycle 6**"),
-      subtitle = md("**Map type:** Peri, **QTL type:** DV")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-```
-
-#### Cycle 6, Chromosome map  
-
-```{r, echo=FALSE, message=FALSE}
-response_6 <- emmeans(my_lmer_6, ~ Recombination+QTL+H2+Repulsion+Matrix | Map_type + QTL_type) %>% tidy() %>% as.data.frame()
-
-a = (response_6 %>% arrange(estimate) %>% 
-  filter(Map_type == "Chr", QTL_type == "R") %>%
-  arrange(-estimate) %>% 
-  select(Recombination, QTL, H2, Repulsion, Matrix, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Genetic variance estimates, top 2%, cycle 6**"),
-      subtitle = md("**Map type:** Chr, **QTL type:** R")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-
-a = (response_6 %>% 
-  arrange(estimate) %>% 
-  filter(Map_type == "Chr", QTL_type == "R") %>% 
-  select(Recombination, QTL, H2, Repulsion, Matrix, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Genetic variance estimates, worst 2%, cycle 6**"),
-      subtitle = md("**Map type:** Chr, **QTL type:** R")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-
-a = (response_6 %>% arrange(estimate) %>% 
-  filter(Map_type == "Chr", QTL_type == "DV") %>%
-  arrange(-estimate) %>% 
-  select(Recombination, QTL, H2, Repulsion, Matrix, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Genetic variance estimates, top 2%, cycle 6**"),
-      subtitle = md("**Map type:** Chr, **QTL type:** DV")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-
-a = (response_6 %>% 
-  arrange(estimate) %>% 
-  filter(Map_type == "Chr", QTL_type == "DV") %>% 
-  select(Recombination, QTL, H2, Repulsion, Matrix, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Genetic variance estimates, worst 2%, cycle 6**"),
-      subtitle = md("**Map type:** Chr, **QTL type:** DV")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-```
-
-</details> 
   
 
 ### Bulmer effect  
 
 **Linear model, ANOVA table, best and worst simulation parameters by genetic map and QTL type**  
 
-<details><summary>Click here: Model, ANOVA tables cycle 6</summary>
+<details><summary>Click here: Model, ANOVA tables cycle 6 & 10</summary>
 
 **Note:** filtered for cycle 6 or cycle 10 observations. See .Rmd file for code.  
 
@@ -567,7 +229,7 @@ my_data_10 <- my_data %>% filter(cycle == 10)
 
 # run mixed model 
 my_lmer_6 <- lmer(value ~ (Map_type + Recombination+QTL+H2+Repulsion+Matrix+QTL_type)^2 + (1|rep), data = my_data_6)
-# my_lmer_10 <- lmer(value ~ (Map_type + Recombination+QTL+H2+Repulsion+Matrix+QTL_type)^2 + (1|rep), data = my_data_10)
+my_lmer_10 <- lmer(value ~ (Map_type + Recombination+QTL+H2+Repulsion+Matrix+QTL_type)^2 + (1|rep), data = my_data_10)
 
 ```
   
@@ -580,194 +242,25 @@ my_Anova_6 <- Anova(my_lmer_6)
 print(my_Anova_6)
 ```
   
-  
+ANOVA table, cycle 10:  
+```{r, echo=FALSE, message=FALSE}
+# run Anova
+my_Anova_10 <- Anova(my_lmer_10) 
+# print the 10th cycle of selection ANOVA table
+print(my_Anova_10)
+```
+    
 
 </details>   
 
-<details><summary>Click here: Cycle 6, best and worst simulation parameter prediction summaries</summary>
 
-#### Cycle 6, WT map  
-
-```{r, echo=FALSE, message=FALSE}
-response_6 <- emmeans(my_lmer_6, ~ Recombination+QTL+H2+Repulsion+Matrix | Map_type + QTL_type) %>% tidy() %>% as.data.frame()
-
-a = (response_6 %>% arrange(estimate) %>% 
-  filter(Map_type == "WT", QTL_type == "R") %>%
-  arrange(-estimate) %>% 
-  select( QTL, H2, Repulsion, Matrix, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Bulmer effect estimates, top 2%, cycle 6**"),
-      subtitle = md("**Map type:** WT, **QTL type:** R")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-
-a = (response_6 %>% 
-  arrange(estimate) %>% 
-  filter(Map_type == "WT", QTL_type == "R") %>% 
-  select(QTL, H2, Repulsion, Matrix, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Bulmer effect estimates, worst 2%, cycle 6**"),
-      subtitle = md("**Map type:** WT, **QTL type:** R")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-
-a = (response_6 %>% arrange(estimate) %>% 
-  filter(Map_type == "WT", QTL_type == "DV") %>%
-  arrange(-estimate) %>% 
-  select( QTL, H2, Repulsion, Matrix, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Bulmer effect estimates, top 2%, cycle 6**"),
-      subtitle = md("**Map type:** WT, **QTL type:** DV")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-
-a = (response_6 %>% 
-  arrange(estimate) %>% 
-  filter(Map_type == "WT", QTL_type == "DV") %>% 
-  select( QTL, H2, Repulsion, Matrix, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Bulmer effect estimates, worst 2%, cycle 6**"),
-      subtitle = md("**Map type:** WT, **QTL type:** DV")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-```
-
-#### Cycle 6, Pericentromere map  
-
-```{r, echo=FALSE, message=FALSE}
-response_6 <- emmeans(my_lmer_6, ~ Recombination+QTL+H2+Repulsion+Matrix | Map_type + QTL_type) %>% tidy() %>% as.data.frame()
-
-a = (response_6 %>% arrange(estimate) %>% 
-  filter(Map_type == "Peri", QTL_type == "R") %>%
-  arrange(-estimate) %>% 
-  select(Recombination, QTL, H2, Repulsion, Matrix, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Bulmer effect estimates, top 2%, cycle 6**"),
-      subtitle = md("**Map type:** Peri, **QTL type:** R")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-
-a = (response_6 %>% 
-  arrange(estimate) %>% 
-  filter(Map_type == "Peri", QTL_type == "R") %>% 
-  select(Recombination, QTL, H2, Repulsion, Matrix, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Bulmer effect estimates, worst 2%, cycle 6**"),
-      subtitle = md("**Map type:** Peri, **QTL type:** R")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-
-a = (response_6 %>% arrange(estimate) %>% 
-  filter(Map_type == "Peri", QTL_type == "DV") %>%
-  arrange(-estimate) %>% 
-  select(Recombination, QTL, H2, Repulsion, Matrix, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Bulmer effect estimates, top 2%, cycle 6**"),
-      subtitle = md("**Map type:** Peri, **QTL type:** DV")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-
-a = (response_6 %>% 
-  arrange(estimate) %>% 
-  filter(Map_type == "Peri", QTL_type == "DV") %>% 
-  select(Recombination, QTL, H2, Repulsion, Matrix, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Bulmer effect estimates, worst 2%, cycle 6**"),
-      subtitle = md("**Map type:** Peri, **QTL type:** DV")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-```
-
-#### Cycle 6, Chromosome map  
-
-```{r, echo=FALSE, message=FALSE}
-response_6 <- emmeans(my_lmer_6, ~ Recombination+QTL+H2+Repulsion+Matrix | Map_type + QTL_type) %>% tidy() %>% as.data.frame()
-
-a = (response_6 %>% arrange(estimate) %>% 
-  filter(Map_type == "Chr", QTL_type == "R") %>%
-  arrange(-estimate) %>% 
-  select(Recombination, QTL, H2, Repulsion, Matrix, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Bulmer effect estimates, top 2%, cycle 6**"),
-      subtitle = md("**Map type:** Chr, **QTL type:** R")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-
-a = (response_6 %>% 
-  arrange(estimate) %>% 
-  filter(Map_type == "Chr", QTL_type == "R") %>% 
-  select(Recombination, QTL, H2, Repulsion, Matrix, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Bulmer effect estimates, worst 2%, cycle 6**"),
-      subtitle = md("**Map type:** Chr, **QTL type:** R")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-
-a = (response_6 %>% arrange(estimate) %>% 
-  filter(Map_type == "Chr", QTL_type == "DV") %>%
-  arrange(-estimate) %>% 
-  select(Recombination, QTL, H2, Repulsion, Matrix, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Bulmer effect estimates, top 2%, cycle 6**"),
-      subtitle = md("**Map type:** Chr, **QTL type:** DV")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-
-a = (response_6 %>% 
-  arrange(estimate) %>% 
-  filter(Map_type == "Chr", QTL_type == "DV") %>% 
-  select(Recombination, QTL, H2, Repulsion, Matrix, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Bulmer effect estimates, worst 2%, cycle 6**"),
-      subtitle = md("**Map type:** Chr, **QTL type:** DV")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-```
-
-</details>  
 
 
 ### Prediction accuracy
 
 **Linear model, ANOVA table, best and worst simulation parameters by genetic map and QTL type**  
 
-<details><summary>Click here: Model, ANOVA tables cycle 6</summary>
+<details><summary>Click here: Model, ANOVA tables cycle 6 & 10</summary>
 
 **Note:** filtered for cycle 6 or cycle 10 observations. See .Rmd file for code.   
 
@@ -793,7 +286,7 @@ my_data_10 <- my_data %>% filter(cycle == 10)
 
 # run mixed model 
 my_lmer_6 <- lmer(value ~ (Map_type + Recombination+QTL+H2+Repulsion+Matrix+QTL_type)^2 + (1|rep), data = my_data_6)
-# my_lmer_10 <- lmer(value ~ (Map_type + Recombination+QTL+H2+Repulsion+Matrix+QTL_type)^2 + (1|rep), data = my_data_10)
+my_lmer_10 <- lmer(value ~ (Map_type + Recombination+QTL+H2+Repulsion+Matrix+QTL_type)^2 + (1|rep), data = my_data_10)
 
 ```
   
@@ -806,194 +299,25 @@ my_Anova_6 <- Anova(my_lmer_6)
 print(my_Anova_6)
 ```
   
-  
+ANOVA table, cycle 10:  
+```{r, echo=FALSE, message=FALSE}
+# run Anova
+my_Anova_10 <- Anova(my_lmer_10) 
+# print the 10th cycle of selection ANOVA table
+print(my_Anova_10)
+```
+    
  
 </details>  
 
-<details><summary>Click here: Cycle 6, best and worst simulation parameter prediction summaries</summary>
 
-#### Cycle 6, WT map  
-
-```{r, echo=FALSE, message=FALSE}
-response_6 <- emmeans(my_lmer_6, ~ Recombination+QTL+H2+Repulsion+Matrix | Map_type + QTL_type) %>% tidy() %>% as.data.frame()
-
-a = (response_6 %>% arrange(estimate) %>% 
-  filter(Map_type == "WT", QTL_type == "R") %>%
-  arrange(-estimate) %>% 
-  select( QTL, H2, Repulsion, Matrix, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Prediction accuracy estimates, top 2%, cycle 6**"),
-      subtitle = md("**Map type:** WT, **QTL type:** R")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-
-a = (response_6 %>% 
-  arrange(estimate) %>% 
-  filter(Map_type == "WT", QTL_type == "R") %>% 
-  select(QTL, H2, Repulsion, Matrix, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Prediction accuracy estimates, worst 2%, cycle 6**"),
-      subtitle = md("**Map type:** WT, **QTL type:** R")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-
-a = (response_6 %>% arrange(estimate) %>% 
-  filter(Map_type == "WT", QTL_type == "DV") %>%
-  arrange(-estimate) %>% 
-  select( QTL, H2, Repulsion, Matrix, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Prediction accuracy estimates, top 2%, cycle 6**"),
-      subtitle = md("**Map type:** WT, **QTL type:** DV")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-
-a = (response_6 %>% 
-  arrange(estimate) %>% 
-  filter(Map_type == "WT", QTL_type == "DV") %>% 
-  select( QTL, H2, Repulsion, Matrix, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Prediction accuracy estimates, worst 2%, cycle 6**"),
-      subtitle = md("**Map type:** WT, **QTL type:** DV")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-```
-
-#### Cycle 6, Pericentromere map  
-
-```{r, echo=FALSE, message=FALSE}
-response_6 <- emmeans(my_lmer_6, ~ Recombination+QTL+H2+Repulsion+Matrix | Map_type + QTL_type) %>% tidy() %>% as.data.frame()
-
-a = (response_6 %>% arrange(estimate) %>% 
-  filter(Map_type == "Peri", QTL_type == "R") %>%
-  arrange(-estimate) %>% 
-  select(Recombination, QTL, H2, Repulsion, Matrix, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Prediction accuracy estimates, top 2%, cycle 6**"),
-      subtitle = md("**Map type:** Peri, **QTL type:** R")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-
-a = (response_6 %>% 
-  arrange(estimate) %>% 
-  filter(Map_type == "Peri", QTL_type == "R") %>% 
-  select(Recombination, QTL, H2, Repulsion, Matrix, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Prediction accuracy estimates, worst 2%, cycle 6**"),
-      subtitle = md("**Map type:** Peri, **QTL type:** R")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-
-a = (response_6 %>% arrange(estimate) %>% 
-  filter(Map_type == "Peri", QTL_type == "DV") %>%
-  arrange(-estimate) %>% 
-  select(Recombination, QTL, H2, Repulsion, Matrix, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Prediction accuracy estimates, top 2%, cycle 6**"),
-      subtitle = md("**Map type:** Peri, **QTL type:** DV")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-
-a = (response_6 %>% 
-  arrange(estimate) %>% 
-  filter(Map_type == "Peri", QTL_type == "DV") %>% 
-  select(Recombination, QTL, H2, Repulsion, Matrix, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Prediction accuracy estimates, worst 2%, cycle 6**"),
-      subtitle = md("**Map type:** Peri, **QTL type:** DV")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-```
-
-#### Cycle 6, Chromosome map  
-
-```{r, echo=FALSE, message=FALSE}
-response_6 <- emmeans(my_lmer_6, ~ Recombination+QTL+H2+Repulsion+Matrix | Map_type + QTL_type) %>% tidy() %>% as.data.frame()
-
-a = (response_6 %>% arrange(estimate) %>% 
-  filter(Map_type == "Chr", QTL_type == "R") %>%
-  arrange(-estimate) %>% 
-  select(Recombination, QTL, H2, Repulsion, Matrix, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Prediction accuracy estimates, top 2%, cycle 6**"),
-      subtitle = md("**Map type:** Chr, **QTL type:** R")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-
-a = (response_6 %>% 
-  arrange(estimate) %>% 
-  filter(Map_type == "Chr", QTL_type == "R") %>% 
-  select(Recombination, QTL, H2, Repulsion, Matrix, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Prediction accuracy estimates, worst 2%, cycle 6**"),
-      subtitle = md("**Map type:** Chr, **QTL type:** R")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-
-a = (response_6 %>% arrange(estimate) %>% 
-  filter(Map_type == "Chr", QTL_type == "DV") %>%
-  arrange(-estimate) %>% 
-  select(Recombination, QTL, H2, Repulsion, Matrix, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Prediction accuracy estimates, top 2%, cycle 6**"),
-      subtitle = md("**Map type:** Chr, **QTL type:** DV")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-
-a = (response_6 %>% 
-  arrange(estimate) %>% 
-  filter(Map_type == "Chr", QTL_type == "DV") %>% 
-  select(Recombination, QTL, H2, Repulsion, Matrix, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Prediction accuracy estimates, worst 2%, cycle 6**"),
-      subtitle = md("**Map type:** Chr, **QTL type:** DV")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-```
-
-</details>
 
 
 ### QTL fixation   
 
 **Linear model has `singular fit`, omitted**    
 
-### QTL positive allele frequency change 
+### QTL allele frequency change 
 
 **Linear model, ANOVA table, best and worst simulation parameters by genetic map and QTL type**  
 
@@ -1038,179 +362,3 @@ print(my_Anova)
 </details>
 
 
-<details><summary>Click here: Best and worst simulation parameter prediction summaries</summary>
-#### WT map  
-
-```{r, echo=FALSE, message=FALSE}
-response_10 <- emmeans(my_lmer, ~ Recombination+QTL+H2+Repulsion+Matrix+Allele | Map_type + QTL_type) %>% tidy() %>% as.data.frame()
-
-response_10 %>% arrange(estimate) %>% 
-  filter(Map_type == "WT", QTL_type == "R") %>%
-  arrange(-estimate) %>% 
-  select(QTL, H2, Repulsion, Matrix, Allele, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Positive QTL AF change estimates, top 10**"),
-      subtitle = md("**Map type:** WT, **QTL type:** R")
-    )
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-
-a = (response_10 %>% 
-  arrange(estimate) %>% 
-  filter(Map_type == "WT", QTL_type == "R") %>% 
-  select( QTL, H2, Repulsion, Matrix, Allele, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Positive QTL AF change estimates, worst 10**"),
-      subtitle = md("**Map type:** WT, **QTL type:** R")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-
-a = (response_10 %>% arrange(estimate) %>% 
-  filter(Map_type == "WT", QTL_type == "DV") %>%
-  arrange(-estimate) %>% 
-  select( QTL, H2, Repulsion, Matrix, Allele, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Positive QTL AF change estimates, top 10**"),
-      subtitle = md("**Map type:** WT, **QTL type:** DV")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-
-a = (response_10 %>% 
-  arrange(estimate) %>% 
-  filter(Map_type == "WT", QTL_type == "DV") %>% 
-  select( QTL, H2, Repulsion, Matrix, Allele, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Positive QTL AF change estimates, worst 10**"),
-      subtitle = md("**Map type:** WT, **QTL type:** DV")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-```
-
-#### Pericentromere map  
-
-```{r, echo=FALSE, message=FALSE}
-response_10 <- emmeans(my_lmer, ~ Recombination+QTL+H2+Repulsion+Matrix+Allele | Map_type + QTL_type) %>% tidy() %>% as.data.frame()
-
-a = (response_10 %>% arrange(estimate) %>% 
-  filter(Map_type == "Peri", QTL_type == "R") %>%
-  arrange(-estimate) %>% 
-  select(Recombination, QTL, H2, Repulsion, Matrix, Allele, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Positive QTL AF change estimates, top 10**"),
-      subtitle = md("**Map type:** Peri, **QTL type:** R")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-
-a = (response_10 %>% 
-  arrange(estimate) %>% 
-  filter(Map_type == "Peri", QTL_type == "R") %>% 
-  select(Recombination, QTL, H2, Repulsion, Matrix, Allele, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Positive QTL AF change estimates, worst 10**"),
-      subtitle = md("**Map type:** Peri, **QTL type:** R")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-
-a = (response_10 %>% arrange(estimate) %>% 
-  filter(Map_type == "Peri", QTL_type == "DV") %>%
-  arrange(-estimate) %>% 
-  select(Recombination, QTL, H2, Repulsion, Matrix, Allele, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Positive QTL AF change estimates, top 10**"),
-      subtitle = md("**Map type:** Peri, **QTL type:** DV")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-
-a = (response_10 %>% 
-  arrange(estimate) %>% 
-  filter(Map_type == "Peri", QTL_type == "DV") %>% 
-  select(Recombination, QTL, H2, Repulsion, Matrix, Allele, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Positive QTL AF change estimates, worst 10**"),
-      subtitle = md("**Map type:** Peri, **QTL type:** DV")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-```
-
-#### Chromosome map  
-
-```{r, echo=FALSE, message=FALSE}
-response_10 <- emmeans(my_lmer, ~ Recombination+QTL+H2+Repulsion+Matrix+Allele | Map_type + QTL_type) %>% tidy() %>% as.data.frame()
-
-a = (response_10 %>% arrange(estimate) %>% 
-  filter(Map_type == "Chr", QTL_type == "R") %>%
-  arrange(-estimate) %>% 
-  select(Recombination, QTL, H2, Repulsion, Matrix, Allele, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Positive QTL AF change estimates, top 10**"),
-      subtitle = md("**Map type:** Chr, **QTL type:** R")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-
-a = (response_10 %>% 
-  arrange(estimate) %>% 
-  filter(Map_type == "Chr", QTL_type == "R") %>% 
-  select(Recombination, QTL, H2, Repulsion, Matrix, Allele, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Positive QTL AF change estimates, worst 10**"),
-      subtitle = md("**Map type:** Chr, **QTL type:** R")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-
-a = (response_10 %>% arrange(estimate) %>% 
-  filter(Map_type == "Chr", QTL_type == "DV") %>%
-  arrange(-estimate) %>% 
-  select(Recombination, QTL, H2, Repulsion, Matrix, Allele, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Positive QTL AF change estimates, top 10**"),
-      subtitle = md("**Map type:** Chr, **QTL type:** DV")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-
-a = (response_10 %>% 
-  arrange(estimate) %>% 
-  filter(Map_type == "Chr", QTL_type == "DV") %>% 
-  select(Recombination, QTL, H2, Repulsion, Matrix, Allele, estimate, std.error, p.value) %>% 
-  head(10) %>% 
-  gt() %>% 
-  tab_header(
-      title = md("**Positive QTL AF change estimates, worst 10**"),
-      subtitle = md("**Map type:** Chr, **QTL type:** DV")
-    ))
-gtsave(a, "table.png")
-invisible(file.remove("table.png"))
-```
-
-</details>

@@ -1,4 +1,4 @@
-Controlled recombination simulation, model analysis, cycle 6
+Controlled recombination simulation, model analysis, cycle 6 & 10
 ================
 
 ### Notes:
@@ -104,7 +104,7 @@ genetic map and QTL type**
 
 <details>
 <summary>
-Click here: Model, ANOVA tables cycle 6
+Click here: Model, ANOVA tables cycle 6 & 10
 </summary>
 
 **Note:** filtered for cycle 6 or cycle 10 observations. See .Rmd file
@@ -118,55 +118,73 @@ ANOVA table, cycle 6:
     ## 
     ## Response: value
     ##                              Chisq Df Pr(>Chisq)    
-    ## Map_type                  101.0194  2  < 2.2e-16 ***
-    ## Recombination             110.5811  1  < 2.2e-16 ***
-    ## QTL                     13437.2069  1  < 2.2e-16 ***
-    ## H2                      30885.4319  1  < 2.2e-16 ***
-    ## Repulsion               44368.8764  4  < 2.2e-16 ***
-    ## Matrix                   8913.4296  1  < 2.2e-16 ***
-    ## QTL_type                  228.6894  1  < 2.2e-16 ***
-    ## Map_type:Recombination     53.8515  2  2.024e-12 ***
-    ## Map_type:QTL               49.8383  2  1.506e-11 ***
-    ## Map_type:H2                21.1028  2  2.616e-05 ***
-    ## Map_type:Repulsion         21.9181  8    0.00507 ** 
-    ## Map_type:Matrix            98.8036  2  < 2.2e-16 ***
-    ## Map_type:QTL_type          21.6756  2  1.964e-05 ***
-    ## Recombination:QTL          16.4759  1  4.927e-05 ***
-    ## Recombination:H2            2.7113  1    0.09964 .  
-    ## Recombination:Repulsion    29.0321  4  7.701e-06 ***
-    ## Recombination:Matrix       56.5239  1  5.552e-14 ***
-    ## Recombination:QTL_type      0.4699  1    0.49304    
-    ## QTL:H2                  13374.6500  1  < 2.2e-16 ***
-    ## QTL:Repulsion           20740.1563  4  < 2.2e-16 ***
-    ## QTL:Matrix                303.3262  1  < 2.2e-16 ***
-    ## QTL:QTL_type                0.5557  1    0.45598    
-    ## H2:Repulsion              961.6636  4  < 2.2e-16 ***
-    ## H2:Matrix                  64.7833  1  8.360e-16 ***
-    ## H2:QTL_type                28.5104  1  9.320e-08 ***
-    ## Repulsion:Matrix         1529.8692  4  < 2.2e-16 ***
-    ## Repulsion:QTL_type        144.6101  4  < 2.2e-16 ***
-    ## Matrix:QTL_type            19.1637  1  1.200e-05 ***
+    ## Map_type                   89.4420  2  < 2.2e-16 ***
+    ## Recombination             125.4176  1  < 2.2e-16 ***
+    ## QTL                     13597.3675  1  < 2.2e-16 ***
+    ## H2                      30875.0986  1  < 2.2e-16 ***
+    ## Repulsion               45217.3694  4  < 2.2e-16 ***
+    ## Matrix                   8567.8467  1  < 2.2e-16 ***
+    ## QTL_type                  195.1159  1  < 2.2e-16 ***
+    ## Map_type:Recombination     54.9519  2  1.168e-12 ***
+    ## Map_type:QTL               51.1622  2  7.767e-12 ***
+    ## Map_type:H2                17.0646  2   0.000197 ***
+    ## Map_type:Repulsion         19.2111  8   0.013770 *  
+    ## Map_type:Matrix            90.7872  2  < 2.2e-16 ***
+    ## Map_type:QTL_type          10.6679  2   0.004825 ** 
+    ## Recombination:QTL          31.9720  1  1.564e-08 ***
+    ## Recombination:H2            4.9912  1   0.025477 *  
+    ## Recombination:Repulsion    29.5366  4  6.081e-06 ***
+    ## Recombination:Matrix       69.0208  1  < 2.2e-16 ***
+    ## Recombination:QTL_type      1.2630  1   0.261092    
+    ## QTL:H2                  13363.7849  1  < 2.2e-16 ***
+    ## QTL:Repulsion           20914.5757  4  < 2.2e-16 ***
+    ## QTL:Matrix                328.3382  1  < 2.2e-16 ***
+    ## QTL:QTL_type                1.4338  1   0.231147    
+    ## H2:Repulsion              921.2661  4  < 2.2e-16 ***
+    ## H2:Matrix                  77.4231  1  < 2.2e-16 ***
+    ## H2:QTL_type                26.1310  1  3.190e-07 ***
+    ## Repulsion:Matrix         1579.5358  4  < 2.2e-16 ***
+    ## Repulsion:QTL_type        135.0370  4  < 2.2e-16 ***
+    ## Matrix:QTL_type            12.8808  1   0.000332 ***
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-</details>
-<details>
-<summary>
-Click here: Cycle 6, best and worst simulation parameter prediction
-summaries
-</summary>
+ANOVA table, cycle 10:
 
-#### Cycle 6, WT map
-
-![](model_S2.1_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-3-2.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-3-3.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-3-4.png)<!-- -->
-
-#### Cycle 6, Pericentromere map
-
-![](model_S2.1_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-4-2.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-4-3.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-4-4.png)<!-- -->
-
-#### Cycle 6, Chromosome map
-
-![](model_S2.1_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-5-2.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-5-3.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-5-4.png)<!-- -->
+    ## Analysis of Deviance Table (Type II Wald chisquare tests)
+    ## 
+    ## Response: value
+    ##                              Chisq Df Pr(>Chisq)    
+    ## Map_type                   24.5680  2  4.625e-06 ***
+    ## Recombination              26.0883  1  3.261e-07 ***
+    ## QTL                     69683.0142  1  < 2.2e-16 ***
+    ## H2                      47470.8522  1  < 2.2e-16 ***
+    ## Repulsion               53692.4669  4  < 2.2e-16 ***
+    ## Matrix                   6438.8584  1  < 2.2e-16 ***
+    ## QTL_type                  705.9874  1  < 2.2e-16 ***
+    ## Map_type:Recombination     30.7548  2  2.097e-07 ***
+    ## Map_type:QTL               21.9562  2  1.707e-05 ***
+    ## Map_type:H2                77.5940  2  < 2.2e-16 ***
+    ## Map_type:Repulsion         47.7166  8  1.119e-07 ***
+    ## Map_type:Matrix           173.3465  2  < 2.2e-16 ***
+    ## Map_type:QTL_type          14.1630  2  0.0008405 ***
+    ## Recombination:QTL           2.6505  1  0.1035156    
+    ## Recombination:H2           29.0120  1  7.193e-08 ***
+    ## Recombination:Repulsion    50.7409  4  2.529e-10 ***
+    ## Recombination:Matrix      114.2558  1  < 2.2e-16 ***
+    ## Recombination:QTL_type      8.8331  1  0.0029582 ** 
+    ## QTL:H2                  33221.7135  1  < 2.2e-16 ***
+    ## QTL:Repulsion           20284.4633  4  < 2.2e-16 ***
+    ## QTL:Matrix                116.7378  1  < 2.2e-16 ***
+    ## QTL:QTL_type              185.3634  1  < 2.2e-16 ***
+    ## H2:Repulsion             1214.0012  4  < 2.2e-16 ***
+    ## H2:Matrix                  36.1123  1  1.863e-09 ***
+    ## H2:QTL_type                79.6111  1  < 2.2e-16 ***
+    ## Repulsion:Matrix         1117.0858  4  < 2.2e-16 ***
+    ## Repulsion:QTL_type        161.2456  4  < 2.2e-16 ***
+    ## Matrix:QTL_type            26.4919  1  2.646e-07 ***
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 </details>
 
@@ -177,7 +195,7 @@ genetic map and QTL type**
 
 <details>
 <summary>
-Click here: Model, ANOVA tables cycle 6
+Click here: Model, ANOVA tables cycle 6 & 10
 </summary>
 
 **Note:** filtered for cycle 6 or cycle 10 observations. See .Rmd file
@@ -185,61 +203,82 @@ for code.
 
 `response variable ~ (map type + recombination + QTL per Chr + H2 + repulsion + matrix + QTL type)^2 + (1|rep)`
 
+    ## boundary (singular) fit: see help('isSingular')
+    ## boundary (singular) fit: see help('isSingular')
+
 ANOVA table, cycle 6:
 
     ## Analysis of Deviance Table (Type II Wald chisquare tests)
     ## 
     ## Response: value
     ##                              Chisq Df Pr(>Chisq)    
-    ## Map_type                  790.8788  2  < 2.2e-16 ***
-    ## Recombination             413.1177  1  < 2.2e-16 ***
-    ## QTL                     30294.9966  1  < 2.2e-16 ***
-    ## H2                       7559.8438  1  < 2.2e-16 ***
-    ## Repulsion                5698.5540  4  < 2.2e-16 ***
-    ## Matrix                   6754.3559  1  < 2.2e-16 ***
-    ## QTL_type                  426.2978  1  < 2.2e-16 ***
-    ## Map_type:Recombination    170.4159  2  < 2.2e-16 ***
-    ## Map_type:QTL              288.3043  2  < 2.2e-16 ***
-    ## Map_type:H2                15.2764  2  0.0004817 ***
-    ## Map_type:Repulsion        146.8844  8  < 2.2e-16 ***
-    ## Map_type:Matrix            88.4942  2  < 2.2e-16 ***
-    ## Map_type:QTL_type          37.3038  2  7.936e-09 ***
-    ## Recombination:QTL         138.6647  1  < 2.2e-16 ***
-    ## Recombination:H2            0.3073  1  0.5793625    
-    ## Recombination:Repulsion    92.3304  4  < 2.2e-16 ***
-    ## Recombination:Matrix       27.4763  1  1.590e-07 ***
-    ## Recombination:QTL_type      8.2971  1  0.0039710 ** 
-    ## QTL:H2                     44.8762  1  2.099e-11 ***
-    ## QTL:Repulsion            4063.3353  4  < 2.2e-16 ***
-    ## QTL:Matrix                850.4611  1  < 2.2e-16 ***
-    ## QTL:QTL_type              285.4757  1  < 2.2e-16 ***
-    ## H2:Repulsion              669.3071  4  < 2.2e-16 ***
-    ## H2:Matrix                 908.8516  1  < 2.2e-16 ***
-    ## H2:QTL_type                22.2243  1  2.426e-06 ***
-    ## Repulsion:Matrix          656.0847  4  < 2.2e-16 ***
-    ## Repulsion:QTL_type          7.2796  4  0.1218303    
-    ## Matrix:QTL_type            33.4535  1  7.299e-09 ***
+    ## Map_type                  696.6703  2  < 2.2e-16 ***
+    ## Recombination             499.1506  1  < 2.2e-16 ***
+    ## QTL                     30191.1671  1  < 2.2e-16 ***
+    ## H2                       7659.5367  1  < 2.2e-16 ***
+    ## Repulsion                5681.2691  4  < 2.2e-16 ***
+    ## Matrix                   6580.7232  1  < 2.2e-16 ***
+    ## QTL_type                  476.0269  1  < 2.2e-16 ***
+    ## Map_type:Recombination    210.0695  2  < 2.2e-16 ***
+    ## Map_type:QTL              257.0303  2  < 2.2e-16 ***
+    ## Map_type:H2                11.6328  2   0.002978 ** 
+    ## Map_type:Repulsion        140.6820  8  < 2.2e-16 ***
+    ## Map_type:Matrix            59.4582  2  1.227e-13 ***
+    ## Map_type:QTL_type          23.8410  2  6.653e-06 ***
+    ## Recombination:QTL         143.5848  1  < 2.2e-16 ***
+    ## Recombination:H2            0.2182  1   0.640406    
+    ## Recombination:Repulsion   100.8170  4  < 2.2e-16 ***
+    ## Recombination:Matrix       46.9447  1  7.302e-12 ***
+    ## Recombination:QTL_type      8.9435  1   0.002785 ** 
+    ## QTL:H2                     42.5655  1  6.836e-11 ***
+    ## QTL:Repulsion            3966.3256  4  < 2.2e-16 ***
+    ## QTL:Matrix                884.2658  1  < 2.2e-16 ***
+    ## QTL:QTL_type              296.1741  1  < 2.2e-16 ***
+    ## H2:Repulsion              667.7577  4  < 2.2e-16 ***
+    ## H2:Matrix                 861.2709  1  < 2.2e-16 ***
+    ## H2:QTL_type                25.1489  1  5.307e-07 ***
+    ## Repulsion:Matrix          636.9729  4  < 2.2e-16 ***
+    ## Repulsion:QTL_type          2.9301  4   0.569583    
+    ## Matrix:QTL_type            20.5368  1  5.849e-06 ***
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-</details>
-<details>
-<summary>
-Click here: Click to expand: Cycle 6, best and worst simulation
-parameter prediction summaries
-</summary>
+ANOVA table, cycle 10:
 
-#### Cycle 6, WT map
-
-![](model_S2.1_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-8-2.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-8-3.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-8-4.png)<!-- -->
-
-#### Cycle 6, Pericentromere map
-
-![](model_S2.1_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-9-2.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-9-3.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-9-4.png)<!-- -->
-
-#### Cycle 6, Chromosome map
-
-![](model_S2.1_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-10-2.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-10-3.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-10-4.png)<!-- -->
+    ## Analysis of Deviance Table (Type II Wald chisquare tests)
+    ## 
+    ## Response: value
+    ##                              Chisq Df Pr(>Chisq)    
+    ## Map_type                 1617.3552  2  < 2.2e-16 ***
+    ## Recombination             939.6183  1  < 2.2e-16 ***
+    ## QTL                     41806.4056  1  < 2.2e-16 ***
+    ## H2                       4447.5608  1  < 2.2e-16 ***
+    ## Repulsion                5513.0116  4  < 2.2e-16 ***
+    ## Matrix                   3268.5481  1  < 2.2e-16 ***
+    ## QTL_type                  738.4682  1  < 2.2e-16 ***
+    ## Map_type:Recombination    467.6696  2  < 2.2e-16 ***
+    ## Map_type:QTL              999.2793  2  < 2.2e-16 ***
+    ## Map_type:H2                98.1838  2  < 2.2e-16 ***
+    ## Map_type:Repulsion        202.9028  8  < 2.2e-16 ***
+    ## Map_type:Matrix           111.1330  2  < 2.2e-16 ***
+    ## Map_type:QTL_type          52.9782  2  3.133e-12 ***
+    ## Recombination:QTL         441.5412  1  < 2.2e-16 ***
+    ## Recombination:H2           29.9093  1  4.527e-08 ***
+    ## Recombination:Repulsion   115.4242  4  < 2.2e-16 ***
+    ## Recombination:Matrix       68.2360  1  < 2.2e-16 ***
+    ## Recombination:QTL_type      8.6923  1  0.0031956 ** 
+    ## QTL:H2                    389.9247  1  < 2.2e-16 ***
+    ## QTL:Repulsion            4264.5478  4  < 2.2e-16 ***
+    ## QTL:Matrix                 37.8615  1  7.595e-10 ***
+    ## QTL:QTL_type              635.8169  1  < 2.2e-16 ***
+    ## H2:Repulsion              314.9633  4  < 2.2e-16 ***
+    ## H2:Matrix                 417.5357  1  < 2.2e-16 ***
+    ## H2:QTL_type                11.9875  1  0.0005356 ***
+    ## Repulsion:Matrix          155.2592  4  < 2.2e-16 ***
+    ## Repulsion:QTL_type         11.9006  4  0.0181056 *  
+    ## Matrix:QTL_type            22.3161  1  2.313e-06 ***
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 </details>
 
@@ -250,7 +289,7 @@ genetic map and QTL type**
 
 <details>
 <summary>
-Click here: Model, ANOVA tables cycle 6
+Click here: Model, ANOVA tables cycle 6 & 10
 </summary>
 
 **Note:** filtered for cycle 6 or cycle 10 observations. See .Rmd file
@@ -258,61 +297,83 @@ for code.
 
 `response variable ~ (map type + recombination + QTL per Chr + H2 + repulsion + matrix + QTL type)^2 + (1|rep)`
 
+    ## boundary (singular) fit: see help('isSingular')
+
+    ## fixed-effect model matrix is rank deficient so dropping 1 column / coefficient
+
 ANOVA table, cycle 6:
 
     ## Analysis of Deviance Table (Type II Wald chisquare tests)
     ## 
     ## Response: value
     ##                              Chisq Df Pr(>Chisq)    
-    ## Map_type                  238.4673  2  < 2.2e-16 ***
-    ## Recombination             119.9017  1  < 2.2e-16 ***
-    ## QTL                         5.6399  1  0.0175564 *  
-    ## H2                      14321.9523  1  < 2.2e-16 ***
-    ## Repulsion               49687.4998  4  < 2.2e-16 ***
-    ## Matrix                   1345.8369  1  < 2.2e-16 ***
-    ## QTL_type                   10.9079  1  0.0009576 ***
-    ## Map_type:Recombination     58.3355  2  2.151e-13 ***
-    ## Map_type:QTL               76.6621  2  < 2.2e-16 ***
-    ## Map_type:H2                62.0610  2  3.339e-14 ***
-    ## Map_type:Repulsion         24.0929  8  0.0022110 ** 
-    ## Map_type:Matrix            18.4938  2  9.641e-05 ***
-    ## Map_type:QTL_type          18.9998  2  7.486e-05 ***
-    ## Recombination:QTL          35.2666  1  2.875e-09 ***
-    ## Recombination:H2           26.7614  1  2.302e-07 ***
-    ## Recombination:Repulsion    22.9195  4  0.0001314 ***
-    ## Recombination:Matrix        5.5149  1  0.0188547 *  
-    ## Recombination:QTL_type      5.3654  1  0.0205405 *  
-    ## QTL:H2                   2875.9284  1  < 2.2e-16 ***
-    ## QTL:Repulsion           18417.7635  4  < 2.2e-16 ***
-    ## QTL:Matrix                196.9912  1  < 2.2e-16 ***
-    ## QTL:QTL_type               58.6410  1  1.892e-14 ***
-    ## H2:Repulsion             8370.6627  4  < 2.2e-16 ***
-    ## H2:Matrix                   0.1766  1  0.6743049    
-    ## H2:QTL_type               149.4851  1  < 2.2e-16 ***
-    ## Repulsion:Matrix          933.5257  4  < 2.2e-16 ***
-    ## Repulsion:QTL_type        881.8917  4  < 2.2e-16 ***
-    ## Matrix:QTL_type           117.7713  1  < 2.2e-16 ***
+    ## Map_type                  216.4596  2  < 2.2e-16 ***
+    ## Recombination              98.7899  1  < 2.2e-16 ***
+    ## QTL                        15.0194  1  0.0001064 ***
+    ## H2                      14514.0053  1  < 2.2e-16 ***
+    ## Repulsion               49399.2815  4  < 2.2e-16 ***
+    ## Matrix                   1285.0020  1  < 2.2e-16 ***
+    ## QTL_type                    7.5597  1  0.0059688 ** 
+    ## Map_type:Recombination     48.2993  2  3.250e-11 ***
+    ## Map_type:QTL               55.5942  2  8.470e-13 ***
+    ## Map_type:H2                57.2069  2  3.782e-13 ***
+    ## Map_type:Repulsion         39.1829  8  4.546e-06 ***
+    ## Map_type:Matrix            15.3014  2  0.0004757 ***
+    ## Map_type:QTL_type          13.6109  2  0.0011077 ** 
+    ## Recombination:QTL          41.7281  1  1.049e-10 ***
+    ## Recombination:H2           32.5880  1  1.139e-08 ***
+    ## Recombination:Repulsion    21.4383  4  0.0002592 ***
+    ## Recombination:Matrix        2.2666  1  0.1321929    
+    ## Recombination:QTL_type      5.5349  1  0.0186412 *  
+    ## QTL:H2                   2884.4732  1  < 2.2e-16 ***
+    ## QTL:Repulsion           18277.4764  4  < 2.2e-16 ***
+    ## QTL:Matrix                165.8114  1  < 2.2e-16 ***
+    ## QTL:QTL_type               47.4673  1  5.593e-12 ***
+    ## H2:Repulsion             8880.0660  4  < 2.2e-16 ***
+    ## H2:Matrix                   0.2135  1  0.6440710    
+    ## H2:QTL_type               122.1529  1  < 2.2e-16 ***
+    ## Repulsion:Matrix          888.8018  4  < 2.2e-16 ***
+    ## Repulsion:QTL_type        860.3565  4  < 2.2e-16 ***
+    ## Matrix:QTL_type            93.5076  1  < 2.2e-16 ***
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-</details>
-<details>
-<summary>
-Click here: Cycle 6, best and worst simulation parameter prediction
-summaries
-</summary>
+ANOVA table, cycle 10:
 
-#### Cycle 6, WT map
-
-![](model_S2.1_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-13-2.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-13-3.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-13-4.png)<!-- -->
-
-#### Cycle 6, Pericentromere map
-
-![](model_S2.1_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-14-2.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-14-3.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-14-4.png)<!-- -->
-
-#### Cycle 6, Chromosome map
-
-![](model_S2.1_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-15-2.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-15-3.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-15-4.png)<!-- -->
+    ## Analysis of Deviance Table (Type II Wald chisquare tests)
+    ## 
+    ## Response: value
+    ##                              Chisq Df Pr(>Chisq)    
+    ## Map_type                  258.3498  2  < 2.2e-16 ***
+    ## Recombination             123.3980  1  < 2.2e-16 ***
+    ## QTL                       774.5131  1  < 2.2e-16 ***
+    ## H2                      17666.1542  1  < 2.2e-16 ***
+    ## Repulsion               33662.0688  4  < 2.2e-16 ***
+    ## Matrix                   1183.9237  1  < 2.2e-16 ***
+    ## QTL_type                    0.6752  1  0.4112584    
+    ## Map_type:Recombination     97.1343  2  < 2.2e-16 ***
+    ## Map_type:QTL               99.8406  2  < 2.2e-16 ***
+    ## Map_type:H2                62.4210  2  2.789e-14 ***
+    ## Map_type:Repulsion         38.2611  8  6.737e-06 ***
+    ## Map_type:Matrix            47.3400  2  5.251e-11 ***
+    ## Map_type:QTL_type          14.5555  2  0.0006907 ***
+    ## Recombination:QTL          33.4263  1  7.402e-09 ***
+    ## Recombination:H2           26.2315  1  3.028e-07 ***
+    ## Recombination:Repulsion     8.2669  4  0.0822779 .  
+    ## Recombination:Matrix       27.3481  1  1.699e-07 ***
+    ## Recombination:QTL_type      5.3330  1  0.0209256 *  
+    ## QTL:H2                   2076.6451  1  < 2.2e-16 ***
+    ## QTL:Repulsion            8108.0174  4  < 2.2e-16 ***
+    ## QTL:Matrix                          0               
+    ## QTL:QTL_type               30.9882  1  2.596e-08 ***
+    ## H2:Repulsion             5365.0462  4  < 2.2e-16 ***
+    ## H2:Matrix                   0.2239  1  0.6360683    
+    ## H2:QTL_type                71.4104  1  < 2.2e-16 ***
+    ## Repulsion:Matrix          897.2405  4  < 2.2e-16 ***
+    ## Repulsion:QTL_type        565.1629  4  < 2.2e-16 ***
+    ## Matrix:QTL_type            65.8398  1  4.891e-16 ***
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 </details>
 
@@ -323,7 +384,7 @@ genetic map and QTL type**
 
 <details>
 <summary>
-Click here: Model, ANOVA tables cycle 6
+Click here: Model, ANOVA tables cycle 6 & 10
 </summary>
 
 **Note:** filtered for cycle 6 or cycle 10 observations. See .Rmd file
@@ -331,61 +392,81 @@ for code.
 
 `response variable ~ (map type + recombination + QTL per Chr + H2 + repulsion + matrix + QTL type)^2 + (1|rep)`
 
+    ## fixed-effect model matrix is rank deficient so dropping 1 column / coefficient
+
 ANOVA table, cycle 6:
 
     ## Analysis of Deviance Table (Type II Wald chisquare tests)
     ## 
     ## Response: value
     ##                              Chisq Df Pr(>Chisq)    
-    ## Map_type                  134.9856  2  < 2.2e-16 ***
-    ## Recombination              60.4413  1  7.581e-15 ***
-    ## QTL                      2841.1749  1  < 2.2e-16 ***
-    ## H2                      15828.2522  1  < 2.2e-16 ***
-    ## Repulsion                1757.6344  4  < 2.2e-16 ***
-    ## Matrix                   2680.1305  1  < 2.2e-16 ***
-    ## QTL_type                   23.7940  1  1.072e-06 ***
-    ## Map_type:Recombination     52.6813  2  3.634e-12 ***
-    ## Map_type:QTL               81.3879  2  < 2.2e-16 ***
-    ## Map_type:H2                 0.8367  2   0.658130    
-    ## Map_type:Repulsion         11.3497  8   0.182661    
-    ## Map_type:Matrix            71.7847  2  2.583e-16 ***
-    ## Map_type:QTL_type           4.9238  2   0.085271 .  
-    ## Recombination:QTL          14.0391  1   0.000179 ***
-    ## Recombination:H2            1.7826  1   0.181830    
-    ## Recombination:Repulsion     8.3627  4   0.079161 .  
-    ## Recombination:Matrix       24.1059  1  9.118e-07 ***
-    ## Recombination:QTL_type      1.8431  1   0.174588    
-    ## QTL:H2                   1960.3430  1  < 2.2e-16 ***
-    ## QTL:Repulsion             339.6510  4  < 2.2e-16 ***
-    ## QTL:Matrix                716.6802  1  < 2.2e-16 ***
-    ## QTL:QTL_type                3.2833  1   0.069989 .  
-    ## H2:Repulsion               38.6133  4  8.373e-08 ***
-    ## H2:Matrix                 547.3578  1  < 2.2e-16 ***
-    ## H2:QTL_type                 1.3411  1   0.246837    
-    ## Repulsion:Matrix           54.4870  4  4.161e-11 ***
-    ## Repulsion:QTL_type          6.1297  4   0.189672    
-    ## Matrix:QTL_type            43.9344  1  3.396e-11 ***
+    ## Map_type                  128.4071  2  < 2.2e-16 ***
+    ## Recombination              61.7312  1  3.937e-15 ***
+    ## QTL                      2715.0770  1  < 2.2e-16 ***
+    ## H2                      16414.8840  1  < 2.2e-16 ***
+    ## Repulsion                1806.8348  4  < 2.2e-16 ***
+    ## Matrix                   2834.3687  1  < 2.2e-16 ***
+    ## QTL_type                   15.4883  1  8.302e-05 ***
+    ## Map_type:Recombination     53.5982  2  2.298e-12 ***
+    ## Map_type:QTL               83.9894  2  < 2.2e-16 ***
+    ## Map_type:H2                 6.5914  2   0.037042 *  
+    ## Map_type:Repulsion         12.3429  8   0.136546    
+    ## Map_type:Matrix            77.6085  2  < 2.2e-16 ***
+    ## Map_type:QTL_type           1.3579  2   0.507157    
+    ## Recombination:QTL          27.2896  1  1.751e-07 ***
+    ## Recombination:H2            0.0037  1   0.951373    
+    ## Recombination:Repulsion     5.1547  4   0.271794    
+    ## Recombination:Matrix       33.5975  1  6.778e-09 ***
+    ## Recombination:QTL_type      1.3339  1   0.248113    
+    ## QTL:H2                   1850.9790  1  < 2.2e-16 ***
+    ## QTL:Repulsion             319.9080  4  < 2.2e-16 ***
+    ## QTL:Matrix                842.1568  1  < 2.2e-16 ***
+    ## QTL:QTL_type                9.5621  1   0.001986 ** 
+    ## H2:Repulsion               37.7668  4  1.252e-07 ***
+    ## H2:Matrix                 581.9232  1  < 2.2e-16 ***
+    ## H2:QTL_type                 1.1168  1   0.290602    
+    ## Repulsion:Matrix           63.4173  4  5.543e-13 ***
+    ## Repulsion:QTL_type         11.5856  4   0.020714 *  
+    ## Matrix:QTL_type            64.1690  1  1.142e-15 ***
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-</details>
-<details>
-<summary>
-Click here: Cycle 6, best and worst simulation parameter prediction
-summaries
-</summary>
+ANOVA table, cycle 10:
 
-#### Cycle 6, WT map
-
-![](model_S2.1_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-18-2.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-18-3.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-18-4.png)<!-- -->
-
-#### Cycle 6, Pericentromere map
-
-![](model_S2.1_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-19-2.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-19-3.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-19-4.png)<!-- -->
-
-#### Cycle 6, Chromosome map
-
-![](model_S2.1_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-20-2.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-20-3.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-20-4.png)<!-- -->
+    ## Analysis of Deviance Table (Type II Wald chisquare tests)
+    ## 
+    ## Response: value
+    ##                              Chisq Df Pr(>Chisq)    
+    ## Map_type                   36.9578  2  9.434e-09 ***
+    ## Recombination              11.1375  1   0.000846 ***
+    ## QTL                     12450.2629  1  < 2.2e-16 ***
+    ## H2                      40222.4041  1  < 2.2e-16 ***
+    ## Repulsion                3632.1656  4  < 2.2e-16 ***
+    ## Matrix                   2253.1764  1  < 2.2e-16 ***
+    ## QTL_type                  222.3027  1  < 2.2e-16 ***
+    ## Map_type:Recombination     27.6508  2  9.902e-07 ***
+    ## Map_type:QTL               69.6119  2  7.655e-16 ***
+    ## Map_type:H2                 1.0211  2   0.600162    
+    ## Map_type:Repulsion         13.8676  8   0.085283 .  
+    ## Map_type:Matrix           126.7120  2  < 2.2e-16 ***
+    ## Map_type:QTL_type           9.8018  2   0.007440 ** 
+    ## Recombination:QTL          30.6362  1  3.112e-08 ***
+    ## Recombination:H2            0.0827  1   0.773681    
+    ## Recombination:Repulsion     1.1745  4   0.882274    
+    ## Recombination:Matrix       57.4536  1  3.461e-14 ***
+    ## Recombination:QTL_type      5.0253  1   0.024980 *  
+    ## QTL:H2                   5586.9541  1  < 2.2e-16 ***
+    ## QTL:Repulsion             263.5152  4  < 2.2e-16 ***
+    ## QTL:Matrix                          0               
+    ## QTL:QTL_type               66.8967  1  2.861e-16 ***
+    ## H2:Repulsion               64.2368  4  3.726e-13 ***
+    ## H2:Matrix                 921.4778  1  < 2.2e-16 ***
+    ## H2:QTL_type                 3.9033  1   0.048190 *  
+    ## Repulsion:Matrix          115.4210  4  < 2.2e-16 ***
+    ## Repulsion:QTL_type         40.5718  4  3.296e-08 ***
+    ## Matrix:QTL_type           109.5343  1  < 2.2e-16 ***
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 </details>
 
@@ -393,7 +474,7 @@ summaries
 
 **Linear model has `singular fit`, omitted**
 
-### QTL positive allele frequency change
+### QTL allele frequency change
 
 **Linear model, ANOVA table, best and worst simulation parameters by
 genetic map and QTL type**
@@ -407,513 +488,51 @@ Click here: Model, ANOVA table
 
 `response variable ~ (map type + recombination + QTL per Chr + H2 + repulsion + matrix + QTL type + allele)^2 + (1|rep)`
 
+    ## boundary (singular) fit: see help('isSingular')
+
 ANOVA table:
 
     ## Analysis of Deviance Table (Type II Wald chisquare tests)
     ## 
     ## Response: value
     ##                              Chisq Df Pr(>Chisq)    
-    ## Map_type                    7.5916  2  0.0224654 *  
-    ## Recombination              13.8127  1  0.0002020 ***
-    ## QTL                     72156.0864  1  < 2.2e-16 ***
-    ## H2                          4.8586  1  0.0275086 *  
-    ## Repulsion               31640.6715  4  < 2.2e-16 ***
-    ## Matrix                   2645.3858  1  < 2.2e-16 ***
-    ## QTL_type                  366.9488  1  < 2.2e-16 ***
-    ## Allele                   4355.9982  2  < 2.2e-16 ***
-    ## Map_type:Recombination      6.6114  2  0.0366740 *  
-    ## Map_type:QTL                2.5264  2  0.2827471    
-    ## Map_type:H2                13.8616  2  0.0009772 ***
-    ## Map_type:Repulsion          2.6898  8  0.9522909    
-    ## Map_type:Matrix            19.9313  2  4.699e-05 ***
-    ## Map_type:QTL_type           1.7159  2  0.4240226    
-    ## Map_type:Allele             2.1492  4  0.7083346    
-    ## Recombination:QTL           2.3565  1  0.1247642    
-    ## Recombination:H2            1.6002  1  0.2058765    
-    ## Recombination:Repulsion     4.3689  4  0.3583720    
-    ## Recombination:Matrix        9.9975  1  0.0015675 ** 
-    ## Recombination:QTL_type      0.4094  1  0.5222764    
-    ## Recombination:Allele        5.4240  2  0.0664053 .  
-    ## QTL:H2                   1189.9138  1  < 2.2e-16 ***
-    ## QTL:Repulsion           25751.5391  4  < 2.2e-16 ***
-    ## QTL:Matrix               1475.7672  1  < 2.2e-16 ***
-    ## QTL:QTL_type               88.0456  1  < 2.2e-16 ***
-    ## QTL:Allele              20841.6066  2  < 2.2e-16 ***
-    ## H2:Repulsion               27.3418  4  1.695e-05 ***
-    ## H2:Matrix                  48.6184  1  3.109e-12 ***
-    ## H2:QTL_type                23.2883  1  1.394e-06 ***
-    ## H2:Allele               15462.7855  2  < 2.2e-16 ***
-    ## Repulsion:Matrix         1374.6931  4  < 2.2e-16 ***
-    ## Repulsion:QTL_type         31.3299  4  2.622e-06 ***
-    ## Repulsion:Allele         2253.8078  8  < 2.2e-16 ***
-    ## Matrix:QTL_type             9.8533  1  0.0016953 ** 
-    ## Matrix:Allele             183.2536  2  < 2.2e-16 ***
-    ## QTL_type:Allele            34.6539  2  2.985e-08 ***
+    ## Map_type                    7.6050  2  0.0223149 *  
+    ## Recombination               8.7192  1  0.0031487 ** 
+    ## QTL                     72069.0154  1  < 2.2e-16 ***
+    ## H2                          1.6475  1  0.1993003    
+    ## Repulsion               31755.2339  4  < 2.2e-16 ***
+    ## Matrix                   2576.8294  1  < 2.2e-16 ***
+    ## QTL_type                  344.4908  1  < 2.2e-16 ***
+    ## Allele                   4413.3619  2  < 2.2e-16 ***
+    ## Map_type:Recombination      6.9795  2  0.0305088 *  
+    ## Map_type:QTL                3.1292  2  0.2091685    
+    ## Map_type:H2                11.0767  2  0.0039330 ** 
+    ## Map_type:Repulsion          2.6763  8  0.9530029    
+    ## Map_type:Matrix            18.2048  2  0.0001114 ***
+    ## Map_type:QTL_type           0.4092  2  0.8149710    
+    ## Map_type:Allele            10.8113  4  0.0287683 *  
+    ## Recombination:QTL           0.3534  1  0.5521776    
+    ## Recombination:H2            2.8969  1  0.0887507 .  
+    ## Recombination:Repulsion     4.4768  4  0.3453020    
+    ## Recombination:Matrix       14.4182  1  0.0001464 ***
+    ## Recombination:QTL_type      0.4017  1  0.5262103    
+    ## Recombination:Allele        1.3715  2  0.5037215    
+    ## QTL:H2                   1233.2556  1  < 2.2e-16 ***
+    ## QTL:Repulsion           25862.2095  4  < 2.2e-16 ***
+    ## QTL:Matrix               1440.5732  1  < 2.2e-16 ***
+    ## QTL:QTL_type               77.3361  1  < 2.2e-16 ***
+    ## QTL:Allele              20405.0332  2  < 2.2e-16 ***
+    ## H2:Repulsion               18.5441  4  0.0009657 ***
+    ## H2:Matrix                  64.7589  1  8.465e-16 ***
+    ## H2:QTL_type                13.8161  1  0.0002016 ***
+    ## H2:Allele               15549.8127  2  < 2.2e-16 ***
+    ## Repulsion:Matrix         1383.6361  4  < 2.2e-16 ***
+    ## Repulsion:QTL_type         33.9241  4  7.724e-07 ***
+    ## Repulsion:Allele         2314.6917  8  < 2.2e-16 ***
+    ## Matrix:QTL_type             9.0609  1  0.0026114 ** 
+    ## Matrix:Allele             145.4860  2  < 2.2e-16 ***
+    ## QTL_type:Allele            30.7960  2  2.055e-07 ***
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-</details>
-<details>
-<summary>
-Click here: Best and worst simulation parameter prediction summaries
-</summary>
-
-#### WT map
-
-<div id="uoywgxeufq" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>html {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
-}
-
-#uoywgxeufq .gt_table {
-  display: table;
-  border-collapse: collapse;
-  margin-left: auto;
-  margin-right: auto;
-  color: #333333;
-  font-size: 16px;
-  font-weight: normal;
-  font-style: normal;
-  background-color: #FFFFFF;
-  width: auto;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #A8A8A8;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #A8A8A8;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-}
-
-#uoywgxeufq .gt_heading {
-  background-color: #FFFFFF;
-  text-align: center;
-  border-bottom-color: #FFFFFF;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-}
-
-#uoywgxeufq .gt_title {
-  color: #333333;
-  font-size: 125%;
-  font-weight: initial;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  border-bottom-color: #FFFFFF;
-  border-bottom-width: 0;
-}
-
-#uoywgxeufq .gt_subtitle {
-  color: #333333;
-  font-size: 85%;
-  font-weight: initial;
-  padding-top: 0;
-  padding-bottom: 6px;
-  border-top-color: #FFFFFF;
-  border-top-width: 0;
-}
-
-#uoywgxeufq .gt_bottom_border {
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#uoywgxeufq .gt_col_headings {
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-}
-
-#uoywgxeufq .gt_col_heading {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: normal;
-  text-transform: inherit;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: bottom;
-  padding-top: 5px;
-  padding-bottom: 6px;
-  padding-left: 5px;
-  padding-right: 5px;
-  overflow-x: hidden;
-}
-
-#uoywgxeufq .gt_column_spanner_outer {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: normal;
-  text-transform: inherit;
-  padding-top: 0;
-  padding-bottom: 0;
-  padding-left: 4px;
-  padding-right: 4px;
-}
-
-#uoywgxeufq .gt_column_spanner_outer:first-child {
-  padding-left: 0;
-}
-
-#uoywgxeufq .gt_column_spanner_outer:last-child {
-  padding-right: 0;
-}
-
-#uoywgxeufq .gt_column_spanner {
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  vertical-align: bottom;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  overflow-x: hidden;
-  display: inline-block;
-  width: 100%;
-}
-
-#uoywgxeufq .gt_group_heading {
-  padding: 8px;
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: middle;
-}
-
-#uoywgxeufq .gt_empty_group_heading {
-  padding: 0.5px;
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  vertical-align: middle;
-}
-
-#uoywgxeufq .gt_from_md > :first-child {
-  margin-top: 0;
-}
-
-#uoywgxeufq .gt_from_md > :last-child {
-  margin-bottom: 0;
-}
-
-#uoywgxeufq .gt_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  margin: 10px;
-  border-top-style: solid;
-  border-top-width: 1px;
-  border-top-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: middle;
-  overflow-x: hidden;
-}
-
-#uoywgxeufq .gt_stub {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-right-style: solid;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  padding-left: 12px;
-}
-
-#uoywgxeufq .gt_summary_row {
-  color: #333333;
-  background-color: #FFFFFF;
-  text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#uoywgxeufq .gt_first_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-}
-
-#uoywgxeufq .gt_grand_summary_row {
-  color: #333333;
-  background-color: #FFFFFF;
-  text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#uoywgxeufq .gt_first_grand_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-top-style: double;
-  border-top-width: 6px;
-  border-top-color: #D3D3D3;
-}
-
-#uoywgxeufq .gt_striped {
-  background-color: rgba(128, 128, 128, 0.05);
-}
-
-#uoywgxeufq .gt_table_body {
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#uoywgxeufq .gt_footnotes {
-  color: #333333;
-  background-color: #FFFFFF;
-  border-bottom-style: none;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-}
-
-#uoywgxeufq .gt_footnote {
-  margin: 0px;
-  font-size: 90%;
-  padding: 4px;
-}
-
-#uoywgxeufq .gt_sourcenotes {
-  color: #333333;
-  background-color: #FFFFFF;
-  border-bottom-style: none;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-}
-
-#uoywgxeufq .gt_sourcenote {
-  font-size: 90%;
-  padding: 4px;
-}
-
-#uoywgxeufq .gt_left {
-  text-align: left;
-}
-
-#uoywgxeufq .gt_center {
-  text-align: center;
-}
-
-#uoywgxeufq .gt_right {
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-}
-
-#uoywgxeufq .gt_font_normal {
-  font-weight: normal;
-}
-
-#uoywgxeufq .gt_font_bold {
-  font-weight: bold;
-}
-
-#uoywgxeufq .gt_font_italic {
-  font-style: italic;
-}
-
-#uoywgxeufq .gt_super {
-  font-size: 65%;
-}
-
-#uoywgxeufq .gt_footnote_marks {
-  font-style: italic;
-  font-weight: normal;
-  font-size: 65%;
-}
-</style>
-<table class="gt_table">
-  <thead class="gt_header">
-    <tr>
-      <th colspan="8" class="gt_heading gt_title gt_font_normal" style><strong>Positive QTL AF change estimates, top 10</strong></th>
-    </tr>
-    <tr>
-      <th colspan="8" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style><strong>Map type:</strong> WT, <strong>QTL type:</strong> R</th>
-    </tr>
-  </thead>
-  <thead class="gt_col_headings">
-    <tr>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">QTL</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">H2</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Repulsion</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Matrix</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Allele</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">estimate</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">std.error</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">p.value</th>
-    </tr>
-  </thead>
-  <tbody class="gt_table_body">
-    <tr><td class="gt_row gt_left">2</td>
-<td class="gt_row gt_left">2</td>
-<td class="gt_row gt_left">5</td>
-<td class="gt_row gt_left">CV</td>
-<td class="gt_row gt_left">med_pos</td>
-<td class="gt_row gt_right">0.2750611</td>
-<td class="gt_row gt_right">0.001516022</td>
-<td class="gt_row gt_right">0</td></tr>
-    <tr><td class="gt_row gt_left">2</td>
-<td class="gt_row gt_left">2</td>
-<td class="gt_row gt_left">5</td>
-<td class="gt_row gt_left">CV</td>
-<td class="gt_row gt_left">med_pos</td>
-<td class="gt_row gt_right">0.2738180</td>
-<td class="gt_row gt_right">0.001516022</td>
-<td class="gt_row gt_right">0</td></tr>
-    <tr><td class="gt_row gt_left">2</td>
-<td class="gt_row gt_left">8</td>
-<td class="gt_row gt_left">5</td>
-<td class="gt_row gt_left">CV</td>
-<td class="gt_row gt_left">med_pos</td>
-<td class="gt_row gt_right">0.2515346</td>
-<td class="gt_row gt_right">0.001516022</td>
-<td class="gt_row gt_right">0</td></tr>
-    <tr><td class="gt_row gt_left">2</td>
-<td class="gt_row gt_left">8</td>
-<td class="gt_row gt_left">5</td>
-<td class="gt_row gt_left">CV</td>
-<td class="gt_row gt_left">med_pos</td>
-<td class="gt_row gt_right">0.2511277</td>
-<td class="gt_row gt_right">0.001516022</td>
-<td class="gt_row gt_right">0</td></tr>
-    <tr><td class="gt_row gt_left">2</td>
-<td class="gt_row gt_left">8</td>
-<td class="gt_row gt_left">5</td>
-<td class="gt_row gt_left">CV</td>
-<td class="gt_row gt_left">small_pos</td>
-<td class="gt_row gt_right">0.2396553</td>
-<td class="gt_row gt_right">0.001516022</td>
-<td class="gt_row gt_right">0</td></tr>
-    <tr><td class="gt_row gt_left">2</td>
-<td class="gt_row gt_left">8</td>
-<td class="gt_row gt_left">5</td>
-<td class="gt_row gt_left">CV</td>
-<td class="gt_row gt_left">small_pos</td>
-<td class="gt_row gt_right">0.2387044</td>
-<td class="gt_row gt_right">0.001516022</td>
-<td class="gt_row gt_right">0</td></tr>
-    <tr><td class="gt_row gt_left">2</td>
-<td class="gt_row gt_left">2</td>
-<td class="gt_row gt_left">3</td>
-<td class="gt_row gt_left">CV</td>
-<td class="gt_row gt_left">med_pos</td>
-<td class="gt_row gt_right">0.2384267</td>
-<td class="gt_row gt_right">0.001516022</td>
-<td class="gt_row gt_right">0</td></tr>
-    <tr><td class="gt_row gt_left">2</td>
-<td class="gt_row gt_left">2</td>
-<td class="gt_row gt_left">3</td>
-<td class="gt_row gt_left">CV</td>
-<td class="gt_row gt_left">med_pos</td>
-<td class="gt_row gt_right">0.2379634</td>
-<td class="gt_row gt_right">0.001516022</td>
-<td class="gt_row gt_right">0</td></tr>
-    <tr><td class="gt_row gt_left">2</td>
-<td class="gt_row gt_left">2</td>
-<td class="gt_row gt_left">5</td>
-<td class="gt_row gt_left">GW</td>
-<td class="gt_row gt_left">med_pos</td>
-<td class="gt_row gt_right">0.2268367</td>
-<td class="gt_row gt_right">0.001516022</td>
-<td class="gt_row gt_right">0</td></tr>
-    <tr><td class="gt_row gt_left">2</td>
-<td class="gt_row gt_left">2</td>
-<td class="gt_row gt_left">5</td>
-<td class="gt_row gt_left">GW</td>
-<td class="gt_row gt_left">med_pos</td>
-<td class="gt_row gt_right">0.2235032</td>
-<td class="gt_row gt_right">0.001516022</td>
-<td class="gt_row gt_right">0</td></tr>
-  </tbody>
-  
-  
-</table>
-</div>
-
-![](model_S2.1_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-23-2.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-23-3.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-23-4.png)<!-- -->
-
-#### Pericentromere map
-
-![](model_S2.1_files/figure-gfm/unnamed-chunk-24-1.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-24-2.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-24-3.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-24-4.png)<!-- -->
-
-#### Chromosome map
-
-![](model_S2.1_files/figure-gfm/unnamed-chunk-25-1.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-25-2.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-25-3.png)<!-- -->![](model_S2.1_files/figure-gfm/unnamed-chunk-25-4.png)<!-- -->
 
 </details>
