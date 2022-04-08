@@ -30,13 +30,9 @@ Data, analysis, and scripts for reviewing or reproducing results presented in ch
 
 * **plots_S2.2.md & .Rmd**, response variable plots, biparental population
 
-* **model_S2.1.md & .Rmd**, response variable linear models, cycle 6, full founder
+* **model_S2.1.md & .Rmd**, response variable linear models, cycle 6 & 10, full founder
 
-* **model_S2.2.md & .Rmd**, response variable linear models, cycle 10, full founder  
-
-* **model_S2.3.md & .Rmd**, response variable linear models, cycle 6, biparental
- 
-* **model_S2.4.md & .Rmd**, response variable linear models, cycle 10, biparental    
+* **model_S2.2.md & .Rmd**, response variable linear models, cycle 6 & 10, biparental      
 
 * **script_S2.1**, genetic map changes and recombination frequency response  
 
