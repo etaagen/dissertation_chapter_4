@@ -1,0 +1,323 @@
+---
+title: "Full versus BP pop model analysis, cycle 6 & 10"
+output: github_document
+always_allow_html: true
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+<details><summary>Click here: Load packages, format data</summary>
+```{r load data, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(data.table)
+library(kableExtra)
+library(ggsci)
+library(gt)
+library(lme4)
+library(emmeans)
+library(car)
+library(broom.mixed)
+
+gg <- fread("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_2/results_S2.1/f_gg.csv") %>% as.data.frame()
+gv <- fread("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_2/results_S2.1/f_gv.csv") %>% as.data.frame()
+pa <- fread("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_2/results_S2.1/f_pa.csv") %>% as.data.frame()
+be <- fread("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_2/results_S2.1/f_be.csv") %>% as.data.frame()
+# be `value` is 2-fold higher than it should be (ASR does not know how to treat VarA/GenicVarA for DH)
+be$value <- be$value/2
+qtl <- fread("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_2/results_S2.1/f_qtl.csv") %>% as.data.frame()
+qtl_af <- fread("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_2/results_S2.1/f_qtl_af.csv") %>% as.data.frame()
+
+
+gg_bp <- fread("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_2/results_S2.1/bp_gg.csv") %>% as.data.frame()
+gv_bp <- fread("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_2/results_S2.1/bp_gv.csv") %>% as.data.frame()
+pa_bp <- fread("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_2/results_S2.1/bp_pa.csv") %>% as.data.frame()
+be_bp <- fread("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_2/results_S2.1/bp_be.csv") %>% as.data.frame()
+# be `value` is 2-fold higher than it should be (ASR does not know how to treat VarA/GenicVarA for DH)
+be_bp$value <- be_bp$value/2
+qtl_bp <- fread("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_2/results_S2.1/bp_qtl.csv") %>% as.data.frame()
+qtl_af_bp <- fread("https://raw.githubusercontent.com/etaagen/dissertation_chapter_4/main/Supplementary_2/results_S2.1/bp_qtl_af.csv") %>% as.data.frame()
+
+#filter full pop for repulsion conditions 3 and 4 and QTL type random
+gg <- gg %>% filter(Repulsion %in% c(3, 4), QTL_type == "R")
+gv <- gv %>% filter(Repulsion %in% c(3, 4), QTL_type == "R")
+be <- be %>% filter(Repulsion %in% c(3, 4), QTL_type == "R")
+pa <- pa %>% filter(Repulsion %in% c(3, 4), QTL_type == "R")
+qtl <- qtl %>% filter(Repulsion %in% c(3, 4), QTL_type == "R")
+qtl_af <- qtl_af %>% filter(Repulsion %in% c(3, 4), QTL_type == "R")
+
+# combine
+gg <- rbind(gg, gg_bp)
+gv <- rbind(gv, gv_bp)
+be <- rbind(be, be_bp)
+pa <- rbind(pa, pa_bp)
+qtl <- rbind(qtl, qtl_bp)
+qtl_af <- rbind(qtl_af, qtl_af_bp)
+```
+
+ </details>  
+
+
+### Genetic gain  
+
+**Linear model, ANOVA table** 
+
+<details><summary>Click here: Model, ANOVA tables cycle 6 & 10</summary>
+
+**Note:** filtered for cycle 6 or cycle 10 observations. See .Rmd file for code.  
+
+`response variable ~ (map type + recombination + QTL per Chr + H2 + repulsion + matrix + founder population)^2 + (1|rep)`   
+
+ 
+```{r, echo=FALSE}
+ # set factors
+my_data <- gg
+my_data$rep <- as.factor(my_data$rep)
+my_data$Map_type <- as.factor(my_data$Map_type)
+my_data$Recombination<- as.factor(my_data$Recombination)
+my_data$QTL<- as.factor(my_data$QTL)
+my_data$H2<- as.factor(my_data$H2)
+my_data$Repulsion<- as.factor(my_data$Repulsion)
+my_data$Matrix<- as.factor(my_data$Matrix)
+my_data$QTL_type <- as.factor(my_data$QTL_type)
+my_data$Pop <- as.factor(my_data$Pop)
+
+# filter to 6th and 10th cycle
+my_data_6 <- my_data %>% filter(cycle == 6)
+my_data_10 <- my_data %>% filter(cycle == 10)
+
+# run mixed model 
+my_lmer_6 <- lmer(value ~ (Map_type + Recombination+QTL+H2+Repulsion+Matrix+Pop)^2 + (1|rep), data = my_data_6)
+my_lmer_10 <- lmer(value ~ (Map_type + Recombination+QTL+H2+Repulsion+Matrix+Pop)^2 + (1|rep), data = my_data_10)
+
+```
+  
+  
+ANOVA table, cycle 6:  
+```{r, echo=FALSE, message=FALSE}
+# run Anova
+my_Anova_6 <- Anova(my_lmer_6) 
+# print the 6th cycle of selection ANOVA table
+print(my_Anova_6)
+```
+  
+ANOVA table, cycle 10:  
+```{r, echo=FALSE, message=FALSE}
+# run Anova
+my_Anova_10 <- Anova(my_lmer_10) 
+# print the 10th cycle of selection ANOVA table
+print(my_Anova_10)
+```
+  
+
+ </details>
+ 
+### Genetic variance
+
+**Linear model,  ANOVA table** 
+<details><summary>Click here: Model, ANOVA tables cycle 6 & 10</summary>
+
+**Note:** filtered for cycle 6 or cycle 10 observations. See .Rmd file for code.  
+
+`response variable ~ (map type + recombination + QTL per Chr + H2 + repulsion + matrix + founder population)^2 + (1|rep)`   
+
+ 
+```{r, echo=FALSE}
+ # set factors
+my_data <- gv
+my_data$rep <- as.factor(my_data$rep)
+my_data$Map_type <- as.factor(my_data$Map_type)
+my_data$Recombination<- as.factor(my_data$Recombination)
+my_data$QTL<- as.factor(my_data$QTL)
+my_data$H2<- as.factor(my_data$H2)
+my_data$Repulsion<- as.factor(my_data$Repulsion)
+my_data$Matrix<- as.factor(my_data$Matrix)
+my_data$QTL_type <- as.factor(my_data$QTL_type)
+my_data$Pop <- as.factor(my_data$Pop)
+
+# filter to 6th and 10th cycle
+my_data_6 <- my_data %>% filter(cycle == 6)
+my_data_10 <- my_data %>% filter(cycle == 10)
+
+# run mixed model 
+my_lmer_6 <- lmer(value ~ (Map_type + Recombination+QTL+H2+Repulsion+Matrix+Pop)^2 + (1|rep), data = my_data_6)
+my_lmer_10 <- lmer(value ~ (Map_type + Recombination+QTL+H2+Repulsion+Matrix+Pop)^2 + (1|rep), data = my_data_10)
+
+```
+  
+  
+ANOVA table, cycle 6:  
+```{r, echo=FALSE, message=FALSE}
+# run Anova
+my_Anova_6 <- Anova(my_lmer_6) 
+# print the 6th cycle of selection ANOVA table
+print(my_Anova_6)
+```
+  
+ANOVA table, cycle 10:  
+```{r, echo=FALSE, message=FALSE}
+# run Anova
+my_Anova_10 <- Anova(my_lmer_10) 
+# print the 10th cycle of selection ANOVA table
+print(my_Anova_10)
+```
+ 
+ </details>
+ 
+### Bulmer effect  
+
+**Linear model,  ANOVA table**  
+<details><summary>Click here: Model, ANOVA tables cycle 6 & 10</summary>
+
+**Note:** filtered for cycle 6 or cycle 10 observations. See .Rmd file for code.  
+
+`response variable ~ (map type + recombination + QTL per Chr + H2 + repulsion + matrix + founder population)^2 + (1|rep)`   
+
+ 
+```{r, echo=FALSE}
+ # set factors
+my_data <- be
+my_data$rep <- as.factor(my_data$rep)
+my_data$Map_type <- as.factor(my_data$Map_type)
+my_data$Recombination<- as.factor(my_data$Recombination)
+my_data$QTL<- as.factor(my_data$QTL)
+my_data$H2<- as.factor(my_data$H2)
+my_data$Repulsion<- as.factor(my_data$Repulsion)
+my_data$Matrix<- as.factor(my_data$Matrix)
+my_data$QTL_type <- as.factor(my_data$QTL_type)
+my_data$Pop <- as.factor(my_data$Pop)
+
+# filter to 6th and 10th cycle
+my_data_6 <- my_data %>% filter(cycle == 6)
+my_data_10 <- my_data %>% filter(cycle == 10)
+
+# run mixed model 
+my_lmer_6 <- lmer(value ~ (Map_type + Recombination+QTL+H2+Repulsion+Matrix+Pop)^2 + (1|rep), data = my_data_6)
+my_lmer_10 <- lmer(value ~ (Map_type + Recombination+QTL+H2+Repulsion+Matrix+Pop)^2 + (1|rep), data = my_data_10)
+
+```
+  
+  
+ANOVA table, cycle 6:  
+```{r, echo=FALSE, message=FALSE}
+# run Anova
+my_Anova_6 <- Anova(my_lmer_6) 
+# print the 6th cycle of selection ANOVA table
+print(my_Anova_6)
+```
+  
+ANOVA table, cycle 10:  
+```{r, echo=FALSE, message=FALSE}
+# run Anova
+my_Anova_10 <- Anova(my_lmer_10) 
+# print the 10th cycle of selection ANOVA table
+print(my_Anova_10)
+```
+ 
+ </details>
+ 
+ 
+### Prediction accuracy
+
+**Linear model,  ANOVA table**  
+<details><summary>Click here: Model, ANOVA tables cycle 6 & 10</summary>
+
+**Note:** filtered for cycle 6 or cycle 10 observations. See .Rmd file for code.  
+
+`response variable ~ (map type + recombination + QTL per Chr + H2 + repulsion + matrix + founder population)^2 + (1|rep)`   
+
+ 
+```{r, echo=FALSE}
+ # set factors
+my_data <- pa
+my_data$rep <- as.factor(my_data$rep)
+my_data$Map_type <- as.factor(my_data$Map_type)
+my_data$Recombination<- as.factor(my_data$Recombination)
+my_data$QTL<- as.factor(my_data$QTL)
+my_data$H2<- as.factor(my_data$H2)
+my_data$Repulsion<- as.factor(my_data$Repulsion)
+my_data$Matrix<- as.factor(my_data$Matrix)
+my_data$QTL_type <- as.factor(my_data$QTL_type)
+my_data$Pop <- as.factor(my_data$Pop)
+
+# filter to 6th and 10th cycle
+my_data_6 <- my_data %>% filter(cycle == 6)
+my_data_10 <- my_data %>% filter(cycle == 10)
+
+# run mixed model 
+my_lmer_6 <- lmer(value ~ (Map_type + Recombination+QTL+H2+Repulsion+Matrix+Pop)^2 + (1|rep), data = my_data_6)
+my_lmer_10 <- lmer(value ~ (Map_type + Recombination+QTL+H2+Repulsion+Matrix+Pop)^2 + (1|rep), data = my_data_10)
+
+```
+  
+  
+ANOVA table, cycle 6:  
+```{r, echo=FALSE, message=FALSE}
+# run Anova
+my_Anova_6 <- Anova(my_lmer_6) 
+# print the 6th cycle of selection ANOVA table
+print(my_Anova_6)
+```
+  
+ANOVA table, cycle 10:  
+```{r, echo=FALSE, message=FALSE}
+# run Anova
+my_Anova_10 <- Anova(my_lmer_10) 
+# print the 10th cycle of selection ANOVA table
+print(my_Anova_10)
+```
+ 
+ </details>  
+ 
+ 
+### QTL fixation   
+
+**Linear model has `singular fit`, omitted / plots have little variation**    
+
+### QTL allele frequency change 
+
+**Linear model,  ANOVA table**  
+
+<details><summary>Click here: Model, ANOVA table</summary>
+
+**Note:** total cycle change observations. See .Rmd file for code.  
+
+`response variable ~ (map type + recombination + QTL per Chr + H2 + repulsion + matrix + founder pop + allele)^2 + (1|rep)` 
+
+
+```{r, echo=FALSE}
+ # set factors
+my_data <- qtl_af
+my_data$rep <- as.factor(my_data$rep)
+my_data$Map_type <- as.factor(my_data$Map_type)
+my_data$Recombination<- as.factor(my_data$Recombination)
+my_data$QTL<- as.factor(my_data$QTL)
+my_data$H2<- as.factor(my_data$H2)
+my_data$Repulsion<- as.factor(my_data$Repulsion)
+my_data$Matrix<- as.factor(my_data$Matrix)
+my_data$QTL_type <- as.factor(my_data$QTL_type)
+my_data$Pop <- as.factor(my_data$Pop)
+
+names(my_data)[1] <- "Allele"
+my_data$Allele <- as.factor(my_data$Allele)
+
+my_data <- my_data %>% filter(Allele %in% c("large_pos", "med_pos", "small_pos"))
+
+# run mixed model 
+my_lmer <- lmer(value ~ (Map_type + Recombination+QTL+H2+Repulsion+Matrix+Pop+Allele)^2 + (1|rep), data = my_data)
+
+```
+  
+  
+ANOVA table:  
+```{r, echo=FALSE, message=FALSE}
+# run Anova
+my_Anova <- Anova(my_lmer) 
+# print ANOVA table
+print(my_Anova)
+```
+  
+</details>
